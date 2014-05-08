@@ -332,6 +332,8 @@ typedef struct __GSEvent * GSEventRef;
     [touch release];
 }
 
+#pragma mark - Drag Methods
+
 #define DRAG_TOUCH_DELAY 0.01
 
 - (void)longPressAtPoint:(CGPoint)point duration:(NSTimeInterval)duration
@@ -433,6 +435,112 @@ typedef struct __GSEvent * GSEventRef;
     }
     [touch release];
 }
+
+#pragma mark - Pinch Methods
+
+- (void)pinchFromStartPoints:(NSArray *)startPoints toEndPoints:(NSArray *)endPoints {
+    [self pinchFromStartPoints:startPoints toEndPoints:endPoints steps:3];
+}
+
+- (void)pinchFromStartPoints:(NSArray *)startPoints toEndPoints:(NSArray *)endPoints steps:(NSUInteger)stepCount {
+    CGPoint *leftPath = alloca(stepCount * sizeof(CGPoint));
+    CGPoint *rightPath = alloca(stepCount * sizeof(CGPoint));
+    
+    CGPoint leftStartPoint = [startPoints[0] CGPointValue];
+    CGPoint rightStartPoint = [startPoints[1] CGPointValue];
+    CGPoint leftEndPoint = [endPoints[0] CGPointValue];
+    CGPoint rightEndPoint = [endPoints[1] CGPointValue];
+    
+    CGPoint leftDisplacement = CGPointMake(leftEndPoint.x - leftStartPoint.x, leftEndPoint.y - leftStartPoint.y);
+    CGPoint rightDisplacement = CGPointMake(rightEndPoint.x - rightStartPoint.x, rightEndPoint.y - rightStartPoint.y);
+    
+    for (NSUInteger i = 0; i < stepCount; i++) {
+        CGFloat progress = ((CGFloat)i) / (stepCount - 1);
+        leftPath[i] = CGPointMake(leftStartPoint.x + (progress * leftDisplacement.x),
+                                  leftStartPoint.y + (progress * leftDisplacement.y));
+        rightPath[i] = CGPointMake(rightStartPoint.x + (progress * rightDisplacement.x),
+                                   rightStartPoint.y + (progress * rightDisplacement.y));
+    }
+    
+    [self pinchAlongPathWithLeftPoints:leftPath rightPoints:rightPath count:stepCount];
+}
+
+- (void)pinchAlongPathWithLeftPoints:(CGPoint *)leftPoints rightPoints:(CGPoint *)rightPoints count:(NSInteger)count {
+    // we need at least two points in order to make segments
+    if (count < 2) {
+        return;
+    }
+    
+    // Create the start touches
+    UITouch *touch1 = [[UITouch alloc] initAtPoint:leftPoints[0] inView:self];
+    [touch1 setPhaseAndUpdateTimestamp:UITouchPhaseBegan];
+    
+    UITouch *touch2 = [[UITouch alloc] initAtPoint:rightPoints[0] inView:self];
+    [touch2 setPhaseAndUpdateTimestamp:UITouchPhaseBegan];
+    
+    UIEvent *eventDown = [self _eventWithTouch:touch1];
+    // Add the second touch here rather then creating a second '_eventWithTouch:' method
+    [eventDown _addTouch:touch2 forDelayedDelivery:NO];
+    [[UIApplication sharedApplication] sendEvent:eventDown];
+    
+    CFRunLoopRunInMode(UIApplicationCurrentRunMode, DRAG_TOUCH_DELAY, false);
+    
+    for (NSInteger pointIndex = 1; pointIndex < count; pointIndex++) {
+        [touch1 setLocationInWindow:[self.window convertPoint:leftPoints[pointIndex] fromView:self]];
+        [touch1 setPhaseAndUpdateTimestamp:UITouchPhaseMoved];
+        
+        [touch2 setLocationInWindow:[self.window convertPoint:rightPoints[pointIndex] fromView:self]];
+        [touch2 setPhaseAndUpdateTimestamp:UITouchPhaseMoved];
+        
+        UIEvent *eventPinch = [self _eventWithTouch:touch1];
+        // Add the second touch here rather then creating a second '_eventWithTouch:' method
+        [eventPinch _addTouch:touch2 forDelayedDelivery:NO];
+        [[UIApplication sharedApplication] sendEvent:eventPinch];
+        
+        CFRunLoopRunInMode(UIApplicationCurrentRunMode, DRAG_TOUCH_DELAY, false);
+    }
+    
+    // We need to send a final move with no change and a stationary event to stop the fling
+    [touch1 setPhaseAndUpdateTimestamp:UITouchPhaseMoved];
+    [touch2 setPhaseAndUpdateTimestamp:UITouchPhaseMoved];
+    
+    UIEvent *eventPinch = [self _eventWithTouch:touch1];
+    [eventPinch _addTouch:touch2 forDelayedDelivery:NO];
+    [[UIApplication sharedApplication] sendEvent:eventPinch];
+    
+    CFRunLoopRunInMode(UIApplicationCurrentRunMode, DRAG_TOUCH_DELAY, false);
+    
+    // Send the Stationary event
+    [touch1 setPhaseAndUpdateTimestamp:UITouchPhaseStationary];
+    [touch2 setPhaseAndUpdateTimestamp:UITouchPhaseStationary];
+    
+    UIEvent *eventStop = [self _eventWithTouch:touch1];
+    [eventStop _addTouch:touch2 forDelayedDelivery:NO];
+    [[UIApplication sharedApplication] sendEvent:eventStop];
+    
+    CFRunLoopRunInMode(UIApplicationCurrentRunMode, DRAG_TOUCH_DELAY, false);
+    
+    // Finally end the touch event
+    [touch1 setPhaseAndUpdateTimestamp:UITouchPhaseEnded];
+    [touch2 setPhaseAndUpdateTimestamp:UITouchPhaseEnded];
+    
+    UIEvent *eventUp = [self _eventWithTouch:touch1];
+    [eventUp _addTouch:touch2 forDelayedDelivery:NO];
+    [[UIApplication sharedApplication] sendEvent:eventUp];
+    
+    // Dispatching the event doesn't actually update the first responder, so fake it
+    if (touch1.view == self && [self canBecomeFirstResponder]) {
+        [self becomeFirstResponder];
+    }
+    
+    while (UIApplicationCurrentRunMode != kCFRunLoopDefaultMode) {
+        CFRunLoopRunInMode(UIApplicationCurrentRunMode, 0.1, false);
+    }
+    [touch1 release];
+    [touch2 release];
+}
+
+#pragma mark - Tappable Check Methods
 
 - (BOOL)isProbablyTappable
 {

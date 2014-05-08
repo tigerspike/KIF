@@ -411,4 +411,62 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @result Collection view cell at index path
  */
 - (UICollectionViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier;
+
+/*!
+ @abstract Taps a particular view in the view hierarchy multiple times.
+ @discussion The view or accessibility element with the given label is searched for in the view hierarchy. If the element isn't found or isn't currently tappable, then the step will attempt to wait until it is. Once the view is present and tappable, multiple tap events are simulated in the center of the view or element.
+ @param label The accessibility label of the element to tap.
+ @param numberOfTaps The number of times the view should be tapped
+ */
+
+- (void)multiTapViewWithAccessibilityLabel:(NSString *)label andNumberOfTaps:(NSUInteger)numberOfTaps;
+
+/*!
+ @abstract Taps a particular view in the view hierarchy multiple times.
+ @discussion The view or accessibility element with the given label is searched for in the view hierarchy. If the element isn't found or isn't currently tappable, then the step will attempt to wait until it is. Once the view is present and tappable, multiple tap events are simulated in the center of the view or element.
+ @param label The accessibility label of the element to tap.
+ @param traits The accessibility traits of the element to tap. Elements that do not include at least these traits are ignored.
+ @param numberOfTaps The number of times the view should be tapped
+ */
+- (void)multiTapViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps;
+
+/*!
+ @abstract Taps a particular view in the view hierarchy multiple times.
+ @discussion The view or accessibility element with the given label is searched for in the view hierarchy. If the element isn't found or isn't currently tappable, then the step will attempt to wait until it is. Once the view is present and tappable, multiple tap events are simulated in the center of the view or element.
+ 
+ This variation allows finding a particular instance of an accessibility element. For example, a table view might have multiple elements with the accessibility label of "Employee", but only one that also has the accessibility value of "Bob".
+ @param label The accessibility label of the element to tap.
+ @param value The accessibility value of the element to tap.
+ @param traits The accessibility traits of the element to tap. Elements that do not include at least these traits are ignored.
+ @param numberOfTaps The number of times the view should be tapped
+ */
+- (void)multiTapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps;
+
+/*!
+ @abstract Taps a particular view in the view heirarchy.
+ @discussion Unlike the -multiTapViewWithAccessibilityLabel: family of methods, this method allows you to tap an arbitrary element.  Combined with -waitForAccessibilityElement:view:withLabel:value:traits:tappable: or +[UIAccessibilityElement accessibilityElement:view:withLabel:value:traits:tappable:error:] this provides an opportunity for more complex logic.
+ @param element The accessibility element to tap.
+ @param view The view containing the accessibility element.
+ @param numberOfTaps The number of times the view should be tapped
+ */
+- (void)multiTapAccessibilityElement:(UIAccessibilityElement *)element inView:(UIView *)view andNumberOfTaps:(NSUInteger)numberOfTaps;
+
+/*!
+ @abstract Pinches a particular view in the view hierarchy based on points relative to its size.
+ @discussion The view will get the view with the specified accessibility identifier and pinch it in an inwards direction by the indicated fraction of its size, with the pinch centered on the center of the view.
+ @param identifier The accessibility identifier of the view to pinch.
+ @param relativeStartPoints The 2 relative start points of the pinch action, as a fraction of the size of the view.
+ @param relativeEndPoints The 2 relative end points of the pinch action, as a fraction of the size of the view.
+ */
+- (void)pinchViewWithAccessibilityIdentifier:(NSString *)identifier atRelativeStartPoints:(NSArray *)relativeStartPoints andRelativeEndPoints:(NSArray *)relativeEndPoints;
+
+/*!
+ @abstract Taps a particular view in the view hierarchy.
+ @discussion The view or accessibility element with the given label is searched for in the view hierarchy. If the element isn't found or isn't currently tappable, then the step will attempt to wait until it is. Once the view is present and tappable, a tap event is simulated in the center of the view or element.
+ @param segmentIndex The index of the UISegmentedControl to tap.
+ @param identifier Accessibility identifier of the element to tap.
+ */
+- (void)tapSegmentAtIndex:(NSInteger)segmentIndex inSegmentedControlWithAccessibilityIdentifier:(NSString *)identifier;
+- (void)tapSegmentAtIndex:(NSInteger)segmentIndex inAccessibilityElement:(UIAccessibilityElement *)element inView:(UIView *)view;
+
 @end

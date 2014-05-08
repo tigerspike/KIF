@@ -1,0 +1,490 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAFF0C4C18EA64E9002B0033 /* KIFRecorder.h */; };
+		FAF36BA518EA6C3C00A9BB61 /* UIApplication+KIFRUtils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAFF0C0318EA4A65002B0033 /* UIApplication+KIFRUtils.h */; };
+		FAFF0BB718EA4A05002B0033 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFF0BB618EA4A05002B0033 /* Foundation.framework */; };
+		FAFF0C0918EA4A65002B0033 /* UIAlertView+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BDF18EA4A65002B0033 /* UIAlertView+KIFRUtils.m */; };
+		FAFF0C0A18EA4A65002B0033 /* UIPickerView+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BE118EA4A65002B0033 /* UIPickerView+KIFRUtils.m */; };
+		FAFF0C0B18EA4A65002B0033 /* KIFRTargetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BE418EA4A65002B0033 /* KIFRTargetInfo.m */; };
+		FAFF0C0C18EA4A65002B0033 /* KIFRTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BE618EA4A65002B0033 /* KIFRTest.m */; };
+		FAFF0C0D18EA4A65002B0033 /* KIFRTestEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BE818EA4A65002B0033 /* KIFRTestEvent.m */; };
+		FAFF0C0E18EA4A65002B0033 /* KIFRTestStep+FromString.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BEA18EA4A65002B0033 /* KIFRTestStep+FromString.m */; };
+		FAFF0C0F18EA4A65002B0033 /* KIFRTestStep+ToString.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BEC18EA4A65002B0033 /* KIFRTestStep+ToString.m */; };
+		FAFF0C1018EA4A65002B0033 /* KIFRTestStep.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BEE18EA4A65002B0033 /* KIFRTestStep.m */; };
+		FAFF0C1118EA4A65002B0033 /* KIFRAddStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BF118EA4A65002B0033 /* KIFRAddStepView.m */; };
+		FAFF0C1218EA4A65002B0033 /* KIFRBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BF318EA4A65002B0033 /* KIFRBorderView.m */; };
+		FAFF0C1318EA4A65002B0033 /* KIFRMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BF518EA4A65002B0033 /* KIFRMenuView.m */; };
+		FAFF0C1418EA4A65002B0033 /* KIFRTestsView.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BF718EA4A65002B0033 /* KIFRTestsView.m */; };
+		FAFF0C1518EA4A65002B0033 /* KIFRStepTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BFA18EA4A65002B0033 /* KIFRStepTypeCell.m */; };
+		FAFF0C1618EA4A65002B0033 /* KIFRTestStepCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BFC18EA4A65002B0033 /* KIFRTestStepCell.m */; };
+		FAFF0C1718EA4A65002B0033 /* KIFRWaitStepCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BFE18EA4A65002B0033 /* KIFRWaitStepCell.m */; };
+		FAFF0C1818EA4A65002B0033 /* UIView+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0C0018EA4A65002B0033 /* UIView+KIFRUtils.m */; };
+		FAFF0C1918EA4A65002B0033 /* UIWindow+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0C0218EA4A65002B0033 /* UIWindow+KIFRUtils.m */; };
+		FAFF0C1A18EA4A65002B0033 /* UIApplication+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0C0418EA4A65002B0033 /* UIApplication+KIFRUtils.m */; };
+		FAFF0C1B18EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0C0618EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.m */; };
+		FAFF0C1C18EA4A65002B0033 /* UITouch+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0C0818EA4A65002B0033 /* UITouch+KIFRUtils.m */; };
+		FAFF0C1F18EA4B8B002B0033 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFF0C1E18EA4B8B002B0033 /* UIKit.framework */; };
+		FAFF0C2118EA4B96002B0033 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFF0C2018EA4B96002B0033 /* CoreGraphics.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FAF36BA318EA6BC500A9BB61 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in CopyFiles */,
+				FAF36BA518EA6C3C00A9BB61 /* UIApplication+KIFRUtils.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FA269030191B16DE000758D2 /* KIFRecording-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KIFRecording-Prefix.pch"; sourceTree = "<group>"; };
+		FA269031191B16DE000758D2 /* KIFRecording.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KIFRecording.h; sourceTree = "<group>"; };
+		FA269033191B16DE000758D2 /* KIFRecording.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KIFRecording.m; sourceTree = "<group>"; };
+		FA269042191B16DE000758D2 /* KIFRecordingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KIFRecordingTests-Info.plist"; sourceTree = "<group>"; };
+		FA269044191B16DE000758D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FA269046191B16DE000758D2 /* KIFRecordingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KIFRecordingTests.m; sourceTree = "<group>"; };
+		FAFF0BB318EA4A05002B0033 /* libKIFRecorder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKIFRecorder.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAFF0BB618EA4A05002B0033 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FAFF0BBA18EA4A06002B0033 /* KIFRecorder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KIFRecorder-Prefix.pch"; sourceTree = "<group>"; };
+		FAFF0BC418EA4A06002B0033 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		FAFF0BDE18EA4A65002B0033 /* UIAlertView+KIFRUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+KIFRUtils.h"; sourceTree = "<group>"; };
+		FAFF0BDF18EA4A65002B0033 /* UIAlertView+KIFRUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+KIFRUtils.m"; sourceTree = "<group>"; };
+		FAFF0BE018EA4A65002B0033 /* UIPickerView+KIFRUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPickerView+KIFRUtils.h"; sourceTree = "<group>"; };
+		FAFF0BE118EA4A65002B0033 /* UIPickerView+KIFRUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPickerView+KIFRUtils.m"; sourceTree = "<group>"; };
+		FAFF0BE318EA4A65002B0033 /* KIFRTargetInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRTargetInfo.h; sourceTree = "<group>"; };
+		FAFF0BE418EA4A65002B0033 /* KIFRTargetInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRTargetInfo.m; sourceTree = "<group>"; };
+		FAFF0BE518EA4A65002B0033 /* KIFRTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRTest.h; sourceTree = "<group>"; };
+		FAFF0BE618EA4A65002B0033 /* KIFRTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRTest.m; sourceTree = "<group>"; };
+		FAFF0BE718EA4A65002B0033 /* KIFRTestEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRTestEvent.h; sourceTree = "<group>"; };
+		FAFF0BE818EA4A65002B0033 /* KIFRTestEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRTestEvent.m; sourceTree = "<group>"; };
+		FAFF0BE918EA4A65002B0033 /* KIFRTestStep+FromString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFRTestStep+FromString.h"; sourceTree = "<group>"; };
+		FAFF0BEA18EA4A65002B0033 /* KIFRTestStep+FromString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFRTestStep+FromString.m"; sourceTree = "<group>"; };
+		FAFF0BEB18EA4A65002B0033 /* KIFRTestStep+ToString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFRTestStep+ToString.h"; sourceTree = "<group>"; };
+		FAFF0BEC18EA4A65002B0033 /* KIFRTestStep+ToString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFRTestStep+ToString.m"; sourceTree = "<group>"; };
+		FAFF0BED18EA4A65002B0033 /* KIFRTestStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRTestStep.h; sourceTree = "<group>"; };
+		FAFF0BEE18EA4A65002B0033 /* KIFRTestStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRTestStep.m; sourceTree = "<group>"; };
+		FAFF0BF018EA4A65002B0033 /* KIFRAddStepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRAddStepView.h; sourceTree = "<group>"; };
+		FAFF0BF118EA4A65002B0033 /* KIFRAddStepView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRAddStepView.m; sourceTree = "<group>"; };
+		FAFF0BF218EA4A65002B0033 /* KIFRBorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRBorderView.h; sourceTree = "<group>"; };
+		FAFF0BF318EA4A65002B0033 /* KIFRBorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRBorderView.m; sourceTree = "<group>"; };
+		FAFF0BF418EA4A65002B0033 /* KIFRMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRMenuView.h; sourceTree = "<group>"; };
+		FAFF0BF518EA4A65002B0033 /* KIFRMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRMenuView.m; sourceTree = "<group>"; };
+		FAFF0BF618EA4A65002B0033 /* KIFRTestsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRTestsView.h; sourceTree = "<group>"; };
+		FAFF0BF718EA4A65002B0033 /* KIFRTestsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRTestsView.m; sourceTree = "<group>"; };
+		FAFF0BF918EA4A65002B0033 /* KIFRStepTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRStepTypeCell.h; sourceTree = "<group>"; };
+		FAFF0BFA18EA4A65002B0033 /* KIFRStepTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRStepTypeCell.m; sourceTree = "<group>"; };
+		FAFF0BFB18EA4A65002B0033 /* KIFRTestStepCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRTestStepCell.h; sourceTree = "<group>"; };
+		FAFF0BFC18EA4A65002B0033 /* KIFRTestStepCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRTestStepCell.m; sourceTree = "<group>"; };
+		FAFF0BFD18EA4A65002B0033 /* KIFRWaitStepCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRWaitStepCell.h; sourceTree = "<group>"; };
+		FAFF0BFE18EA4A65002B0033 /* KIFRWaitStepCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRWaitStepCell.m; sourceTree = "<group>"; };
+		FAFF0BFF18EA4A65002B0033 /* UIView+KIFRUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+KIFRUtils.h"; sourceTree = "<group>"; };
+		FAFF0C0018EA4A65002B0033 /* UIView+KIFRUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+KIFRUtils.m"; sourceTree = "<group>"; };
+		FAFF0C0118EA4A65002B0033 /* UIWindow+KIFRUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+KIFRUtils.h"; sourceTree = "<group>"; };
+		FAFF0C0218EA4A65002B0033 /* UIWindow+KIFRUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+KIFRUtils.m"; sourceTree = "<group>"; };
+		FAFF0C0318EA4A65002B0033 /* UIApplication+KIFRUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+KIFRUtils.h"; sourceTree = "<group>"; };
+		FAFF0C0418EA4A65002B0033 /* UIApplication+KIFRUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+KIFRUtils.m"; sourceTree = "<group>"; };
+		FAFF0C0518EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+KIFRUtils.h"; sourceTree = "<group>"; };
+		FAFF0C0618EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+KIFRUtils.m"; sourceTree = "<group>"; };
+		FAFF0C0718EA4A65002B0033 /* UITouch+KIFRUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITouch+KIFRUtils.h"; sourceTree = "<group>"; };
+		FAFF0C0818EA4A65002B0033 /* UITouch+KIFRUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITouch+KIFRUtils.m"; sourceTree = "<group>"; };
+		FAFF0C1E18EA4B8B002B0033 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		FAFF0C2018EA4B96002B0033 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		FAFF0C4C18EA64E9002B0033 /* KIFRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KIFRecorder.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FAFF0BB018EA4A05002B0033 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAFF0C2118EA4B96002B0033 /* CoreGraphics.framework in Frameworks */,
+				FAFF0C1F18EA4B8B002B0033 /* UIKit.framework in Frameworks */,
+				FAFF0BB718EA4A05002B0033 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FA26902E191B16DE000758D2 /* KIFRecording */ = {
+			isa = PBXGroup;
+			children = (
+				FA269031191B16DE000758D2 /* KIFRecording.h */,
+				FA269033191B16DE000758D2 /* KIFRecording.m */,
+				FA26902F191B16DE000758D2 /* Supporting Files */,
+			);
+			path = KIFRecording;
+			sourceTree = "<group>";
+		};
+		FA26902F191B16DE000758D2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FA269030191B16DE000758D2 /* KIFRecording-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FA269040191B16DE000758D2 /* KIFRecordingTests */ = {
+			isa = PBXGroup;
+			children = (
+				FA269046191B16DE000758D2 /* KIFRecordingTests.m */,
+				FA269041191B16DE000758D2 /* Supporting Files */,
+			);
+			path = KIFRecordingTests;
+			sourceTree = "<group>";
+		};
+		FA269041191B16DE000758D2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FA269042191B16DE000758D2 /* KIFRecordingTests-Info.plist */,
+				FA269043191B16DE000758D2 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FAFF0BAA18EA4A05002B0033 = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BB818EA4A06002B0033 /* KIFRecorder */,
+				FA26902E191B16DE000758D2 /* KIFRecording */,
+				FA269040191B16DE000758D2 /* KIFRecordingTests */,
+				FAFF0BB518EA4A05002B0033 /* Frameworks */,
+				FAFF0BB418EA4A05002B0033 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FAFF0BB418EA4A05002B0033 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BB318EA4A05002B0033 /* libKIFRecorder.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FAFF0BB518EA4A05002B0033 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0C2018EA4B96002B0033 /* CoreGraphics.framework */,
+				FAFF0C1E18EA4B8B002B0033 /* UIKit.framework */,
+				FAFF0BB618EA4A05002B0033 /* Foundation.framework */,
+				FAFF0BC418EA4A06002B0033 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FAFF0BB818EA4A06002B0033 /* KIFRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BDC18EA4A65002B0033 /* Classes */,
+				FAFF0BB918EA4A06002B0033 /* Supporting Files */,
+			);
+			path = KIFRecorder;
+			sourceTree = "<group>";
+		};
+		FAFF0BB918EA4A06002B0033 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BBA18EA4A06002B0033 /* KIFRecorder-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FAFF0BDC18EA4A65002B0033 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BDD18EA4A65002B0033 /* Other Categories */,
+				FAFF0BE218EA4A65002B0033 /* Test Data */,
+				FAFF0BEF18EA4A65002B0033 /* UI Components */,
+				FAFF0C0318EA4A65002B0033 /* UIApplication+KIFRUtils.h */,
+				FAFF0C0418EA4A65002B0033 /* UIApplication+KIFRUtils.m */,
+				FAFF0C0518EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.h */,
+				FAFF0C0618EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.m */,
+				FAFF0C0718EA4A65002B0033 /* UITouch+KIFRUtils.h */,
+				FAFF0C0818EA4A65002B0033 /* UITouch+KIFRUtils.m */,
+				FAFF0C4C18EA64E9002B0033 /* KIFRecorder.h */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		FAFF0BDD18EA4A65002B0033 /* Other Categories */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BDE18EA4A65002B0033 /* UIAlertView+KIFRUtils.h */,
+				FAFF0BDF18EA4A65002B0033 /* UIAlertView+KIFRUtils.m */,
+				FAFF0BE018EA4A65002B0033 /* UIPickerView+KIFRUtils.h */,
+				FAFF0BE118EA4A65002B0033 /* UIPickerView+KIFRUtils.m */,
+			);
+			path = "Other Categories";
+			sourceTree = "<group>";
+		};
+		FAFF0BE218EA4A65002B0033 /* Test Data */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BE318EA4A65002B0033 /* KIFRTargetInfo.h */,
+				FAFF0BE418EA4A65002B0033 /* KIFRTargetInfo.m */,
+				FAFF0BE518EA4A65002B0033 /* KIFRTest.h */,
+				FAFF0BE618EA4A65002B0033 /* KIFRTest.m */,
+				FAFF0BE718EA4A65002B0033 /* KIFRTestEvent.h */,
+				FAFF0BE818EA4A65002B0033 /* KIFRTestEvent.m */,
+				FAFF0BE918EA4A65002B0033 /* KIFRTestStep+FromString.h */,
+				FAFF0BEA18EA4A65002B0033 /* KIFRTestStep+FromString.m */,
+				FAFF0BEB18EA4A65002B0033 /* KIFRTestStep+ToString.h */,
+				FAFF0BEC18EA4A65002B0033 /* KIFRTestStep+ToString.m */,
+				FAFF0BED18EA4A65002B0033 /* KIFRTestStep.h */,
+				FAFF0BEE18EA4A65002B0033 /* KIFRTestStep.m */,
+			);
+			path = "Test Data";
+			sourceTree = "<group>";
+		};
+		FAFF0BEF18EA4A65002B0033 /* UI Components */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BF818EA4A65002B0033 /* UITableViewCells */,
+				FAFF0BF018EA4A65002B0033 /* KIFRAddStepView.h */,
+				FAFF0BF118EA4A65002B0033 /* KIFRAddStepView.m */,
+				FAFF0BF218EA4A65002B0033 /* KIFRBorderView.h */,
+				FAFF0BF318EA4A65002B0033 /* KIFRBorderView.m */,
+				FAFF0BF418EA4A65002B0033 /* KIFRMenuView.h */,
+				FAFF0BF518EA4A65002B0033 /* KIFRMenuView.m */,
+				FAFF0BF618EA4A65002B0033 /* KIFRTestsView.h */,
+				FAFF0BF718EA4A65002B0033 /* KIFRTestsView.m */,
+				FAFF0BFF18EA4A65002B0033 /* UIView+KIFRUtils.h */,
+				FAFF0C0018EA4A65002B0033 /* UIView+KIFRUtils.m */,
+				FAFF0C0118EA4A65002B0033 /* UIWindow+KIFRUtils.h */,
+				FAFF0C0218EA4A65002B0033 /* UIWindow+KIFRUtils.m */,
+			);
+			path = "UI Components";
+			sourceTree = "<group>";
+		};
+		FAFF0BF818EA4A65002B0033 /* UITableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				FAFF0BF918EA4A65002B0033 /* KIFRStepTypeCell.h */,
+				FAFF0BFA18EA4A65002B0033 /* KIFRStepTypeCell.m */,
+				FAFF0BFB18EA4A65002B0033 /* KIFRTestStepCell.h */,
+				FAFF0BFC18EA4A65002B0033 /* KIFRTestStepCell.m */,
+				FAFF0BFD18EA4A65002B0033 /* KIFRWaitStepCell.h */,
+				FAFF0BFE18EA4A65002B0033 /* KIFRWaitStepCell.m */,
+			);
+			path = UITableViewCells;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FAFF0BB218EA4A05002B0033 /* KIFRecorder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAFF0BD618EA4A06002B0033 /* Build configuration list for PBXNativeTarget "KIFRecorder" */;
+			buildPhases = (
+				FAFF0BAF18EA4A05002B0033 /* Sources */,
+				FAFF0BB018EA4A05002B0033 /* Frameworks */,
+				FAF36BA318EA6BC500A9BB61 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KIFRecorder;
+			productName = KIFRecorder;
+			productReference = FAFF0BB318EA4A05002B0033 /* libKIFRecorder.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FAFF0BAB18EA4A05002B0033 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = Tigerspike;
+			};
+			buildConfigurationList = FAFF0BAE18EA4A05002B0033 /* Build configuration list for PBXProject "KIFRecorder" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FAFF0BAA18EA4A05002B0033;
+			productRefGroup = FAFF0BB418EA4A05002B0033 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FAFF0BB218EA4A05002B0033 /* KIFRecorder */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FAFF0BAF18EA4A05002B0033 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAFF0C1118EA4A65002B0033 /* KIFRAddStepView.m in Sources */,
+				FAFF0C0C18EA4A65002B0033 /* KIFRTest.m in Sources */,
+				FAFF0C1A18EA4A65002B0033 /* UIApplication+KIFRUtils.m in Sources */,
+				FAFF0C1418EA4A65002B0033 /* KIFRTestsView.m in Sources */,
+				FAFF0C1C18EA4A65002B0033 /* UITouch+KIFRUtils.m in Sources */,
+				FAFF0C0D18EA4A65002B0033 /* KIFRTestEvent.m in Sources */,
+				FAFF0C1518EA4A65002B0033 /* KIFRStepTypeCell.m in Sources */,
+				FAFF0C0A18EA4A65002B0033 /* UIPickerView+KIFRUtils.m in Sources */,
+				FAFF0C1318EA4A65002B0033 /* KIFRMenuView.m in Sources */,
+				FAFF0C0E18EA4A65002B0033 /* KIFRTestStep+FromString.m in Sources */,
+				FAFF0C1818EA4A65002B0033 /* UIView+KIFRUtils.m in Sources */,
+				FAFF0C1218EA4A65002B0033 /* KIFRBorderView.m in Sources */,
+				FAFF0C1918EA4A65002B0033 /* UIWindow+KIFRUtils.m in Sources */,
+				FAFF0C1718EA4A65002B0033 /* KIFRWaitStepCell.m in Sources */,
+				FAFF0C0B18EA4A65002B0033 /* KIFRTargetInfo.m in Sources */,
+				FAFF0C0918EA4A65002B0033 /* UIAlertView+KIFRUtils.m in Sources */,
+				FAFF0C1618EA4A65002B0033 /* KIFRTestStepCell.m in Sources */,
+				FAFF0C0F18EA4A65002B0033 /* KIFRTestStep+ToString.m in Sources */,
+				FAFF0C1018EA4A65002B0033 /* KIFRTestStep.m in Sources */,
+				FAFF0C1B18EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FA269043191B16DE000758D2 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA269044191B16DE000758D2 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FAFF0BD418EA4A06002B0033 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		FAFF0BD518EA4A06002B0033 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FAFF0BD718EA4A06002B0033 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/KIFRecorder.dst;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "KIFRecorder/KIFRecorder-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		FAFF0BD818EA4A06002B0033 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/KIFRecorder.dst;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "KIFRecorder/KIFRecorder-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FAFF0BAE18EA4A05002B0033 /* Build configuration list for PBXProject "KIFRecorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAFF0BD418EA4A06002B0033 /* Debug */,
+				FAFF0BD518EA4A06002B0033 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAFF0BD618EA4A06002B0033 /* Build configuration list for PBXNativeTarget "KIFRecorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAFF0BD718EA4A06002B0033 /* Debug */,
+				FAFF0BD818EA4A06002B0033 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FAFF0BAB18EA4A05002B0033 /* Project object */;
+}

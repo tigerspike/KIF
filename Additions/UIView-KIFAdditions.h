@@ -51,6 +51,17 @@ typedef CGPoint KIFDisplacement;
 - (void)dragAlongPathWithPoints:(CGPoint *)points count:(NSInteger)count;
 
 /*!
+ @method pinchFromStartPoints:toEndPoints:
+ @abstract Simulates pinching on the screen between the given points.
+ @discussion Causes the application to dispatch a sequence of touch events which simulate pinching from the startPoints to the endPoints.
+ @param startPoints The points at which to start the pinch, in the coordinate system of the receiver.
+ @param endPoints The points at which to end the pinch, in the coordinate system of the receiver.
+ */
+- (void)pinchFromStartPoints:(NSArray *)startPoints toEndPoints:(NSArray *)endPoints;
+- (void)pinchFromStartPoints:(NSArray *)startPoints toEndPoints:(NSArray *)endPoints steps:(NSUInteger)stepCount;
+- (void)pinchAlongPathWithLeftPoints:(CGPoint *)leftPoints rightPoints:(CGPoint *)rightPoints count:(NSInteger)count;
+
+/*!
  @method isTappableWithHitTestResultView:
  @abstract Easy hook to override whether a hit test result makes a view tappable.
  @discussion Some times, your view hierarchies involve putting overlays over views that would otherwise be tappable. Since KIF doesn't know about these exceptions, you can override this method as a convenient way of hooking in to the check for something being tappable. Your implementation will probably want to call up to super.

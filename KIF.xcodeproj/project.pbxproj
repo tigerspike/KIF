@@ -167,6 +167,13 @@
 			remoteGlobalIDString = EB60ECC0177F8C83005A041A;
 			remoteInfo = "Test Host";
 		};
+		FA268FD4191B1634000758D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA268FD0191B1633000758D2 /* KIFRecorder.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FAFF0BB318EA4A05002B0033;
+			remoteInfo = KIFRecorder;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -231,7 +238,7 @@
 		EB60ECD2177F8C84005A041A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		EB60ECD4177F8C84005A041A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		EB60ECD6177F8C84005A041A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		EB60ECEB177F8DB3005A041A /* KIF Tests - SenTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "KIF Tests - SenTest.octest"; path = "KIF Tests-OCUnit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB60ECEB177F8DB3005A041A /* KIF Tests-OCUnit.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KIF Tests-OCUnit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB60ECF1177F8DB3005A041A /* KIF Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KIF Tests-Info.plist"; sourceTree = "<group>"; };
 		EB60ECF3177F8DB3005A041A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EB60ECF8177F8DB3005A041A /* KIF Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KIF Tests-Prefix.pch"; sourceTree = "<group>"; };
@@ -259,6 +266,7 @@
 		EBAE488017A460E50005EE19 /* NSError-KIFAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError-KIFAdditions.m"; sourceTree = "<group>"; };
 		EBAE488517A4E5C30005EE19 /* KIFTestStepValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFTestStepValidation.h; sourceTree = "<group>"; };
 		EBAE488617A4E5C30005EE19 /* KIFTestStepValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFTestStepValidation.m; sourceTree = "<group>"; };
+		FA268FD0191B1633000758D2 /* KIFRecorder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KIFRecorder.xcodeproj; path = KIFRecorder/KIFRecorder.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -327,6 +335,7 @@
 				EB60ECEF177F8DB3005A041A /* KIF Tests */,
 				AAB0726A139719AC008AF393 /* Frameworks */,
 				AAB07269139719AC008AF393 /* Products */,
+				FA268FD0191B1633000758D2 /* KIFRecorder.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -335,7 +344,7 @@
 			children = (
 				EB72047C1680DDAD00278DA2 /* libKIF.a */,
 				EB60ECC1177F8C83005A041A /* Test Host.app */,
-				EB60ECEB177F8DB3005A041A /* KIF Tests - SenTest.octest */,
+				EB60ECEB177F8DB3005A041A /* KIF Tests-OCUnit.octest */,
 				EABD46AA1857A0C700A5F081 /* libKIF-XCTest.a */,
 				EABD46CD1857A0F300A5F081 /* KIF Tests - XCTest.xctest */,
 			);
@@ -503,6 +512,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FA268FD1191B1633000758D2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA268FD5191B1634000758D2 /* libKIFRecorder.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -650,7 +667,7 @@
 			);
 			name = "KIF Tests-OCUnit";
 			productName = "KIF Tests";
-			productReference = EB60ECEB177F8DB3005A041A /* KIF Tests - SenTest.octest */;
+			productReference = EB60ECEB177F8DB3005A041A /* KIF Tests-OCUnit.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		EB72043E1680DDAD00278DA2 /* KIF-OCUnit */ = {
@@ -689,6 +706,12 @@
 			mainGroup = AAB0725D139719AC008AF393;
 			productRefGroup = AAB07269139719AC008AF393 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FA268FD1191B1633000758D2 /* Products */;
+					ProjectRef = FA268FD0191B1633000758D2 /* KIFRecorder.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				EABD46791857A0C700A5F081 /* KIF */,
@@ -700,6 +723,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FA268FD5191B1634000758D2 /* libKIFRecorder.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKIFRecorder.a;
+			remoteRef = FA268FD4191B1634000758D2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EABD46C61857A0F300A5F081 /* Resources */ = {

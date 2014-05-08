@@ -761,5 +761,186 @@
     [self tapAccessibilityElement:statusBars[0] inView:statusBars[0]];
 }
 
+#pragma mark - Multi-tap methods
+
+#define MULTI_TAP_DELAY 0.05
+
+- (void)multiTapViewWithAccessibilityLabel:(NSString *)label andNumberOfTaps:(NSUInteger)numberOfTaps {
+    [self multiTapViewWithAccessibilityLabel:label value:nil traits:UIAccessibilityTraitNone andNumberOfTaps:numberOfTaps];
+}
+
+- (void)multiTapViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps {
+    [self multiTapViewWithAccessibilityLabel:label value:nil traits:traits andNumberOfTaps:numberOfTaps];
+}
+
+- (void)multiTapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
+    
+    [self waitForAccessibilityElement:&element view:&view withLabel:label value:value traits:traits tappable:YES];
+    [self multiTapAccessibilityElement:element inView:view andNumberOfTaps:numberOfTaps];
+}
+
+- (void)multiTapAccessibilityElement:(UIAccessibilityElement *)element inView:(UIView *)view andNumberOfTaps:(NSUInteger)numberOfTaps {
+    [self runBlock:^KIFTestStepResult(NSError **error) {
+        
+        KIFTestWaitCondition(view.isUserInteractionActuallyEnabled, error, @"View is not enabled for interaction");
+        
+        // If the accessibilityFrame is not set, fallback to the view frame.
+        CGRect elementFrame;
+        if (CGRectEqualToRect(CGRectZero, element.accessibilityFrame)) {
+            elementFrame.origin = CGPointZero;
+            elementFrame.size = view.frame.size;
+        } else {
+            elementFrame = [view.windowOrIdentityWindow convertRect:element.accessibilityFrame toView:view];
+        }
+        CGPoint tappablePointInElement = [view tappablePointInRect:elementFrame];
+        
+        // This is mostly redundant of the test in _accessibilityElementWithLabel:
+        KIFTestWaitCondition(!isnan(tappablePointInElement.x), error, @"View is not tappable");
+        
+        for (int i = 0; i < numberOfTaps; ++i) {
+            [view tapAtPoint:tappablePointInElement];
+            
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, MULTI_TAP_DELAY, false);
+        }
+        
+        KIFTestCondition(![view canBecomeFirstResponder] || [view isDescendantOfFirstResponder], error, @"Failed to make the view into the first responder");
+        
+        return KIFTestStepResultSuccess;
+    }];
+    
+    // Wait for the view to stabilize.
+    [self waitForTimeInterval:0.5];
+}
+
+#pragma mark - Pinch Methods
+
+- (void)pinchViewWithAccessibilityIdentifier:(NSString *)identifier atRelativeStartPoints:(NSArray *)relativeStartPoints andRelativeEndPoints:(NSArray *)relativeEndPoints {
+    UIView *viewToPinch;
+    UIAccessibilityElement *element;
+    [self waitForAccessibilityElement:&element view:&viewToPinch withIdentifier:identifier tappable:NO];
+    [self pinchAccessibilityElement:element inView:viewToPinch atRelativeStartPoints:relativeStartPoints andRelativeEndPoints:relativeEndPoints];
+}
+
+- (void)pinchAccessibilityElement:(UIAccessibilityElement *)element inView:(UIView *)viewToPinch atRelativeStartPoints:(NSArray *)relativeStartPoints andRelativeEndPoints:(NSArray *)relativeEndPoints {
+    const NSUInteger kNumberOfPointsInPinchPath = 5;
+    
+    // Within this method, all geometry is done in the coordinate system of the view to pinch.
+    CGRect elementFrame = [viewToPinch.windowOrIdentityWindow convertRect:element.accessibilityFrame toView:viewToPinch];
+    
+    // Get the relative points (UIPinchGestureRecognizer only supports 2 touches on iOS so hard-coding this should be fine)
+    CGPoint relativeStartPoint1 = [relativeStartPoints[0] CGPointValue];
+    CGPoint relativeStartPoint2 = [relativeStartPoints[1] CGPointValue];
+    CGPoint relativeEndPoint1 = [relativeEndPoints[0] CGPointValue];
+    CGPoint relativeEndPoint2 = [relativeEndPoints[1] CGPointValue];
+    
+    // Start at the middle
+    CGPoint pinchStart1 = CGPointMake(elementFrame.size.width * relativeStartPoint1.x, elementFrame.size.height * relativeStartPoint1.y);
+    CGPoint pinchStart2 = CGPointMake(elementFrame.size.width * relativeStartPoint2.x, elementFrame.size.height * relativeStartPoint2.y);
+    
+    // End at points displaced by the horizontal and vertical fractions
+    CGPoint pinchEnd1 = CGPointMake(elementFrame.size.width * relativeEndPoint1.x, elementFrame.size.height * relativeEndPoint1.y);
+    CGPoint pinchEnd2 = CGPointMake(elementFrame.size.width * relativeEndPoint2.x, elementFrame.size.height * relativeEndPoint2.y);
+    
+    NSArray *startPoints = @[ [NSValue valueWithCGPoint:pinchStart1], [NSValue valueWithCGPoint:pinchStart2] ];
+    NSArray *endPoints = @[ [NSValue valueWithCGPoint:pinchEnd1], [NSValue valueWithCGPoint:pinchEnd2] ];
+    [viewToPinch pinchFromStartPoints:startPoints toEndPoints:endPoints steps:kNumberOfPointsInPinchPath];
+}
+
+//#pragma mark - Wait for UITableView to get row
+//
+//- (void)waitForRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier {
+//    UITableView *tableView = nil;
+//    return [self waitForRowAtIndexPath:indexPath inTableView:&tableView withAccessibilityIdentifier:identifier value:nil traits:UIAccessibilityTraitNone tappable:NO];
+//}
+//
+//- (void)waitForRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(out UITableView **)tableView withAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits tappable:(BOOL)mustBeTappable {
+//    
+//    UIAccessibilityElement *element;
+//    [self waitForAccessibilityElement:&element view:tableView withIdentifier:identifier tappable:NO];
+//    
+//    if (![*tableView isKindOfClass:[UITableView class]]) {
+//        [self failWithError:[NSError KIFErrorWithFormat:@"View is not a table view"] stopTest:YES];
+//    }
+//    
+//    UITableView *foundTableView = *tableView;
+//    [self runBlock:^KIFTestStepResult(NSError **error) {
+//        UITableViewCell *cell = [foundTableView cellForRowAtIndexPath:indexPath];
+//        NSIndexPath *localIndexPath = indexPath;    // We want to reset this every time we run this
+//        
+//        if (!cell) {
+//            // If section < 0, search from the end of the table.
+//            if (localIndexPath.section < 0) {
+//                localIndexPath = [NSIndexPath indexPathForRow:localIndexPath.row inSection:foundTableView.numberOfSections + localIndexPath.section];
+//            }
+//            
+//            // If row < 0, search from the end of the section.
+//            if (localIndexPath.row < 0) {
+//                localIndexPath = [NSIndexPath indexPathForRow:[foundTableView numberOfRowsInSection:localIndexPath.section] + localIndexPath.row inSection:localIndexPath.section];
+//            }
+//            
+//            if (localIndexPath.section >= foundTableView.numberOfSections) {
+//                return KIFTestStepResultWait;
+//            }
+//            
+//            if (localIndexPath.row >= [foundTableView numberOfRowsInSection:localIndexPath.section]) {
+//                return KIFTestStepResultWait;
+//            }
+//            
+//            [foundTableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+//            [self waitForTimeInterval:0.5];
+//            cell = [foundTableView cellForRowAtIndexPath:localIndexPath];
+//        }
+//        
+//        return (cell ? KIFTestStepResultSuccess : KIFTestStepResultWait);
+//    }];
+//}
+
+#pragma mark - UISegmentedControl Methods
+
+- (void)tapSegmentAtIndex:(NSInteger)segmentIndex inSegmentedControlWithAccessibilityIdentifier:(NSString *)identifier {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
+    
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier tappable:YES];
+    [self tapSegmentAtIndex:segmentIndex inAccessibilityElement:element inView:view];
+}
+
+- (void)tapSegmentAtIndex:(NSInteger)segmentIndex inAccessibilityElement:(UIAccessibilityElement *)element inView:(UIView *)view {
+    [self runBlock:^KIFTestStepResult(NSError **error) {
+        
+        KIFTestWaitCondition(view.isUserInteractionActuallyEnabled, error, @"View is not enabled for interaction");
+        
+        // I don't like this but it seem like it's the only way to get the index of the segment
+        UIView *targetView;
+        UISegmentedControl *segmentedControl = (UISegmentedControl *)view;
+        for (UIView *subview in segmentedControl.subviews) {
+            NSInteger currentIndex = segmentedControl.subviews.count - [segmentedControl.subviews indexOfObject:subview] - 1;
+            
+            if (currentIndex == segmentIndex) {
+                targetView = subview;
+                break;
+            }
+        }
+        
+        // If the accessibilityFrame is not set, fallback to the view frame.
+        CGRect elementFrame = targetView.accessibilityFrame;
+        elementFrame.origin = CGPointZero;
+        CGPoint tappablePointInElement = [targetView tappablePointInRect:elementFrame];
+        
+        // This is mostly redundant of the test in _accessibilityElementWithLabel:
+        KIFTestWaitCondition(!isnan(tappablePointInElement.x), error, @"View is not tappable");
+        [targetView tapAtPoint:tappablePointInElement];
+        
+        KIFTestCondition(![view canBecomeFirstResponder] || [view isDescendantOfFirstResponder], error, @"Failed to make the view into the first responder");
+        
+        return KIFTestStepResultSuccess;
+    }];
+    
+    // Wait for the view to stabilize.
+    [self waitForTimeInterval:0.5];
+}
+
 @end
 
