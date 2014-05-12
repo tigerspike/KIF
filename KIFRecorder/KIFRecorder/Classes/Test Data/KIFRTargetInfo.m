@@ -13,7 +13,6 @@
 + (KIFRTargetInfo *)targetInfoForView:(UIView *)view {
     KIFRTargetInfo *targetInfo = [KIFRTargetInfo new];
     targetInfo.targetClass = [view class];
-    targetInfo.accessibilityLabel = view.accessibilityLabel;
     targetInfo.accessibilityIdentifier = view.accessibilityIdentifier;
     targetInfo.frame = view.frame;
     
@@ -29,15 +28,7 @@
 // TODO - If we end up using this anywhere
     }
     
-    return (frameEqual && tableViewCellStuffEqual && [view isKindOfClass:self.targetClass] && [view.accessibilityIdentifier isEqualToString:self.accessibilityIdentifier] && [view.accessibilityLabel isEqualToString:self.accessibilityLabel]);
-}
-
-- (NSString *)identifier {
-    if (self.accessibilityLabel.length > 0) {
-        return self.accessibilityLabel;
-    }
-    
-    return self.accessibilityIdentifier;
+    return (frameEqual && tableViewCellStuffEqual && [view isKindOfClass:self.targetClass] && [view.accessibilityIdentifier isEqualToString:self.accessibilityIdentifier]);
 }
 
 @end

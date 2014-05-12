@@ -27,17 +27,17 @@
         } break;
             
         case KIFRStepTypeTap: {
-            NSString *labelString;
+            NSString *identifierString;
             NSScanner *scanner = [NSScanner scannerWithString:stepString];
             NSCharacterSet *atSet = [NSCharacterSet characterSetWithCharactersInString:@"@"];
             NSCharacterSet *closeSet = [NSCharacterSet characterSetWithCharactersInString:@"]"];
             [scanner scanUpToCharactersFromSet:atSet intoString:nil];
-            [scanner scanUpToCharactersFromSet:closeSet intoString:&labelString];
+            [scanner scanUpToCharactersFromSet:closeSet intoString:&identifierString];
             
             // Remove the '@""' from the string
-            labelString = [labelString substringWithRange:NSMakeRange(2, labelString.length - 3)];
+            identifierString = [identifierString substringWithRange:NSMakeRange(2, identifierString.length - 3)];
             
-            self.readableString = [NSString stringWithFormat:@"Tap on view '%@'.", labelString];
+            self.readableString = [NSString stringWithFormat:@"Tap on view '%@'.", identifierString];
         } break;
             
         case KIFRStepTypeWaitForTableCell:
@@ -163,7 +163,7 @@
 }
 
 + (NSString *)tapStep {
-    return @"tapViewWithAccessibilityLabel:";
+    return @"tapViewWithAccessibilityIdentifier:";
 }
 
 + (NSString *)waitForTableCellStep {

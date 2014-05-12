@@ -121,7 +121,7 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
     // Generate the new test method (Note: Method name MUST start with 'test')
     NSMutableString *testString = [NSMutableString new];
     [testString appendString:@"\n\n"];
-    if ([[testName substringToIndex:4] caseInsensitiveCompare:@"test"]) {
+    if (testName.length >= 4 && [[testName substringToIndex:4] caseInsensitiveCompare:@"test"]) {
         [testString appendFormat:@"- (void)test%@ {", [testName substringFromIndex:4]];
     }
     else {
@@ -270,7 +270,7 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
             CGPoint localPoint = [subview convertPoint:point fromView:view];
             if ([subview pointInside:localPoint withEvent:nil]) {
                 // Only add this view if it has accessibility info (currently needed for testing)
-                if (subview.accessibilityIdentifier.length > 0 || subview.accessibilityLabel.length > 0) {
+                if (subview.accessibilityIdentifier.length > 0) {
                     [mutableArray addObject:subview];
                 }
                 

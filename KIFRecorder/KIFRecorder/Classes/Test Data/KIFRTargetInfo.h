@@ -10,7 +10,6 @@
 
 @interface KIFRTargetInfo : NSObject
 
-@property (nonatomic, copy) NSString *accessibilityLabel;
 @property (nonatomic, copy) NSString *accessibilityIdentifier;
 @property (nonatomic, copy) Class targetClass;
 @property (nonatomic, assign) CGRect frame;
@@ -23,6 +22,5 @@
 @property (nonatomic, assign) NSInteger selectedIndex;
 
 + (KIFRTargetInfo *)targetInfoForView:(UIView *)view;
-- (NSString *)identifier;
 
 @end

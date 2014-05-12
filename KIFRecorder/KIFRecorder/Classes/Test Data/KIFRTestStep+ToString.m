@@ -79,13 +79,13 @@
         }
         else if ([targetInfo.targetClass isSubclassOfClass:[UISegmentedControl class]]) {
             self.stepType = KIFRStepTypeSelectSegment;
-            self.readableString = [NSString stringWithFormat:@"Tap segment %li in the segment control '%@'.", (long)targetInfo.selectedIndex, targetInfo.identifier];
-            self.testString = [NSString stringWithFormat:@"\n    [tester tapSegmentAtIndex:%li inSegmentedControlWithAccessibilityIdentifier:@\"%@\"];", (long)targetInfo.selectedIndex, targetInfo.identifier];
+            self.readableString = [NSString stringWithFormat:@"Tap segment %li in the segment control '%@'.", (long)targetInfo.selectedIndex, targetInfo.accessibilityIdentifier];
+            self.testString = [NSString stringWithFormat:@"\n    [tester tapSegmentAtIndex:%li inSegmentedControlWithAccessibilityIdentifier:@\"%@\"];", (long)targetInfo.selectedIndex, targetInfo.accessibilityIdentifier];
         }
         else {
             self.stepType = KIFRStepTypeTap;
-            self.readableString = [NSString stringWithFormat:@"Tap on view '%@'.", targetInfo.identifier];
-            self.testString = [NSString stringWithFormat:@"\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];", targetInfo.identifier];
+            self.readableString = [NSString stringWithFormat:@"Tap on view '%@'.", targetInfo.accessibilityIdentifier];
+            self.testString = [NSString stringWithFormat:@"\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];", targetInfo.accessibilityIdentifier];
         }
     }
     else {
@@ -93,15 +93,15 @@
 
         NSArray *tapNumberStrings = @[ @"", @"", @"Double ", @"Triple ", @"Multi (4+) " ];
         NSString *tapAmount = tapNumberStrings[MIN(self.testEventData.numberOfTaps, 4)];
-        self.readableString = [NSString stringWithFormat:@"%@Tap on view '%@'.", tapAmount, targetInfo.identifier];
-        self.testString = [NSString stringWithFormat:@"\n    [tester multiTapViewWithAccessibilityLabel:@\"%@\" andNumberOfTaps:%lu];", targetInfo.identifier, (unsigned long)self.testEventData.numberOfTaps];
+        self.readableString = [NSString stringWithFormat:@"%@Tap on view '%@'.", tapAmount, targetInfo.accessibilityIdentifier];
+        self.testString = [NSString stringWithFormat:@"\n    [tester multiTapViewWithAccessibilityIdentifier:@\"%@\" andNumberOfTaps:%lu];", targetInfo.accessibilityIdentifier, (unsigned long)self.testEventData.numberOfTaps];
     }
 }
 
 #pragma mark - Long Press Step
 
 - (void)generateLongPressStep {
-    //    [stepString appendString:[NSString stringWithFormat:@"\n    [tester longPressViewWithAccessibilityLabel:@\"%@\" duration:%.2f];", self.targetInfo.identifier, (self.eventEndTimeInterval - self.eventStartTimeInterval)]];
+    //    [stepString appendString:[NSString stringWithFormat:@"\n    [tester longPressViewWithAccessibilityIdentifier:@\"%@\" duration:%.2f];", self.targetInfo.identifier, (self.eventEndTimeInterval - self.eventStartTimeInterval)]];
     
     self.stepType = KIFRStepTypeUnknown;
     self.readableString = @"Unknown Step";
@@ -124,8 +124,8 @@
         CGFloat horizontalFraction = (xDistance / targetInfo.frame.size.width);
         CGFloat verticalFraction = (yDistance / targetInfo.frame.size.height);
         
-        self.readableString = [NSString stringWithFormat:@"Scroll view '%@' by %.0f%% width and %.0f%% height.", targetInfo.identifier, (horizontalFraction * 100), (verticalFraction * 100)];
-        self.testString = [NSString stringWithFormat:@"\n    [tester scrollViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", targetInfo.identifier, horizontalFraction, verticalFraction];
+        self.readableString = [NSString stringWithFormat:@"Scroll view '%@' by %.0f%% width and %.0f%% height.", targetInfo.accessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];
+        self.testString = [NSString stringWithFormat:@"\n    [tester scrollViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", targetInfo.accessibilityIdentifier, horizontalFraction, verticalFraction];
     }
     else {
         NSLog(@"Warning - Attempt to have unsupported multi-finger pan!");
@@ -151,8 +151,8 @@
         CGPoint relativeEndPoint2 = CGPointMake(endPoint2.x / targetInfo.frame.size.width, endPoint2.y / targetInfo.frame.size.height);
         
         self.stepType = KIFRStepTypePinch;
-        self.readableString = [NSString stringWithFormat:@"Pinch view '%@' from [(%.0f%%, %.0f%%), (%.0f%%, %.0f%%)] to [(%.0f%%, %.0f%%), (%.0f%%, %.0f%%)].", targetInfo.identifier, (relativeStartPoint1.x * 100), (relativeStartPoint1.y * 100), (relativeStartPoint2.x * 100), (relativeStartPoint2.y * 100), (relativeEndPoint1.x * 100), (relativeEndPoint1.y * 100), (relativeEndPoint2.x * 100), (relativeEndPoint2.y * 100)];
-        self.testString = [NSString stringWithFormat:@"\n    [tester pinchViewWithAccessibilityIdentifier:@\"%@\" atRelativeStartPoints:@[ %@, %@ ] andRelativeEndPoints:@[ %@, %@ ]];", targetInfo.identifier, [self valueStringForCGPoint:relativeStartPoint1], [self valueStringForCGPoint:relativeStartPoint2], [self valueStringForCGPoint:relativeEndPoint1], [self valueStringForCGPoint:relativeEndPoint2]];
+        self.readableString = [NSString stringWithFormat:@"Pinch view '%@' from [(%.0f%%, %.0f%%), (%.0f%%, %.0f%%)] to [(%.0f%%, %.0f%%), (%.0f%%, %.0f%%)].", targetInfo.accessibilityIdentifier, (relativeStartPoint1.x * 100), (relativeStartPoint1.y * 100), (relativeStartPoint2.x * 100), (relativeStartPoint2.y * 100), (relativeEndPoint1.x * 100), (relativeEndPoint1.y * 100), (relativeEndPoint2.x * 100), (relativeEndPoint2.y * 100)];
+        self.testString = [NSString stringWithFormat:@"\n    [tester pinchViewWithAccessibilityIdentifier:@\"%@\" atRelativeStartPoints:@[ %@, %@ ] andRelativeEndPoints:@[ %@, %@ ]];", targetInfo.accessibilityIdentifier, [self valueStringForCGPoint:relativeStartPoint1], [self valueStringForCGPoint:relativeStartPoint2], [self valueStringForCGPoint:relativeEndPoint1], [self valueStringForCGPoint:relativeEndPoint2]];
     }
 }
 
@@ -170,13 +170,13 @@
     
     self.stepType = KIFRStepTypeKeyboardKey;
         
-    // The only special key we should need to handle is the 'Dismiss' key (iPad keyboard - it's accessibility label is actuall 'Hide keyboard' for some reason)
+    // The only special key we should need to handle is the 'Dismiss' key (iPad keyboard - it's accessibility identifier is actually 'Hide keyboard' for some reason)
     switch (self.testEventData.eventKey) {
         case KIFREventKeyDismissKeyboard: {
             self.readableString = @"Press dismiss keyboard key.";
             
             // For some reason we need to call this twice or it doesn't work
-            NSString *dismissKeyboardString = @"\n\n    // For some reason we need to call this twice or it doesn't work\n    [tester tapViewWithAccessibilityLabel:@\"Hide keyboard\"\n    [tester tapViewWithAccessibilityLabel:@\"Hide keyboard\"];";
+            NSString *dismissKeyboardString = @"\n\n    // For some reason we need to call this twice or it doesn't work\n    [tester tapViewWithAccessibilityIdentifier:@\"Hide keyboard\"\n    [tester tapViewWithAccessibilityIdentifier:@\"Hide keyboard\"];";
             self.testString = dismissKeyboardString;
         } break;
             
@@ -184,13 +184,13 @@
             self.readableString = @"Press keyboard delete key.";
             
             // The delete key only needs to be pressed once (unlike the 'undo' or 'dimiss' keys)
-            self.testString = [NSString stringWithFormat:@"\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];", self.testEventData.keyString];
+            self.testString = [NSString stringWithFormat:@"\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];", self.testEventData.keyString];
         } break;
             
         case KIFREventKeyOther: {
             self.readableString = [NSString stringWithFormat:@"Press keyboard '%@' key.", self.testEventData.keyString];
             
-            NSString *otherKeyString = [NSString stringWithFormat:@"\n\n    // For some reason we need to call this twice or it doesn't work"@"\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];", self.testEventData.keyString, self.testEventData.keyString];
+            NSString *otherKeyString = [NSString stringWithFormat:@"\n\n    // For some reason we need to call this twice or it doesn't work"@"\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];", self.testEventData.keyString, self.testEventData.keyString];
             self.testString = otherKeyString;
         } break;
             
@@ -198,12 +198,13 @@
             self.readableString = [NSString stringWithFormat:@"Press keyboard '%@' key.", self.testEventData.keyString];
             
             // The delete key only needs to be pressed once (unlike the 'undo' or 'dimiss' keys)
-            self.testString = [NSString stringWithFormat:@"\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];", self.testEventData.keyString];
+            self.testString = [NSString stringWithFormat:@"\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];", self.testEventData.keyString];
         } break;
             
         default: {
             // Ignore any other key but log it in case
             self.readableString = @"Press unknown keyboard key.";
+            self.stepType = KIFRStepTypeUnknown;
         } break;
     }
 }

@@ -63,8 +63,15 @@
     }];
 }
 
-- (void)waitForAccessibilityElement:(UIAccessibilityElement **)element view:(out UIView **)view withIdentifier:(NSString *)identifier tappable:(BOOL)mustBeTappable
-{
+- (void)waitForAccessibilityElement:(UIAccessibilityElement **)element view:(out UIView **)view withIdentifier:(NSString *)identifier tappable:(BOOL)mustBeTappable {
+    [self waitForAccessibilityElement:element view:view withIdentifier:identifier value:nil traits:UIAccessibilityTraitNone tappable:mustBeTappable];
+}
+
+- (void)waitForAccessibilityElement:(UIAccessibilityElement **)element view:(out UIView **)view withIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits tappable:(BOOL)mustBeTappable {
+    [self waitForAccessibilityElement:element view:view withIdentifier:identifier value:nil traits:traits tappable:mustBeTappable];
+}
+
+- (void)waitForAccessibilityElement:(UIAccessibilityElement **)element view:(out UIView **)view withIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits tappable:(BOOL)mustBeTappable {
     if (![UIAccessibilityElement instancesRespondToSelector:@selector(accessibilityIdentifier)]) {
         [self failWithError:[NSError KIFErrorWithFormat:@"Running test on platform that does not support accessibilityIdentifier"] stopTest:YES];
     }
@@ -132,22 +139,35 @@
     }];
 }
 
-- (void)tapViewWithAccessibilityLabel:(NSString *)label
-{
+- (void)tapViewWithAccessibilityLabel:(NSString *)label {
     [self tapViewWithAccessibilityLabel:label value:nil traits:UIAccessibilityTraitNone];
 }
 
-- (void)tapViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits
-{
+- (void)tapViewWithAccessibilityIdentifier:(NSString *)identifier {
+    [self tapViewWithAccessibilityIdentifier:identifier value:nil traits:UIAccessibilityTraitNone];
+}
+
+- (void)tapViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits {
     [self tapViewWithAccessibilityLabel:label value:nil traits:traits];
 }
 
-- (void)tapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits
-{
+- (void)tapViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits {
+    [self tapViewWithAccessibilityIdentifier:identifier value:nil traits:traits];
+}
+
+- (void)tapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits {
     UIView *view = nil;
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&view withLabel:label value:value traits:traits tappable:YES];
+    [self tapAccessibilityElement:element inView:view];
+}
+
+- (void)tapViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
+    
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier traits:traits tappable:YES];
     [self tapAccessibilityElement:element inView:view];
 }
 
@@ -206,22 +226,35 @@
     }];
 }
 
-- (void)longPressViewWithAccessibilityLabel:(NSString *)label duration:(NSTimeInterval)duration;
-{
+- (void)longPressViewWithAccessibilityLabel:(NSString *)label duration:(NSTimeInterval)duration {
     [self longPressViewWithAccessibilityLabel:label value:nil traits:UIAccessibilityTraitNone duration:duration];
 }
 
-- (void)longPressViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value duration:(NSTimeInterval)duration;
-{
+- (void)longPressViewWithAccessibilityIdentifier:(NSString *)identifier duration:(NSTimeInterval)duration {
+    [self longPressViewWithAccessibilityIdentifier:identifier value:nil traits:UIAccessibilityTraitNone duration:duration];
+}
+
+- (void)longPressViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value duration:(NSTimeInterval)duration {
     [self longPressViewWithAccessibilityLabel:label value:value traits:UIAccessibilityTraitNone duration:duration];
 }
 
-- (void)longPressViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits duration:(NSTimeInterval)duration;
-{
+- (void)longPressViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value duration:(NSTimeInterval)duration {
+    [self longPressViewWithAccessibilityIdentifier:identifier value:nil traits:UIAccessibilityTraitNone duration:duration];
+}
+
+- (void)longPressViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits duration:(NSTimeInterval)duration; {
     UIView *view = nil;
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&view withLabel:label value:value traits:traits tappable:YES];
+    [self longPressAccessibilityElement:element inView:view duration:duration];
+}
+
+- (void)longPressViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits duration:(NSTimeInterval)duration {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
+    
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier value:value traits:traits tappable:YES];
     [self longPressAccessibilityElement:element inView:view duration:duration];
 }
 
@@ -279,9 +312,12 @@
     }
 }
 
-- (void)enterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label
-{
+- (void)enterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label {
     return [self enterText:text intoViewWithAccessibilityLabel:label traits:UIAccessibilityTraitNone expectedResult:nil];
+}
+
+- (void)enterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier {
+    return [self enterText:text intoViewWithAccessibilityIdentifier:identifier traits:UIAccessibilityTraitNone expectedResult:nil];
 }
 
 - (void)enterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult
@@ -290,6 +326,16 @@
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&view withLabel:label value:nil traits:traits tappable:YES];
+    [self tapAccessibilityElement:element inView:view];
+    [self enterTextIntoCurrentFirstResponder:text fallbackView:view];
+    [self expectView:view toContainText:expectedResult ?: text];
+}
+
+- (void)enterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
+    
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier value:nil traits:traits tappable:YES];
     [self tapAccessibilityElement:element inView:view];
     [self enterTextIntoCurrentFirstResponder:text fallbackView:view];
     [self expectView:view toContainText:expectedResult ?: text];
@@ -318,18 +364,31 @@
 
 
 
-- (void)clearTextFromViewWithAccessibilityLabel:(NSString *)label
-{
+- (void)clearTextFromViewWithAccessibilityLabel:(NSString *)label {
     [self clearTextFromViewWithAccessibilityLabel:label traits:UIAccessibilityTraitNone];
 }
 
-- (void)clearTextFromViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits
-{
+- (void)clearTextFromViewWithAccessibilityIdentifier:(NSString *)identifier {
+    [self clearTextFromViewWithAccessibilityIdentifier:identifier traits:UIAccessibilityTraitNone];
+}
+
+- (void)clearTextFromViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits {
     UIView *view = nil;
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&view withLabel:label value:nil traits:traits tappable:YES];
+    [self clearTextFromElement:element inView:view];
+}
+
+- (void)clearTextFromViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
     
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier value:nil traits:traits tappable:YES];
+    [self clearTextFromElement:element inView:view];
+}
+
+- (void)clearTextFromElement:(UIAccessibilityElement *)element inView:(UIView *)view {
     NSUInteger numberOfCharacters = [view respondsToSelector:@selector(text)] ? [(UITextField *)view text].length : element.accessibilityValue.length;
     
     [self tapAccessibilityElement:element inView:view];
@@ -341,28 +400,36 @@
         
         [self waitForTimeInterval:0.1];
         [self enterTextIntoCurrentFirstResponder:@"\b" fallbackView:view];
-    } else {
+    }
+    else {
         
         NSMutableString *text = [NSMutableString string];
         for (NSInteger i = 0; i < numberOfCharacters; i ++) {
             [text appendString:@"\b"];
         }
+        
         [self enterTextIntoCurrentFirstResponder:text fallbackView:view];
     }
     
     [self expectView:view toContainText:@""];
 }
 
-- (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label
-{
-    [self clearTextFromViewWithAccessibilityLabel:label];
-    [self enterText:text intoViewWithAccessibilityLabel:label];
+- (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label {
+    [self clearTextFromAndThenEnterText:text intoViewWithAccessibilityLabel:label traits:UIAccessibilityTraitNone expectedResult:nil];
 }
 
-- (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult
-{
+- (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier {
+    [self clearTextFromAndThenEnterText:text intoViewWithAccessibilityIdentifier:identifier traits:UIAccessibilityTraitNone expectedResult:nil];
+}
+
+- (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult {
     [self clearTextFromViewWithAccessibilityLabel:label traits:traits];
     [self enterText:text intoViewWithAccessibilityLabel:label traits:traits expectedResult:expectedResult];
+}
+
+- (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult {
+    [self clearTextFromViewWithAccessibilityIdentifier:identifier];
+    [self enterText:text intoViewWithAccessibilityIdentifier:identifier];
 }
 
 - (void)selectPickerViewRowWithTitle:(NSString *)title
@@ -412,32 +479,40 @@
     }];
 }
 
-- (void)setOn:(BOOL)switchIsOn forSwitchWithAccessibilityLabel:(NSString *)label
-{
+- (void)setOn:(BOOL)switchIsOn forSwitchWithAccessibilityLabel:(NSString *)label {
     UIView *view = nil;
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&view withLabel:label value:nil traits:UIAccessibilityTraitButton tappable:YES];
+    [self setOn:switchIsOn forElement:element inSwitch:(UISwitch *)view withIdentifier:label];
+}
+
+- (void)setOn:(BOOL)switchIsOn forSwitchWithAccessibilityIdentifier:(NSString *)identifier {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
     
-    if (![view isKindOfClass:[UISwitch class]]) {
-        [self failWithError:[NSError KIFErrorWithFormat:@"View with accessibility label \"%@\" is a %@, not a UISwitch", label, NSStringFromClass([view class])] stopTest:YES];
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier value:nil traits:UIAccessibilityTraitButton tappable:YES];
+    [self setOn:switchIsOn forElement:element inSwitch:(UISwitch *)view withIdentifier:identifier];
+}
+
+- (void)setOn:(BOOL)switchIsOn forElement:(UIAccessibilityElement *)element inSwitch:(UISwitch *)switchView withIdentifier:(NSString *)identifier {
+    if (![switchView isKindOfClass:[UISwitch class]]) {
+        [self failWithError:[NSError KIFErrorWithFormat:@"View with accessibility label \"%@\" is a %@, not a UISwitch", identifier, NSStringFromClass([switchView class])] stopTest:YES];
     }
-    
-    UISwitch *switchView = (UISwitch *)view;
     
     // No need to switch it if it's already in the correct position
     if (switchView.isOn == switchIsOn) {
         return;
     }
     
-    [self tapAccessibilityElement:element inView:view];
+    [self tapAccessibilityElement:element inView:switchView];
     
     // If we succeeded, stop the test.
     if (switchView.isOn == switchIsOn) {
         return;
     }
     
-    NSLog(@"Faking turning switch %@ with accessibility label %@", switchIsOn ? @"ON" : @"OFF", label);
+    NSLog(@"Faking turning switch %@ with accessibility label %@", switchIsOn ? @"ON" : @"OFF", identifier);
     [switchView setOn:switchIsOn animated:YES];
     [switchView sendActionsForControlEvents:UIControlEventValueChanged];
     [self waitForTimeInterval:0.5];
@@ -448,29 +523,38 @@
     }
 }
 
-- (void)setValue:(float)value forSliderWithAccessibilityLabel:(NSString *)label
-{
+- (void)setValue:(float)value forSliderWithAccessibilityLabel:(NSString *)label {
     UISlider *slider = nil;
     UIAccessibilityElement *element = nil;
     [self waitForAccessibilityElement:&element view:&slider withLabel:label value:nil traits:UIAccessibilityTraitNone tappable:YES];
-    
-    if (![slider isKindOfClass:[UISlider class]]) {
-        [self failWithError:[NSError KIFErrorWithFormat:@"View with accessibility label \"%@\" is a %@, not a UISlider", label, NSStringFromClass([slider class])] stopTest:YES];
+    [self setValue:value forElement:element inSlider:slider withIdentifier:label];
+}
+
+- (void)setValue:(float)value forSliderWithAccessibilityIdentifier:(NSString *)identifier {
+    UISlider *slider = nil;
+    UIAccessibilityElement *element = nil;
+    [self waitForAccessibilityElement:&element view:&slider withIdentifier:identifier value:nil traits:UIAccessibilityTraitNone tappable:YES];
+    [self setValue:value forElement:element inSlider:slider withIdentifier:identifier];
+}
+
+- (void)setValue:(float)value forElement:(UIAccessibilityElement *)element inSlider:(UISlider *)sliderView withIdentifier:(NSString *)identifier {
+    if (![sliderView isKindOfClass:[UISlider class]]) {
+        [self failWithError:[NSError KIFErrorWithFormat:@"View with accessibility label \"%@\" is a %@, not a UISlider", identifier, NSStringFromClass([sliderView class])] stopTest:YES];
     }
     
-    if (value < slider.minimumValue) {
-        [self failWithError:[NSError KIFErrorWithFormat:@"Cannot slide past minimum value of %f", slider.minimumValue] stopTest:YES];
+    if (value < sliderView.minimumValue) {
+        [self failWithError:[NSError KIFErrorWithFormat:@"Cannot slide past minimum value of %f", sliderView.minimumValue] stopTest:YES];
     }
     
-    if (value > slider.maximumValue) {
-        [self failWithError:[NSError KIFErrorWithFormat:@"Cannot slide past maximum value of %f", slider.maximumValue] stopTest:YES];
+    if (value > sliderView.maximumValue) {
+        [self failWithError:[NSError KIFErrorWithFormat:@"Cannot slide past maximum value of %f", sliderView.maximumValue] stopTest:YES];
     }
     
-    CGRect trackRect = [slider trackRectForBounds:slider.bounds];
-    CGPoint currentPosition = CGPointCenteredInRect([slider thumbRectForBounds:slider.bounds trackRect:trackRect value:slider.value]);
-    CGPoint finalPosition = CGPointCenteredInRect([slider thumbRectForBounds:slider.bounds trackRect:trackRect value:value]);
+    CGRect trackRect = [sliderView trackRectForBounds:sliderView.bounds];
+    CGPoint currentPosition = CGPointCenteredInRect([sliderView thumbRectForBounds:sliderView.bounds trackRect:trackRect value:sliderView.value]);
+    CGPoint finalPosition = CGPointCenteredInRect([sliderView thumbRectForBounds:sliderView.bounds trackRect:trackRect value:value]);
     
-    [slider dragFromPoint:currentPosition toPoint:finalPosition steps:10];
+    [sliderView dragFromPoint:currentPosition toPoint:finalPosition steps:10];
 }
 
 - (void)dismissPopover
@@ -570,19 +654,30 @@
     [collectionView tapAtPoint:CGPointCenteredInRect(cellFrame)];
 }
 
-- (void)swipeViewWithAccessibilityLabel:(NSString *)label inDirection:(KIFSwipeDirection)direction
-{
-    const NSUInteger kNumberOfPointsInSwipePath = 20;
-    
-    // The original version of this came from http://groups.google.com/group/kif-framework/browse_thread/thread/df3f47eff9f5ac8c
-    
+- (void)swipeViewWithAccessibilityLabel:(NSString *)label inDirection:(KIFSwipeDirection)direction {
     UIView *viewToSwipe = nil;
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&viewToSwipe withLabel:label value:nil traits:UIAccessibilityTraitNone tappable:NO];
     
-    // Within this method, all geometry is done in the coordinate system of the view to swipe.
+    [self swipeElement:element inView:viewToSwipe inDirection:direction];
+}
+
+- (void)swipeViewWithAccessibilityIdentifier:(NSString *)identifier inDirection:(KIFSwipeDirection)direction {
+    UIView *viewToSwipe = nil;
+    UIAccessibilityElement *element = nil;
     
+    [self waitForAccessibilityElement:&element view:&viewToSwipe withIdentifier:identifier value:nil traits:UIAccessibilityTraitNone tappable:NO];
+    
+    [self swipeElement:element inView:viewToSwipe inDirection:direction];
+}
+
+- (void)swipeElement:(UIAccessibilityElement *)element inView:(UIView *)viewToSwipe inDirection:(KIFSwipeDirection)direction {
+    const NSUInteger kNumberOfPointsInSwipePath = 20;
+    
+    // The original version of this came from http://groups.google.com/group/kif-framework/browse_thread/thread/df3f47eff9f5ac8c
+    
+    // Within this method, all geometry is done in the coordinate system of the view to swipe.
     CGRect elementFrame = [viewToSwipe.windowOrIdentityWindow convertRect:element.accessibilityFrame toView:viewToSwipe];
     CGPoint swipeStart = CGPointCenteredInRect(elementFrame);
     KIFDisplacement swipeDisplacement = KIFDisplacementForSwipingInDirection(direction);
@@ -638,6 +733,27 @@
     }];
 }
 
+- (void)waitForFirstResponderWithAccessibilityIdentifier:(NSString *)identifier {
+    [self runBlock:^KIFTestStepResult(NSError **error) {
+        UIResponder *firstResponder = [[[UIApplication sharedApplication] keyWindow] firstResponder];
+        if ([firstResponder isKindOfClass:NSClassFromString(@"UISearchBarTextField")]) {
+            do {
+                firstResponder = [(UIView *)firstResponder superview];
+            } while (firstResponder && ![firstResponder isKindOfClass:[UISearchBar class]]);
+        }
+        
+        if (![firstResponder isKindOfClass:[UIView class]]) {
+            [self failWithError:[NSError KIFErrorWithFormat:@"Checking for an accessibilityIdentifier on an object which isn't a UIView (object is a '%@')", [firstResponder class]] stopTest:YES];
+            return KIFTestStepResultFailure;
+        }
+        
+        UIView *firstResponderView = (UIView *)firstResponder;
+        KIFTestWaitCondition([[firstResponderView accessibilityIdentifier] isEqualToString:identifier], error, @"Expected accessibility label for first responder to be '%@', got '%@'", identifier, [firstResponder accessibilityLabel]);
+        
+        return KIFTestStepResultSuccess;
+    }];
+}
+
 - (void)waitForFirstResponderWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits
 {
     [self runBlock:^KIFTestStepResult(NSError **error) {
@@ -647,6 +763,26 @@
         
         // foundLabel == label checks for the case where both are nil.
         KIFTestWaitCondition(foundLabel == label || [foundLabel isEqualToString:label], error, @"Expected accessibility label for first responder to be '%@', got '%@'", label, foundLabel);
+        KIFTestWaitCondition(firstResponder.accessibilityTraits & traits, error, @"Found first responder with accessbility label, but not traits.");
+        
+        return KIFTestStepResultSuccess;
+    }];
+}
+
+- (void)waitForFirstResponderWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits {
+    [self runBlock:^KIFTestStepResult(NSError **error) {
+        UIResponder *firstResponder = [[[UIApplication sharedApplication] keyWindow] firstResponder];
+        
+        if (![firstResponder isKindOfClass:[UIView class]]) {
+            [self failWithError:[NSError KIFErrorWithFormat:@"Checking for an accessibilityIdentifier on an object which isn't a UIView (object is a '%@')", [firstResponder class]] stopTest:YES];
+            return KIFTestStepResultFailure;
+        }
+        
+        UIView *firstResponderView = (UIView *)firstResponder;
+        NSString *foundIdentifier = firstResponderView.accessibilityIdentifier;
+        
+        // foundLabel == label checks for the case where both are nil.
+        KIFTestWaitCondition(foundIdentifier == identifier || [foundIdentifier isEqualToString:identifier], error, @"Expected accessibility label for first responder to be '%@', got '%@'", identifier, foundIdentifier);
         KIFTestWaitCondition(firstResponder.accessibilityTraits & traits, error, @"Found first responder with accessbility label, but not traits.");
         
         return KIFTestStepResultSuccess;
@@ -769,8 +905,16 @@
     [self multiTapViewWithAccessibilityLabel:label value:nil traits:UIAccessibilityTraitNone andNumberOfTaps:numberOfTaps];
 }
 
+- (void)multiTapViewWithAccessibilityIdentifier:(NSString *)identifier andNumberOfTaps:(NSUInteger)numberOfTaps {
+    [self multiTapViewWithAccessibilityIdentifier:identifier value:nil traits:UIAccessibilityTraitNone andNumberOfTaps:numberOfTaps];
+}
+
 - (void)multiTapViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps {
     [self multiTapViewWithAccessibilityLabel:label value:nil traits:traits andNumberOfTaps:numberOfTaps];
+}
+
+- (void)multiTapViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps {
+    [self multiTapViewWithAccessibilityIdentifier:identifier value:nil traits:traits andNumberOfTaps:numberOfTaps];
 }
 
 - (void)multiTapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps {
@@ -778,6 +922,14 @@
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&view withLabel:label value:value traits:traits tappable:YES];
+    [self multiTapAccessibilityElement:element inView:view andNumberOfTaps:numberOfTaps];
+}
+
+- (void)multiTapViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
+    
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier value:value traits:traits tappable:YES];
     [self multiTapAccessibilityElement:element inView:view andNumberOfTaps:numberOfTaps];
 }
 

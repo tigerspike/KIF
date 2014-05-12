@@ -172,6 +172,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param label The accessibility label of the element to tap.
  */
 - (void)tapViewWithAccessibilityLabel:(NSString *)label;
+- (void)tapViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Taps a particular view in the view hierarchy.
@@ -180,6 +181,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param traits The accessibility traits of the element to tap. Elements that do not include at least these traits are ignored.
  */
 - (void)tapViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits;
+- (void)tapViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits;
 
 /*!
  @abstract Taps a particular view in the view hierarchy.
@@ -191,6 +193,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param traits The accessibility traits of the element to tap. Elements that do not include at least these traits are ignored.
  */
 - (void)tapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits;
+- (void)tapViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits;
 
 /*!
  @abstract Taps a particular view in the view heirarchy.
@@ -215,6 +218,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param duration The length of time to long press the element.
  */
 - (void)longPressViewWithAccessibilityLabel:(NSString *)label duration:(NSTimeInterval)duration;
+- (void)longPressViewWithAccessibilityIdentifier:(NSString *)identifier duration:(NSTimeInterval)duration;
 
 /*!
  @abstract Performs a long press on a particular view in the view hierarchy.
@@ -226,6 +230,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param duration The length of time to long press the element.
  */
 - (void)longPressViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value duration:(NSTimeInterval)duration;
+- (void)longPressViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value duration:(NSTimeInterval)duration;
 
 /*!
  @abstract Performs a long press on a particular view in the view hierarchy.
@@ -238,6 +243,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param duration The length of time to long press the element.
  */
 - (void)longPressViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits duration:(NSTimeInterval)duration;
+- (void)longPressViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits duration:(NSTimeInterval)duration;
 
 /*!
  @abstract Enters text into a the current first responder.
@@ -253,6 +259,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param label The accessibility label of the element to type into.
  */
 - (void)enterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label;
+- (void)enterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Enters text into a particular view in the view hierarchy.
@@ -263,12 +270,17 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param expectedResult What the text value should be after entry, including any formatting done by the field. If this is nil, the "text" parameter will be used.
  */
 - (void)enterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult;
+- (void)enterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult;
 
 - (void)clearTextFromViewWithAccessibilityLabel:(NSString *)label;
+- (void)clearTextFromViewWithAccessibilityIdentifier:(NSString *)identifier;
 - (void)clearTextFromViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits;
+- (void)clearTextFromViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits;
 
 - (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label;
+- (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier;
 - (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult;
+- (void)clearTextFromAndThenEnterText:(NSString *)text intoViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits expectedResult:(NSString *)expectedResult;
 
 /*!
  @abstract ASelects an item from a currently visible picker view.
@@ -284,6 +296,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param label The accessibility label of the element to switch.
  */
 - (void)setOn:(BOOL)switchIsOn forSwitchWithAccessibilityLabel:(NSString *)label;
+- (void)setOn:(BOOL)switchIsOn forSwitchWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Slides a UISlider to a specified value.
@@ -292,6 +305,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param label The accessibility label of the element to drag.
  */
 - (void)setValue:(float)value forSliderWithAccessibilityLabel:(NSString *)label;
+- (void)setValue:(float)value forSliderWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Dismisses a popover on screen.
@@ -348,6 +362,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param direction The direction in which to swipe.
  */
 - (void)swipeViewWithAccessibilityLabel:(NSString *)label inDirection:(KIFSwipeDirection)direction;
+- (void)swipeViewWithAccessibilityIdentifier:(NSString *)identifier inDirection:(KIFSwipeDirection)direction;
 
 /*!
  @abstract Scrolls a particular view in the view hierarchy by an amount indicated as a fraction of its size.
@@ -375,6 +390,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param label The accessibility label of the element to wait for.
  */
 - (void)waitForFirstResponderWithAccessibilityLabel:(NSString *)label;
+- (void)waitForFirstResponderWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Waits until a view or accessibility element is the first responder.
@@ -385,6 +401,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param traits The accessibility traits of the element to wait for. Elements that do not include at least these traits are ignored.
  */
 - (void)waitForFirstResponderWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits;
+- (void)waitForFirstResponderWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits;
 
 - (void)tapStatusBar;
 
@@ -420,6 +437,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  */
 
 - (void)multiTapViewWithAccessibilityLabel:(NSString *)label andNumberOfTaps:(NSUInteger)numberOfTaps;
+- (void)multiTapViewWithAccessibilityIdentifier:(NSString *)identifier andNumberOfTaps:(NSUInteger)numberOfTaps;
 
 /*!
  @abstract Taps a particular view in the view hierarchy multiple times.
@@ -429,6 +447,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param numberOfTaps The number of times the view should be tapped
  */
 - (void)multiTapViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps;
+- (void)multiTapViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps;
 
 /*!
  @abstract Taps a particular view in the view hierarchy multiple times.
@@ -441,6 +460,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param numberOfTaps The number of times the view should be tapped
  */
 - (void)multiTapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps;
+- (void)multiTapViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits andNumberOfTaps:(NSUInteger)numberOfTaps;
 
 /*!
  @abstract Taps a particular view in the view heirarchy.

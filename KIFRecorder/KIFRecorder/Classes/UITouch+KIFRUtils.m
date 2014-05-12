@@ -27,8 +27,8 @@
 }
 
 - (UIView *)accessibleViewWithPossibilities:(NSArray *)possibleViews {
-    // We need a view to have an accessibility label to be a contender for recording interaction (unless it is a keyboard event)
-    if (self.isKeyboardEvent || (self.view && self.view.accessibilityLabel.length > 0)) {
+    // We need a view to have an accessibility identifier to be a contender for recording interaction (unless it is a keyboard event)
+    if (self.isKeyboardEvent || (self.view && self.view.accessibilityIdentifier.length > 0)) {
         return self.view;
     }
     
