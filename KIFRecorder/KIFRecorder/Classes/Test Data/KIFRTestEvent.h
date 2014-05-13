@@ -14,6 +14,7 @@
 
 @property (nonatomic, copy) NSString *eventID;
 @property (nonatomic, weak) UIView *targetView;
+@property (nonatomic, weak) UIView *internalTargetView;
 @property (nonatomic, strong) NSArray *potentialTargets;
 
 @property (nonatomic, strong) KIFRTargetInfo *targetInfo;

@@ -344,6 +344,9 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  */
 - (void)tapRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier NS_AVAILABLE_IOS(5_0);
 
+- (void)tapInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier;
+- (void)tapInternalViewOfClass:(Class)classType ofRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier;
+
 /*!
  @abstract Taps the item at indexPath in a collection view with the given identifier.
  @discussion This step will get the view with the specified accessibility identifier and tap the item at indexPath.
@@ -355,6 +358,8 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  */
 - (void)tapItemAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier;
 
+#pragma mark - Swipe Methods
+
 /*!
  @abstract Swipes a particular view in the view hierarchy in the given direction.
  @discussion The view will get the view with the specified accessibility label and swipe the screen in the given direction from the view's center.
@@ -363,6 +368,8 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  */
 - (void)swipeViewWithAccessibilityLabel:(NSString *)label inDirection:(KIFSwipeDirection)direction;
 - (void)swipeViewWithAccessibilityIdentifier:(NSString *)identifier inDirection:(KIFSwipeDirection)direction;
+
+#pragma mark - Scrolling Methods
 
 /*!
  @abstract Scrolls a particular view in the view hierarchy by an amount indicated as a fraction of its size.
@@ -381,6 +388,8 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param verticalFraction The vertical displacement of the scroll action, as a fraction of the height of the view.
  */
 - (void)scrollViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction NS_AVAILABLE_IOS(5_0);
+
+- (void)scrollCellAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction;
 
 /*!
  @abstract Waits until a view or accessibility element is the first responder.

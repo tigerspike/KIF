@@ -16,7 +16,6 @@
     }
     
     // Is it better to attach border to the window or the view?
-    BOOL attachToWindow = YES;
     KIFRBorderView *borderView = [KIFRBorderView new];
     borderView.event = event;
     borderView.userInteractionEnabled = NO;
@@ -24,24 +23,16 @@
     borderView.layer.borderColor = [UIColor redColor].CGColor;
     
     // Create a red border around the tapped view
-    if (attachToWindow) {
-        if (event.isKeyboardEvent) {
-            borderView.frame = [event.targetView.window convertRect:event.keyboardKeyFrame fromView:event.targetView];
-        }
-        else {
-            borderView.frame = [event.targetView.window convertRect:event.targetView.frame fromView:event.targetView.superview];
-        }
-        [event.targetView.window addSubview:borderView];
+    if (event.isKeyboardEvent) {
+        borderView.frame = [event.targetView.window convertRect:event.keyboardKeyFrame fromView:event.targetView];
+    }
+    else if (event.targetInfo.isTargettingInternalSubview) {
+        borderView.frame = [event.internalTargetView.window convertRect:event.internalTargetView.frame fromView:event.internalTargetView.superview];
     }
     else {
-        if (event.isKeyboardEvent) {
-            borderView.frame = event.keyboardKeyFrame;
-        }
-        else {
-            borderView.frame = event.targetView.bounds;
-        }
-        [event.targetView addSubview:borderView];
+        borderView.frame = [event.targetView.window convertRect:event.targetView.frame fromView:event.targetView.superview];
     }
+    [event.targetView.window addSubview:borderView];
     
     [borderView tryRemoveBorder];
 }

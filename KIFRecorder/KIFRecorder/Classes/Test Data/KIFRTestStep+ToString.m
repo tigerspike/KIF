@@ -48,9 +48,9 @@
     }
 }
 
-- (KIFRTestStep *)createActualTapStep {
-    // Should only call this on a step which is waiting for a UITableViewCell
-    if (!self.stepType == KIFRStepTypeWaitForTableCell) {
+- (KIFRTestStep *)createStepToWaitForCell {
+    // Should only call this for a UITableViewCell
+    if ([self.testEventData.targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
         return nil;
     }
     
@@ -59,8 +59,8 @@
     step.stepType = KIFRStepTypeTapTableCell;
     
     KIFRTargetInfo *targetInfo = self.testEventData.targetInfo;
-    step.readableString = [NSString stringWithFormat:@"Tap cell at (%li, %li) in the table '%@'.", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
-    step.testString = [NSString stringWithFormat:@"\n    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+    self.readableString = [NSString stringWithFormat:@"Wait for cell at (%li, %li) in the table '%@'.", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+    self.testString = [NSString stringWithFormat:@"\n    [tester waitForRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
     
     return step;
 }
@@ -71,13 +71,30 @@
     KIFRTargetInfo *targetInfo = self.testEventData.targetInfo;
     
     if (self.testEventData.numberOfTaps == 1) {
-        // If it's a UITableViewCell then use the specific method
-        if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
-            self.stepType = KIFRStepTypeWaitForTableCell;
-            self.readableString = [NSString stringWithFormat:@"Wait for cell at (%li, %li) in the table '%@'.", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
-            self.testString = [NSString stringWithFormat:@"\n    [tester waitForRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+        if (targetInfo.isTargettingInternalSubview) {
+            // Internal views need to be targetted slightly differently
+            if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
+                self.stepType = KIFRStepTypeTapTableCell;
+
+                self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of cell at (%li, %li) in the table '%@'.", targetInfo.internalTargetClass, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+                self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") ofRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+            }
+            else {
+                self.stepType = KIFRStepTypeTap;
+                
+                self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of view '%@'.", targetInfo.internalTargetClass, targetInfo.tableViewAccessibilityIdentifier];
+                self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") inViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, targetInfo.tableViewAccessibilityIdentifier];
+            }
+        }
+        else if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
+            // If it's a UITableViewCell then use the specific method
+            self.stepType = KIFRStepTypeTapTableCell;
+
+            self.readableString = [NSString stringWithFormat:@"Tap cell at (%li, %li) in the table '%@'.", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+            self.testString = [NSString stringWithFormat:@"\n    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
         }
         else if ([targetInfo.targetClass isSubclassOfClass:[UISegmentedControl class]]) {
+            // If it's a UISegmentedControl then use the specific method
             self.stepType = KIFRStepTypeSelectSegment;
             self.readableString = [NSString stringWithFormat:@"Tap segment %li in the segment control '%@'.", (long)targetInfo.selectedIndex, targetInfo.accessibilityIdentifier];
             self.testString = [NSString stringWithFormat:@"\n    [tester tapSegmentAtIndex:%li inSegmentedControlWithAccessibilityIdentifier:@\"%@\"];", (long)targetInfo.selectedIndex, targetInfo.accessibilityIdentifier];
@@ -124,8 +141,14 @@
         CGFloat horizontalFraction = (xDistance / targetInfo.frame.size.width);
         CGFloat verticalFraction = (yDistance / targetInfo.frame.size.height);
         
-        self.readableString = [NSString stringWithFormat:@"Scroll view '%@' by %.0f%% width and %.0f%% height.", targetInfo.accessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];
-        self.testString = [NSString stringWithFormat:@"\n    [tester scrollViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", targetInfo.accessibilityIdentifier, horizontalFraction, verticalFraction];
+        if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
+            self.readableString = [NSString stringWithFormat:@"Scroll cell at (%li, %li) in the table '%@' by %.0f%% width and %.0f%% height.", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];
+            self.testString = [NSString stringWithFormat:@"\n    [tester scrollCellAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, horizontalFraction, verticalFraction];
+        }
+        else {
+            self.readableString = [NSString stringWithFormat:@"Scroll view '%@' by %.0f%% width and %.0f%% height.", targetInfo.accessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];
+            self.testString = [NSString stringWithFormat:@"\n    [tester scrollViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", targetInfo.accessibilityIdentifier, horizontalFraction, verticalFraction];
+        }
     }
     else {
         NSLog(@"Warning - Attempt to have unsupported multi-finger pan!");

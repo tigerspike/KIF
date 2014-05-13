@@ -11,6 +11,6 @@
 @interface KIFRTestStep (ToString)
 
 - (void)generateStepData;
-- (KIFRTestStep *)createActualTapStep;
+- (KIFRTestStep *)createStepToWaitForCell;
 
 @end

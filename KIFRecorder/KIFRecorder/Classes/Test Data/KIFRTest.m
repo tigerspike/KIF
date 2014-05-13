@@ -151,14 +151,6 @@
     testStep.originalIndex = self.testStepsArray.count;
     
     [self.testStepsArray addObject:testStep];
-    
-    // In this one case we need to create an additional step
-    if (testStep.stepType == KIFRStepTypeWaitForTableCell) {
-        KIFRTestStep *tapStep = [testStep createActualTapStep];
-        tapStep.originalIndex = self.testStepsArray.count;
-        
-        [self.testStepsArray addObject:tapStep];
-    }
 }
 
 #pragma mark - Saving

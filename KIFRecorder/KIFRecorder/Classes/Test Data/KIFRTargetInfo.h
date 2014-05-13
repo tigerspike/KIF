@@ -13,6 +13,8 @@
 @property (nonatomic, copy) NSString *accessibilityIdentifier;
 @property (nonatomic, copy) Class targetClass;
 @property (nonatomic, assign) CGRect frame;
+@property (nonatomic, copy) Class internalTargetClass;
+@property (nonatomic, assign) BOOL isTargettingInternalSubview;
 
 // UITableView Specific
 @property (nonatomic, copy) NSString *tableViewAccessibilityIdentifier;

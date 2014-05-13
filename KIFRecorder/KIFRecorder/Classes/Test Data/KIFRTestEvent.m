@@ -13,6 +13,13 @@
 
 @implementation KIFRTestEvent
 
++ (NSArray *)classesWithInternalViews {
+    return @[
+             [UITableViewCell class],
+             [UISearchBar class]
+             ];
+}
+
 + (KIFRTestEvent *)eventWithID:(NSString *)eventID touches:(NSArray *)touches targetView:(UIView *)target andPotentialTargets:(NSArray *)potentialTargets {
     KIFRTestEvent *testEvent = [KIFRTestEvent new];
     testEvent.eventID = eventID;
@@ -93,6 +100,25 @@
     }
     else if ([self.targetView isKindOfClass:[UISegmentedControl class]]) {
         [self finalizeUISegmentedControlWithTouches:touches];
+    }
+    
+    // Check if we tapped an 'internal view' (a control which we don't have direct access to)
+    if ([[KIFRTestEvent classesWithInternalViews] containsObject:self.targetInfo.targetClass]) {
+        // Are we tapping an internal view inside the TableViewCell?
+        UITouch *touch = touches.firstObject;
+        for (UITouch *eventTouch in touches) {
+            if (eventTouch.view) {
+                touch = eventTouch;
+                break;
+            }
+        }
+        
+        // If the touch's view is not the same as the targetClass (then it's probably an internal view)
+        if (![touch.view isKindOfClass:self.targetInfo.targetClass]) {
+            self.targetInfo.isTargettingInternalSubview = YES;
+            self.internalTargetView = touch.view;
+            self.targetInfo.internalTargetClass = [touch.view class];
+        }
     }
     
     // We don't want to keep hanging on the the 'targetView' or 'potentialTargets' references (to avoid memory issues, also the red 'BorderView' will only disappear once this value has been cleared)

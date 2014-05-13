@@ -638,6 +638,38 @@
     [tableView tapAtPoint:CGPointCenteredInRect(cellFrame)];
 }
 
+- (void)tapInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier {
+    UIView *view = nil;
+    UIAccessibilityElement *element = nil;
+    
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier traits:nil tappable:YES];
+    NSArray *controlArray = [view subviewsWithClassNameOrSuperClassNamePrefix:NSStringFromClass(classType)];
+    if (controlArray.count == 1) {
+        UIView *targetView = controlArray[0];
+        [self tapAccessibilityElement:(UIAccessibilityElement *)targetView inView:targetView];
+    }
+    else {
+        NSString *errorString = (controlArray.count > 0 ? @"Found too many internal views of type \"%@\"" : @"Could not find internal view of type \"%@\"");
+        [self failWithError:[NSError KIFErrorWithFormat:errorString, NSStringFromClass(classType)] stopTest:YES];
+    }
+}
+
+- (void)tapInternalViewOfClass:(Class)classType ofRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier {
+    UITableView *tableView;
+    [self waitForAccessibilityElement:NULL view:&tableView withIdentifier:identifier tappable:NO];
+    UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath inTableView:tableView];
+    NSArray *controlArray = [cell subviewsWithClassNameOrSuperClassNamePrefix:NSStringFromClass(classType)];
+    if (controlArray.count == 1) {
+        UIView *targetView = controlArray[0];
+        CGRect buttonFrame = [targetView convertRect:targetView.frame toView:tableView];
+        [tableView tapAtPoint:CGPointCenteredInRect(buttonFrame)];
+    }
+    else {
+        NSString *errorString = (controlArray.count > 0 ? @"Found too many internal views of type \"%@\"" : @"Could not find internal view of type \"%@\"");
+        [self failWithError:[NSError KIFErrorWithFormat:errorString, NSStringFromClass(classType)] stopTest:YES];
+    }
+}
+
 - (void)tapItemAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier
 {
     UICollectionView *collectionView;
@@ -685,6 +717,8 @@
     [viewToSwipe dragFromPoint:swipeStart displacement:swipeDisplacement steps:kNumberOfPointsInSwipePath];
 }
 
+#pragma mark - Scroll Methods
+
 - (void)scrollViewWithAccessibilityLabel:(NSString *)label byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction
 {
     UIView *viewToScroll;
@@ -699,6 +733,16 @@
     UIAccessibilityElement *element;
     [self waitForAccessibilityElement:&element view:&viewToScroll withIdentifier:identifier tappable:NO];
     [self scrollAccessibilityElement:element inView:viewToScroll byFractionOfSizeHorizontal:horizontalFraction vertical:verticalFraction];
+}
+
+- (void)scrollCellAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction {
+    UITableView *tableView;
+    [self waitForAccessibilityElement:NULL view:&tableView withIdentifier:identifier tappable:NO];
+
+    // Wait for the cell, convert it to a 'UIAccessibilityElement' and scroll it
+    UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath inTableView:tableView];
+    UIAccessibilityElement *element = (UIAccessibilityElement *)cell;
+    [self scrollAccessibilityElement:element inView:cell byFractionOfSizeHorizontal:horizontalFraction vertical:verticalFraction];
 }
 
 - (void)scrollAccessibilityElement:(UIAccessibilityElement *)element inView:(UIView *)viewToScroll byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction
