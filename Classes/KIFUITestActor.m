@@ -636,6 +636,9 @@
     UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath inTableView:tableView];
     CGRect cellFrame = [cell.contentView convertRect:cell.contentView.frame toView:tableView];
     [tableView tapAtPoint:CGPointCenteredInRect(cellFrame)];
+    
+    // Wait for the view to stabilize.
+    [self waitForTimeInterval:0.5];
 }
 
 - (void)tapInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier {
@@ -663,6 +666,9 @@
         UIView *targetView = controlArray[0];
         CGRect buttonFrame = [targetView convertRect:targetView.frame toView:tableView];
         [tableView tapAtPoint:CGPointCenteredInRect(buttonFrame)];
+        
+        // Wait for the view to stabilize.
+        [self waitForTimeInterval:0.5];
     }
     else {
         NSString *errorString = (controlArray.count > 0 ? @"Found too many internal views of type \"%@\"" : @"Could not find internal view of type \"%@\"");
