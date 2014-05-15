@@ -7,4 +7,12 @@
 //  Copyright (c) 2014 Tigerspike. All rights reserved.
 //
 
-#import "UIApplication+KIFRUtils.h"
+#import <Foundation/Foundation.h>
+
+@interface KIFRecorder : NSObject 
+
++ (void)setupRecording;
++ (NSArray *)getSavedTests;
++ (void)exportTests;
+
+@end

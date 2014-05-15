@@ -16,6 +16,7 @@
 #import "KIFRAddStepView.h"
 #import "KIFRTestStep.h"
 #import "UIPickerView+KIFRUtils.h"
+#import "KIFRecorder.h"
 
 @interface KIFRTestsView () <UITableViewDataSource, UITableViewDelegate>
 
@@ -270,7 +271,7 @@
 #pragma mark - Content
 
 - (void)updateTests {
-    self.testArray = [UIApplication sharedApplication].getSavedTests;
+    self.testArray = [KIFRecorder getSavedTests];
 }
 
 - (void)setTestArray:(NSArray *)testArray {

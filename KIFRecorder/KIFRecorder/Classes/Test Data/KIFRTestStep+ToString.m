@@ -75,21 +75,21 @@
             // Internal views need to be targetted slightly differently
             if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
                 self.stepType = KIFRStepTypeTapTableCell;
-
+                
                 self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of cell at (%li, %li) in the table '%@'.", targetInfo.internalTargetClass, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
                 self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") ofRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
             }
             else {
                 self.stepType = KIFRStepTypeTap;
                 
-                self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of view '%@'.", targetInfo.internalTargetClass, targetInfo.tableViewAccessibilityIdentifier];
-                self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") inViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, targetInfo.tableViewAccessibilityIdentifier];
+                self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of view '%@'.", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier];
+                self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") inViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier];
             }
         }
         else if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
             // If it's a UITableViewCell then use the specific method
             self.stepType = KIFRStepTypeTapTableCell;
-
+            
             self.readableString = [NSString stringWithFormat:@"Tap cell at (%li, %li) in the table '%@'.", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
             self.testString = [NSString stringWithFormat:@"\n    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
         }
@@ -107,7 +107,7 @@
     }
     else {
         self.stepType = KIFRStepTypeMultiTap;
-
+        
         NSArray *tapNumberStrings = @[ @"", @"", @"Double ", @"Triple ", @"Multi (4+) " ];
         NSString *tapAmount = tapNumberStrings[MIN(self.testEventData.numberOfTaps, 4)];
         self.readableString = [NSString stringWithFormat:@"%@Tap on view '%@'.", tapAmount, targetInfo.accessibilityIdentifier];
@@ -192,14 +192,14 @@
     }
     
     self.stepType = KIFRStepTypeKeyboardKey;
-        
+    
     // The only special key we should need to handle is the 'Dismiss' key (iPad keyboard - it's accessibility identifier is actually 'Hide keyboard' for some reason)
     switch (self.testEventData.eventKey) {
         case KIFREventKeyDismissKeyboard: {
             self.readableString = @"Press dismiss keyboard key.";
             
             // For some reason we need to call this twice or it doesn't work
-            NSString *dismissKeyboardString = @"\n\n    // For some reason we need to call this twice or it doesn't work\n    [tester tapViewWithAccessibilityIdentifier:@\"Hide keyboard\"\n    [tester tapViewWithAccessibilityIdentifier:@\"Hide keyboard\"];";
+            NSString *dismissKeyboardString = @"\n\n    // Keyboard keys can only be found by accessibilityLabel\n    // For some reason we need to call this twice or it doesn't work\n    [tester tapViewWithAccessibilityLabel:@\"Hide keyboard\"\n    [tester tapViewWithAccessibilityLabel:@\"Hide keyboard\"];";
             self.testString = dismissKeyboardString;
         } break;
             
@@ -207,13 +207,13 @@
             self.readableString = @"Press keyboard delete key.";
             
             // The delete key only needs to be pressed once (unlike the 'undo' or 'dimiss' keys)
-            self.testString = [NSString stringWithFormat:@"\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];", self.testEventData.keyString];
+            self.testString = [NSString stringWithFormat:@"\n    // Keyboard keys can only be found by accessibilityLabel\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];", self.testEventData.keyString];
         } break;
             
         case KIFREventKeyOther: {
             self.readableString = [NSString stringWithFormat:@"Press keyboard '%@' key.", self.testEventData.keyString];
             
-            NSString *otherKeyString = [NSString stringWithFormat:@"\n\n    // For some reason we need to call this twice or it doesn't work"@"\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];", self.testEventData.keyString, self.testEventData.keyString];
+            NSString *otherKeyString = [NSString stringWithFormat:@"\n\n    // Keyboard keys can only be found by accessibilityLabel\n    // For some reason we need to call this twice or it doesn't work"@"\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];", self.testEventData.keyString, self.testEventData.keyString];
             self.testString = otherKeyString;
         } break;
             
@@ -221,7 +221,7 @@
             self.readableString = [NSString stringWithFormat:@"Press keyboard '%@' key.", self.testEventData.keyString];
             
             // The delete key only needs to be pressed once (unlike the 'undo' or 'dimiss' keys)
-            self.testString = [NSString stringWithFormat:@"\n    [tester tapViewWithAccessibilityIdentifier:@\"%@\"];", self.testEventData.keyString];
+            self.testString = [NSString stringWithFormat:@"\n    // Keyboard keys can only be found by accessibilityLabel\n    [tester tapViewWithAccessibilityLabel:@\"%@\"];", self.testEventData.keyString];
         } break;
             
         default: {

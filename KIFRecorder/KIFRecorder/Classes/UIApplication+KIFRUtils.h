@@ -10,9 +10,6 @@
 
 @interface UIApplication (KIFRUtils)
 
-- (void)setupRecording;
-
-- (NSArray *)getSavedTests;
-- (void)exportTests;
+- (void)KIFR_sendEvent:(UIEvent *)event;
 
 @end

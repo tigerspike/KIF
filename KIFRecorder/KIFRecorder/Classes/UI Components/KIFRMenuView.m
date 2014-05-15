@@ -10,6 +10,7 @@
 #import "UIWindow+KIFRUtils.h"
 #import "UIApplication+KIFRUtils.h"
 #import "KIFRTestsView.h"
+#import "KIFRecorder.h"
 
 #define OLD_FRAME_KEY @"kOldMenuFrame"
 #define CONTRACTED_SIDE_PADDING 2
@@ -184,7 +185,7 @@
 }
 
 - (void)exportButtonPressed:(id)sender {
-    [[UIApplication sharedApplication] exportTests];
+    [KIFRecorder exportTests];
 }
 
 - (void)menuPanned:(UIPanGestureRecognizer *)sender {

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA013658192357F0008582FC /* KIFRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = FA013657192357F0008582FC /* KIFRecorder.m */; };
 		FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAFF0C4C18EA64E9002B0033 /* KIFRecorder.h */; };
-		FAF36BA518EA6C3C00A9BB61 /* UIApplication+KIFRUtils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAFF0C0318EA4A65002B0033 /* UIApplication+KIFRUtils.h */; };
 		FAFF0BB718EA4A05002B0033 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFF0BB618EA4A05002B0033 /* Foundation.framework */; };
 		FAFF0C0918EA4A65002B0033 /* UIAlertView+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BDF18EA4A65002B0033 /* UIAlertView+KIFRUtils.m */; };
 		FAFF0C0A18EA4A65002B0033 /* UIPickerView+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BE118EA4A65002B0033 /* UIPickerView+KIFRUtils.m */; };
@@ -42,19 +42,13 @@
 			dstSubfolderSpec = 16;
 			files = (
 				FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in CopyFiles */,
-				FAF36BA518EA6C3C00A9BB61 /* UIApplication+KIFRUtils.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FA269030191B16DE000758D2 /* KIFRecording-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KIFRecording-Prefix.pch"; sourceTree = "<group>"; };
-		FA269031191B16DE000758D2 /* KIFRecording.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KIFRecording.h; sourceTree = "<group>"; };
-		FA269033191B16DE000758D2 /* KIFRecording.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KIFRecording.m; sourceTree = "<group>"; };
-		FA269042191B16DE000758D2 /* KIFRecordingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KIFRecordingTests-Info.plist"; sourceTree = "<group>"; };
-		FA269044191B16DE000758D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		FA269046191B16DE000758D2 /* KIFRecordingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KIFRecordingTests.m; sourceTree = "<group>"; };
+		FA013657192357F0008582FC /* KIFRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRecorder.m; sourceTree = "<group>"; };
 		FAFF0BB318EA4A05002B0033 /* libKIFRecorder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKIFRecorder.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAFF0BB618EA4A05002B0033 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FAFF0BBA18EA4A06002B0033 /* KIFRecorder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KIFRecorder-Prefix.pch"; sourceTree = "<group>"; };
@@ -118,48 +112,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		FA26902E191B16DE000758D2 /* KIFRecording */ = {
-			isa = PBXGroup;
-			children = (
-				FA269031191B16DE000758D2 /* KIFRecording.h */,
-				FA269033191B16DE000758D2 /* KIFRecording.m */,
-				FA26902F191B16DE000758D2 /* Supporting Files */,
-			);
-			path = KIFRecording;
-			sourceTree = "<group>";
-		};
-		FA26902F191B16DE000758D2 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				FA269030191B16DE000758D2 /* KIFRecording-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		FA269040191B16DE000758D2 /* KIFRecordingTests */ = {
-			isa = PBXGroup;
-			children = (
-				FA269046191B16DE000758D2 /* KIFRecordingTests.m */,
-				FA269041191B16DE000758D2 /* Supporting Files */,
-			);
-			path = KIFRecordingTests;
-			sourceTree = "<group>";
-		};
-		FA269041191B16DE000758D2 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				FA269042191B16DE000758D2 /* KIFRecordingTests-Info.plist */,
-				FA269043191B16DE000758D2 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		FAFF0BAA18EA4A05002B0033 = {
 			isa = PBXGroup;
 			children = (
 				FAFF0BB818EA4A06002B0033 /* KIFRecorder */,
-				FA26902E191B16DE000758D2 /* KIFRecording */,
-				FA269040191B16DE000758D2 /* KIFRecordingTests */,
 				FAFF0BB518EA4A05002B0033 /* Frameworks */,
 				FAFF0BB418EA4A05002B0033 /* Products */,
 			);
@@ -214,6 +170,7 @@
 				FAFF0C0718EA4A65002B0033 /* UITouch+KIFRUtils.h */,
 				FAFF0C0818EA4A65002B0033 /* UITouch+KIFRUtils.m */,
 				FAFF0C4C18EA64E9002B0033 /* KIFRecorder.h */,
+				FA013657192357F0008582FC /* KIFRecorder.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -349,6 +306,7 @@
 				FAFF0C0B18EA4A65002B0033 /* KIFRTargetInfo.m in Sources */,
 				FAFF0C0918EA4A65002B0033 /* UIAlertView+KIFRUtils.m in Sources */,
 				FAFF0C1618EA4A65002B0033 /* KIFRTestStepCell.m in Sources */,
+				FA013658192357F0008582FC /* KIFRecorder.m in Sources */,
 				FAFF0C0F18EA4A65002B0033 /* KIFRTestStep+ToString.m in Sources */,
 				FAFF0C1018EA4A65002B0033 /* KIFRTestStep.m in Sources */,
 				FAFF0C1B18EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.m in Sources */,
@@ -356,17 +314,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		FA269043191B16DE000758D2 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FA269044191B16DE000758D2 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		FAFF0BD418EA4A06002B0033 /* Debug */ = {
@@ -440,19 +387,23 @@
 		FAFF0BD718EA4A06002B0033 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/KIFRecorder.dst;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KIFRecorder/KIFRecorder-Prefix.pch";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
 		FAFF0BD818EA4A06002B0033 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/KIFRecorder.dst;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -460,6 +411,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
