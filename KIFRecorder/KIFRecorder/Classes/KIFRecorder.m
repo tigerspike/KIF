@@ -111,7 +111,7 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
     // Generate the new test method (Note: Method name MUST start with 'test')
     NSMutableString *testString = [NSMutableString new];
     [testString appendString:@"\n\n"];
-    if (testName.length >= 4 && [[testName substringToIndex:4] caseInsensitiveCompare:@"test"]) {
+    if (testName.length >= 4 && ([[testName substringToIndex:4] caseInsensitiveCompare:@"test"] == NSOrderedSame)) {
         [testString appendFormat:@"- (void)test%@ {", [testName substringFromIndex:4]];
     }
     else {
