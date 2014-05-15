@@ -102,7 +102,14 @@
     }
     
     if (result == KIFTestStepResultWait) {
-        error = [NSError KIFErrorWithUnderlyingError:error format:@"The step timed out after %.2f seconds: %@", timeout, error.localizedDescription];
+        // Crashing when the error is nil is bad...
+        if (error) {
+            error = [NSError KIFErrorWithUnderlyingError:error format:@"The step timed out after %.2f seconds: %@", timeout, error.localizedDescription];
+        }
+        else {
+            error = [NSError KIFErrorWithFormat:@"The step timed out after %.2f seconds", timeout];
+        }
+        
         result = KIFTestStepResultFailure;
     }
     

@@ -840,36 +840,43 @@
     return [self waitForCellAtIndexPath:indexPath inTableView:tableView];
 }
 
-- (UITableViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
-{
+- (UITableViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView {
     if (![tableView isKindOfClass:[UITableView class]]) {
         [self failWithError:[NSError KIFErrorWithFormat:@"View is not a table view"] stopTest:YES];
     }
     
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    // If section < 0, search from the end of the table.
-    if (indexPath.section < 0) {
-        indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:tableView.numberOfSections + indexPath.section];
-    }
-    
-    // If row < 0, search from the end of the section.
-    if (indexPath.row < 0) {
-        indexPath = [NSIndexPath indexPathForRow:[tableView numberOfRowsInSection:indexPath.section] + indexPath.row inSection:indexPath.section];
-    }
+    __block UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if (!cell) {
-        if (indexPath.section >= tableView.numberOfSections) {
-            [self failWithError:[NSError KIFErrorWithFormat:@"Section %d is not found in table view", (int)indexPath.section] stopTest:YES];
-        }
-        
-        if (indexPath.row >= [tableView numberOfRowsInSection:indexPath.section]) {
-            [self failWithError:[NSError KIFErrorWithFormat:@"Row %d is not found in section %d of table view", (int)indexPath.row, (int)indexPath.section] stopTest:YES];
-        }
-        
-        [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        [self waitForTimeInterval:0.5];
-        cell = [tableView cellForRowAtIndexPath:indexPath];
+        [self runBlock:^KIFTestStepResult(NSError **error) {
+            NSIndexPath *localIndexPath = indexPath;    // We want to reset this every time we run this
+            
+            if (!cell) {
+                // If section < 0, search from the end of the table.
+                if (localIndexPath.section < 0) {
+                    localIndexPath = [NSIndexPath indexPathForRow:localIndexPath.row inSection:tableView.numberOfSections + localIndexPath.section];
+                }
+                
+                // If row < 0, search from the end of the section.
+                if (localIndexPath.row < 0) {
+                    localIndexPath = [NSIndexPath indexPathForRow:[tableView numberOfRowsInSection:localIndexPath.section] + localIndexPath.row inSection:localIndexPath.section];
+                }
+                
+                if (localIndexPath.section >= tableView.numberOfSections) {
+                    return KIFTestStepResultWait;
+                }
+                
+                if (localIndexPath.row >= [tableView numberOfRowsInSection:localIndexPath.section]) {
+                    return KIFTestStepResultWait;
+                }
+                
+                [tableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                [self waitForTimeInterval:0.5];
+                cell = [tableView cellForRowAtIndexPath:localIndexPath];
+            }
+            
+            return (cell ? KIFTestStepResultSuccess : KIFTestStepResultFailure);
+        }];
     }
     
     if (!cell) {
@@ -895,28 +902,37 @@
     NSInteger section = indexPath.section;
     NSInteger item    = indexPath.item;
     
-    // If section < 0, search from the end of the table.
-    if (section < 0) {
-        section += collectionView.numberOfSections;
-    }
+    __block UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     
-    // If item < 0, search from the end of the section.
-    if (item < 0) {
-        item += [collectionView numberOfItemsInSection:section];
+    if (!cell) {
+        [self runBlock:^KIFTestStepResult(NSError **error) {
+            NSIndexPath *localIndexPath = indexPath;    // We want to reset this every time we run this
+            
+            // If section < 0, search from the end of the table.
+            if (localIndexPath.section < 0) {
+                localIndexPath = [NSIndexPath indexPathForRow:localIndexPath.row inSection:collectionView.numberOfSections + localIndexPath.section];
+            }
+            
+            // If item < 0, search from the end of the section.
+            if (localIndexPath.row < 0) {
+                localIndexPath = [NSIndexPath indexPathForRow:[collectionView numberOfItemsInSection:localIndexPath.section] + localIndexPath.row inSection:localIndexPath.section];
+            }
+            
+            if (section >= collectionView.numberOfSections) {
+                return KIFTestStepResultWait;
+            }
+            
+            if (item >= [collectionView numberOfItemsInSection:section]) {
+                return KIFTestStepResultWait;
+            }
+            
+            [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically animated:YES];
+            [self waitForTimeInterval:0.5];
+            cell = [collectionView cellForItemAtIndexPath:indexPath];
+            
+            return (cell ? KIFTestStepResultSuccess : KIFTestStepResultFailure);
+        }];
     }
-    
-    if (section >= collectionView.numberOfSections) {
-        [self failWithError:[NSError KIFErrorWithFormat:@"Section %d is not found in collection view", (int)section] stopTest:YES];
-    }
-    
-    if (item >= [collectionView numberOfItemsInSection:section]) {
-        [self failWithError:[NSError KIFErrorWithFormat:@"Item %d is not found in section %d of collection view", (int)item, (int)section] stopTest:YES];
-    }
-    
-    indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-    [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically animated:YES];
-    [self waitForTimeInterval:0.5];
-    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     
     if (!cell) {
         [self failWithError:[NSError KIFErrorWithFormat: @"Collection view cell at index path %@ not found", indexPath] stopTest:YES];
@@ -1043,55 +1059,6 @@
     NSArray *endPoints = @[ [NSValue valueWithCGPoint:pinchEnd1], [NSValue valueWithCGPoint:pinchEnd2] ];
     [viewToPinch pinchFromStartPoints:startPoints toEndPoints:endPoints steps:kNumberOfPointsInPinchPath];
 }
-
-//#pragma mark - Wait for UITableView to get row
-//
-//- (void)waitForRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier {
-//    UITableView *tableView = nil;
-//    return [self waitForRowAtIndexPath:indexPath inTableView:&tableView withAccessibilityIdentifier:identifier value:nil traits:UIAccessibilityTraitNone tappable:NO];
-//}
-//
-//- (void)waitForRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(out UITableView **)tableView withAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits tappable:(BOOL)mustBeTappable {
-//    
-//    UIAccessibilityElement *element;
-//    [self waitForAccessibilityElement:&element view:tableView withIdentifier:identifier tappable:NO];
-//    
-//    if (![*tableView isKindOfClass:[UITableView class]]) {
-//        [self failWithError:[NSError KIFErrorWithFormat:@"View is not a table view"] stopTest:YES];
-//    }
-//    
-//    UITableView *foundTableView = *tableView;
-//    [self runBlock:^KIFTestStepResult(NSError **error) {
-//        UITableViewCell *cell = [foundTableView cellForRowAtIndexPath:indexPath];
-//        NSIndexPath *localIndexPath = indexPath;    // We want to reset this every time we run this
-//        
-//        if (!cell) {
-//            // If section < 0, search from the end of the table.
-//            if (localIndexPath.section < 0) {
-//                localIndexPath = [NSIndexPath indexPathForRow:localIndexPath.row inSection:foundTableView.numberOfSections + localIndexPath.section];
-//            }
-//            
-//            // If row < 0, search from the end of the section.
-//            if (localIndexPath.row < 0) {
-//                localIndexPath = [NSIndexPath indexPathForRow:[foundTableView numberOfRowsInSection:localIndexPath.section] + localIndexPath.row inSection:localIndexPath.section];
-//            }
-//            
-//            if (localIndexPath.section >= foundTableView.numberOfSections) {
-//                return KIFTestStepResultWait;
-//            }
-//            
-//            if (localIndexPath.row >= [foundTableView numberOfRowsInSection:localIndexPath.section]) {
-//                return KIFTestStepResultWait;
-//            }
-//            
-//            [foundTableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-//            [self waitForTimeInterval:0.5];
-//            cell = [foundTableView cellForRowAtIndexPath:localIndexPath];
-//        }
-//        
-//        return (cell ? KIFTestStepResultSuccess : KIFTestStepResultWait);
-//    }];
-//}
 
 #pragma mark - UISegmentedControl Methods
 
