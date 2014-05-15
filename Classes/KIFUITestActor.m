@@ -643,7 +643,7 @@
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier traits:nil tappable:YES];
-    NSArray *controlArray = [view subviewsWithClassNameOrSuperClassNamePrefix:NSStringFromClass(classType)];
+    NSArray *controlArray = [view subviewsOfClass:classType];
     if (controlArray.count == 1) {
         UIView *targetView = controlArray[0];
         [self tapAccessibilityElement:(UIAccessibilityElement *)targetView inView:targetView];
@@ -658,7 +658,7 @@
     UITableView *tableView;
     [self waitForAccessibilityElement:NULL view:&tableView withIdentifier:identifier tappable:NO];
     UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath inTableView:tableView];
-    NSArray *controlArray = [cell subviewsWithClassNameOrSuperClassNamePrefix:NSStringFromClass(classType)];
+    NSArray *controlArray = [cell subviewsOfClass:classType];
     if (controlArray.count == 1) {
         UIView *targetView = controlArray[0];
         CGRect buttonFrame = [targetView convertRect:targetView.frame toView:tableView];

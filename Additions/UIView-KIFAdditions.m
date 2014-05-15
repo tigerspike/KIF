@@ -264,6 +264,31 @@ typedef struct __GSEvent * GSEventRef;
     return result;
 }
 
+- (NSArray *)subviewsOfClass:(Class)classType {
+    NSMutableArray * result = [NSMutableArray array];
+    
+    // Breadth-first population of matching subviews
+    // First traverse the next level of subviews, adding matches
+    for (UIView *view in self.subviews) {
+        Class klass = [view class];
+        while (klass) {
+            if ([klass isSubclassOfClass:classType]) {
+                [result addObject:view];
+                break;
+            }
+            
+            klass = [klass superclass];
+        }
+    }
+    
+    // Now traverse the subviews of the subviews, adding matches
+    for (UIView *view in self.subviews) {
+        NSArray * matchingSubviews = [view subviewsOfClass:classType];
+        [result addObjectsFromArray:matchingSubviews];
+    }
+    
+    return result;
+}
 
 - (BOOL)isDescendantOfFirstResponder;
 {

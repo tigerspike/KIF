@@ -32,6 +32,7 @@ typedef CGPoint KIFDisplacement;
 - (NSArray *)subviewsWithClassNamePrefix:(NSString *)prefix;
 - (UIView *)subviewWithClassNameOrSuperClassNamePrefix:(NSString *)prefix __deprecated;
 - (NSArray *)subviewsWithClassNameOrSuperClassNamePrefix:(NSString *)prefix;
+- (NSArray *)subviewsOfClass:(Class)classType;
 
 - (void)flash;
 - (void)tap;
