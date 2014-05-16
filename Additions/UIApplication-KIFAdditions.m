@@ -142,9 +142,18 @@ static const void *KIFRunLoopModesKey = &KIFRunLoopModesKey;
     }
     
     outputPath = [outputPath stringByExpandingTildeInPath];
-    outputPath = [outputPath stringByAppendingPathComponent:imageName];
-    outputPath = [outputPath stringByAppendingPathExtension:@"png"];
-    if (![UIImagePNGRepresentation(image) writeToFile:outputPath atomically:YES]) {
+
+    if ([[NSFileManager defaultManager] createDirectoryAtPath:outputPath withIntermediateDirectories:YES attributes:nil error:error]) {
+        outputPath = [outputPath stringByAppendingPathComponent:imageName];
+        outputPath = [outputPath stringByAppendingPathExtension:@"png"];
+        if (![UIImagePNGRepresentation(image) writeToFile:outputPath atomically:YES]) {
+            if (error) {
+                *error = [NSError KIFErrorWithFormat:@"Could not write file at path %@", outputPath];
+            }
+            return NO;
+        }
+    }
+    else {
         if (error) {
             *error = [NSError KIFErrorWithFormat:@"Could not write file at path %@", outputPath];
         }
