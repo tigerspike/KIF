@@ -618,11 +618,14 @@
     [self tapViewWithAccessibilityLabel:@"Choose"];
 }
 
-- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier
-{
+- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier {
+    [self tapRowAtIndexPath:indexPath withAccessibilityIdentifier:nil inTableViewWithAccessibilityIdentifier:identifier];
+}
+
+- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier {
     UITableView *tableView;
     [self waitForAccessibilityElement:NULL view:&tableView withIdentifier:identifier tappable:NO];
-    [self tapRowAtIndexPath:indexPath inTableView:tableView];
+    [self tapRowAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inTableView:tableView];
 }
 
 - (void)tapRowInTableViewWithAccessibilityLabel:(NSString*)tableViewLabel atIndexPath:(NSIndexPath *)indexPath
@@ -631,9 +634,12 @@
     [self tapRowAtIndexPath:indexPath inTableView:tableView];
 }
 
-- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
-{
-    UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath inTableView:tableView];
+- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView {
+    [self tapRowAtIndexPath:indexPath withAccessibilityIdentifier:nil inTableView:tableView];
+}
+
+- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableView:(UITableView *)tableView {
+    UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inTableView:tableView];
     CGRect cellFrame = [cell.contentView convertRect:cell.contentView.frame toView:tableView];
     [tableView tapAtPoint:CGPointCenteredInRect(cellFrame)];
     
@@ -658,9 +664,13 @@
 }
 
 - (void)tapInternalViewOfClass:(Class)classType ofRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier {
+    [self tapInternalViewOfClass:classType ofRowAtIndexPath:indexPath withAccessibilityIdentifier:nil inTableViewWithAccessibilityIdentifier:identifier];
+}
+
+- (void)tapInternalViewOfClass:(Class)classType ofRowAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier {
     UITableView *tableView;
     [self waitForAccessibilityElement:NULL view:&tableView withIdentifier:identifier tappable:NO];
-    UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath inTableView:tableView];
+    UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inTableView:tableView];
     NSArray *controlArray = [cell subviewsOfClass:classType];
     if (controlArray.count == 1) {
         UIView *targetView = controlArray[0];
@@ -676,17 +686,19 @@
     }
 }
 
-- (void)tapItemAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier
-{
-    UICollectionView *collectionView;
-    [self waitForAccessibilityElement:NULL view:&collectionView withIdentifier:identifier tappable:NO];
-    [self tapItemAtIndexPath:indexPath inCollectionView:collectionView];
+- (void)tapItemAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier {
+    [self tapItemAtIndexPath:indexPath withAccessibilityIdentifier:nil inCollectionViewWithAccessibilityIdentifier:identifier];
 }
 
-- (void)tapItemAtIndexPath:(NSIndexPath *)indexPath inCollectionView:(UICollectionView *)collectionView
-{
+- (void)tapItemAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier {
+    UICollectionView *collectionView;
+    [self waitForAccessibilityElement:NULL view:&collectionView withIdentifier:identifier tappable:NO];
+    [self tapItemAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inCollectionView:collectionView];
+}
+
+- (void)tapItemAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inCollectionView:(UICollectionView *)collectionView {
     UICollectionViewCell *cell;
-    cell = [self waitForCellAtIndexPath:indexPath inCollectionView:collectionView];
+    cell = [self waitForCellAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inCollectionView:collectionView];
     
     CGRect cellFrame = [cell.contentView convertRect:cell.contentView.frame toView:collectionView];
     [collectionView tapAtPoint:CGPointCenteredInRect(cellFrame)];
@@ -741,12 +753,12 @@
     [self scrollAccessibilityElement:element inView:viewToScroll byFractionOfSizeHorizontal:horizontalFraction vertical:verticalFraction];
 }
 
-- (void)scrollCellAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction {
+- (void)scrollCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction {
     UITableView *tableView;
     [self waitForAccessibilityElement:NULL view:&tableView withIdentifier:identifier tappable:NO];
-
+    
     // Wait for the cell, convert it to a 'UIAccessibilityElement' and scroll it
-    UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath inTableView:tableView];
+    UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inTableView:tableView];
     UIAccessibilityElement *element = (UIAccessibilityElement *)cell;
     [self scrollAccessibilityElement:element inView:cell byFractionOfSizeHorizontal:horizontalFraction vertical:verticalFraction];
 }
@@ -839,46 +851,51 @@
     }];
 }
 
-- (UITableViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier
-{
+- (UITableViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier {
     UITableView *tableView;
     [self waitForAccessibilityElement:NULL view:&tableView withIdentifier:identifier tappable:NO];
-    return [self waitForCellAtIndexPath:indexPath inTableView:tableView];
+    return [self waitForCellAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inTableView:tableView];
 }
 
-- (UITableViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView {
+- (UITableViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableView:(UITableView *)tableView {
     if (![tableView isKindOfClass:[UITableView class]]) {
         [self failWithError:[NSError KIFErrorWithFormat:@"View is not a table view"] stopTest:YES];
     }
     
+    // Ensure the identifiers match up or the identifier passed through was nil
     __block UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    BOOL identifiersEqual = (!cellIdentifier || [cell.accessibilityIdentifier isEqualToString:cellIdentifier]);
     
-    if (!cell) {
+    if (!cell || !identifiersEqual) {
         [self runBlock:^KIFTestStepResult(NSError **error) {
             NSIndexPath *localIndexPath = indexPath;    // We want to reset this every time we run this
             
-            if (!cell) {
-                // If section < 0, search from the end of the table.
-                if (localIndexPath.section < 0) {
-                    localIndexPath = [NSIndexPath indexPathForRow:localIndexPath.row inSection:tableView.numberOfSections + localIndexPath.section];
-                }
-                
-                // If row < 0, search from the end of the section.
-                if (localIndexPath.row < 0) {
-                    localIndexPath = [NSIndexPath indexPathForRow:[tableView numberOfRowsInSection:localIndexPath.section] + localIndexPath.row inSection:localIndexPath.section];
-                }
-                
-                if (localIndexPath.section >= tableView.numberOfSections) {
-                    return KIFTestStepResultWait;
-                }
-                
-                if (localIndexPath.row >= [tableView numberOfRowsInSection:localIndexPath.section]) {
-                    return KIFTestStepResultWait;
-                }
-                
-                [tableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-                [self waitForTimeInterval:0.5];
-                cell = [tableView cellForRowAtIndexPath:localIndexPath];
+            // If section < 0, search from the end of the table.
+            if (localIndexPath.section < 0) {
+                localIndexPath = [NSIndexPath indexPathForRow:localIndexPath.row inSection:tableView.numberOfSections + localIndexPath.section];
+            }
+            
+            // If row < 0, search from the end of the section.
+            if (localIndexPath.row < 0) {
+                localIndexPath = [NSIndexPath indexPathForRow:[tableView numberOfRowsInSection:localIndexPath.section] + localIndexPath.row inSection:localIndexPath.section];
+            }
+            
+            if (localIndexPath.section >= tableView.numberOfSections) {
+                return KIFTestStepResultWait;
+            }
+            
+            if (localIndexPath.row >= [tableView numberOfRowsInSection:localIndexPath.section]) {
+                return KIFTestStepResultWait;
+            }
+            
+            [tableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            [self waitForTimeInterval:0.5];
+            cell = [tableView cellForRowAtIndexPath:localIndexPath];
+            
+            // Ensure the identifiers match up or the identifier passed through was nil
+            BOOL identifiersEqual = (!cellIdentifier || [cell.accessibilityIdentifier isEqualToString:cellIdentifier]);
+            if (!identifiersEqual) {
+                return KIFTestStepResultWait;
             }
             
             return (cell ? KIFTestStepResultSuccess : KIFTestStepResultFailure);
@@ -892,15 +909,17 @@
     return cell;
 }
 
-- (UICollectionViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier
-{
-    UICollectionView *collectionView;
-    [self waitForAccessibilityElement:NULL view:&collectionView withIdentifier:identifier tappable:NO];
-    return [self waitForCellAtIndexPath:indexPath inCollectionView:collectionView];
+- (UICollectionViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier {
+    return [self waitForCellAtIndexPath:indexPath withAccessibilityIdentifier:nil inCollectionViewWithAccessibilityIdentifier:identifier];
 }
 
-- (UICollectionViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inCollectionView:(UICollectionView *)collectionView
-{
+- (UICollectionViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier {
+    UICollectionView *collectionView;
+    [self waitForAccessibilityElement:NULL view:&collectionView withIdentifier:identifier tappable:NO];
+    return [self waitForCellAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inCollectionView:collectionView];
+}
+
+- (UICollectionViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inCollectionView:(UICollectionView *)collectionView {
     if (![collectionView isKindOfClass:[UICollectionView class]]) {
         [self failWithError:[NSError KIFErrorWithFormat:@"View is not a collection view"] stopTest:YES];
     }
@@ -908,9 +927,11 @@
     NSInteger section = indexPath.section;
     NSInteger item    = indexPath.item;
     
+    // Ensure the identifiers match up or the identifier passed through was nil
     __block UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    BOOL identifiersEqual = (!cellIdentifier || [cell.accessibilityIdentifier isEqualToString:cellIdentifier]);
     
-    if (!cell) {
+    if (!cell || !identifiersEqual) {
         [self runBlock:^KIFTestStepResult(NSError **error) {
             NSIndexPath *localIndexPath = indexPath;    // We want to reset this every time we run this
             
@@ -935,6 +956,12 @@
             [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically animated:YES];
             [self waitForTimeInterval:0.5];
             cell = [collectionView cellForItemAtIndexPath:indexPath];
+            
+            // Ensure the identifiers match up or the identifier passed through was nil
+            BOOL identifiersEqual = (!cellIdentifier || [cell.accessibilityIdentifier isEqualToString:cellIdentifier]);
+            if (!identifiersEqual) {
+                return KIFTestStepResultWait;
+            }
             
             return (cell ? KIFTestStepResultSuccess : KIFTestStepResultFailure);
         }];

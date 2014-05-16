@@ -76,8 +76,8 @@
             if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
                 self.stepType = KIFRStepTypeTapTableCell;
                 
-                self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of cell at (%li, %li) in the table '%@'.", targetInfo.internalTargetClass, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
-                self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") ofRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+                self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of cell '%@' at (%li, %li) in the table '%@'.", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+                self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") ofRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] withAccessibilityIdentifier:@\"%@\" inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, targetInfo.tableViewAccessibilityIdentifier];
             }
             else {
                 self.stepType = KIFRStepTypeTap;
@@ -90,8 +90,8 @@
             // If it's a UITableViewCell then use the specific method
             self.stepType = KIFRStepTypeTapTableCell;
             
-            self.readableString = [NSString stringWithFormat:@"Tap cell at (%li, %li) in the table '%@'.", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
-            self.testString = [NSString stringWithFormat:@"\n    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+            self.readableString = [NSString stringWithFormat:@"Tap cell '%@' at (%li, %li) in the table '%@'.", targetInfo.accessibilityIdentifier, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
+            self.testString = [NSString stringWithFormat:@"\n    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] withAccessibilityIdentifier:@\"%@\" inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, targetInfo.tableViewAccessibilityIdentifier];
         }
         else if ([targetInfo.targetClass isSubclassOfClass:[UISegmentedControl class]]) {
             // If it's a UISegmentedControl then use the specific method
@@ -142,8 +142,8 @@
         CGFloat verticalFraction = (yDistance / targetInfo.frame.size.height);
         
         if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
-            self.readableString = [NSString stringWithFormat:@"Scroll cell at (%li, %li) in the table '%@' by %.0f%% width and %.0f%% height.", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];
-            self.testString = [NSString stringWithFormat:@"\n    [tester scrollCellAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] inTableViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, horizontalFraction, verticalFraction];
+            self.readableString = [NSString stringWithFormat:@"Scroll cell '%@' at (%li, %li) in the table '%@' by %.0f%% width and %.0f%% height.", targetInfo.accessibilityIdentifier, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];
+            self.testString = [NSString stringWithFormat:@"\n    [tester scrollCellAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] withAccessibilityIdentifier:@\"%@\" inTableViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, targetInfo.accessibilityIdentifier, horizontalFraction, verticalFraction];
         }
         else {
             self.readableString = [NSString stringWithFormat:@"Scroll view '%@' by %.0f%% width and %.0f%% height.", targetInfo.accessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];

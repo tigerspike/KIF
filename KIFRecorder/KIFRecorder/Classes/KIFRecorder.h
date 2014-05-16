@@ -1,7 +1,7 @@
 //
 //  KIFRecorder.h
 //  KIFRecorder
-//  Version 0.0.15
+//  Version 0.0.16
 //
 //  Created by Morgan Pretty on 1/04/2014.
 //  Copyright (c) 2014 Tigerspike. All rights reserved.

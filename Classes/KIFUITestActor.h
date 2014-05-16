@@ -342,10 +342,12 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param indexPath Index path of the row to tap.
  @param identifier Accessibility identifier of the table view.
  */
-- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier NS_AVAILABLE_IOS(5_0);
+- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier;
+- (void)tapRowAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier NS_AVAILABLE_IOS(5_0);
 
 - (void)tapInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier;
 - (void)tapInternalViewOfClass:(Class)classType ofRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier;
+- (void)tapInternalViewOfClass:(Class)classType ofRowAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Taps the item at indexPath in a collection view with the given identifier.
@@ -356,7 +358,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param indexPath Index path of the item to tap.
  @param identifier Accessibility identifier of the collection view.
  */
-- (void)tapItemAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier;
+- (void)tapItemAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 #pragma mark - Swipe Methods
 
@@ -389,7 +391,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  */
 - (void)scrollViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction NS_AVAILABLE_IOS(5_0);
 
-- (void)scrollCellAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction;
+- (void)scrollCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction;
 
 /*!
  @abstract Waits until a view or accessibility element is the first responder.
@@ -424,7 +426,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param identifier Accessibility identifier of the table view.
  @result Table view cell at index path
  */
-- (UITableViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier;
+- (UITableViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Waits for the cell at indexPath in a collection view with the given identifier.
@@ -436,7 +438,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param identifier Accessibility identifier of the collection view.
  @result Collection view cell at index path
  */
-- (UICollectionViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier;
+- (UICollectionViewCell *)waitForCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inCollectionViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Taps a particular view in the view hierarchy multiple times.
