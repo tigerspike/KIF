@@ -13,6 +13,7 @@
 #import "UIAlertView+KIFRUtils.h"
 #import "KIFRTest.h"
 #import "KIFRTestStep.h"
+#import "UIDatePicker+KIFRUtils.h"
 #import <objc/runtime.h>
 
 @implementation KIFRecorder
@@ -49,6 +50,7 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
         Swizzle([UIPinchGestureRecognizer class], @selector(touchesBegan:withEvent:), @selector(KIFR_touchesBegan:withEvent:));
         Swizzle([UIPinchGestureRecognizer class], @selector(velocity), @selector(KIFR_velocity));
         Swizzle([UIPanGestureRecognizer class], @selector(velocityInView:), @selector(KIFR_velocityInView:));
+        Swizzle(NSClassFromString(@"UIPickerTableView"), @selector(_scrollingFinished), @selector(KIFR_scrollingFinished));
         
         // We will need to add the recording wrapper to the Window
         Swizzle([UIWindow class], @selector(makeKeyAndVisible), @selector(KIFR_makeKeyAndVisible));

@@ -10,7 +10,10 @@
 		FA013658192357F0008582FC /* KIFRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = FA013657192357F0008582FC /* KIFRecorder.m */; };
 		FA03CCF61929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FA03CCF51929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m */; };
 		FA03CCFD1929C60A00E7A3C3 /* KIFRVerificationStepCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA03CCFC1929C60A00E7A3C3 /* KIFRVerificationStepCell.m */; };
-		FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAFF0C4C18EA64E9002B0033 /* KIFRecorder.h */; };
+		FA0452D1192AE6A70044126F /* UIView+KIFRContent.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0452D0192AE6A70044126F /* UIView+KIFRContent.m */; };
+		FA0452E5192B1DDF0044126F /* UIDatePicker+KIFRUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = FA0452E3192B1DDF0044126F /* UIDatePicker+KIFRUtils.h */; };
+		FA0452E6192B1DDF0044126F /* UIDatePicker+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0452E4192B1DDF0044126F /* UIDatePicker+KIFRUtils.m */; };
+		FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = FAFF0C4C18EA64E9002B0033 /* KIFRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FAFF0BB718EA4A05002B0033 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFF0BB618EA4A05002B0033 /* Foundation.framework */; };
 		FAFF0C0918EA4A65002B0033 /* UIAlertView+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BDF18EA4A65002B0033 /* UIAlertView+KIFRUtils.m */; };
 		FAFF0C0A18EA4A65002B0033 /* UIPickerView+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BE118EA4A65002B0033 /* UIPickerView+KIFRUtils.m */; };
@@ -36,25 +39,16 @@
 		FAFF0C2118EA4B96002B0033 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFF0C2018EA4B96002B0033 /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		FAF36BA318EA6BC500A9BB61 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/${PRODUCT_NAME}";
-			dstSubfolderSpec = 16;
-			files = (
-				FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		FA013657192357F0008582FC /* KIFRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRecorder.m; sourceTree = "<group>"; };
 		FA03CCF41929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRAddVerificationStepUI.h; sourceTree = "<group>"; };
 		FA03CCF51929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRAddVerificationStepUI.m; sourceTree = "<group>"; };
 		FA03CCFB1929C60A00E7A3C3 /* KIFRVerificationStepCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRVerificationStepCell.h; sourceTree = "<group>"; };
 		FA03CCFC1929C60A00E7A3C3 /* KIFRVerificationStepCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRVerificationStepCell.m; sourceTree = "<group>"; };
+		FA0452CF192AE6A70044126F /* UIView+KIFRContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+KIFRContent.h"; sourceTree = "<group>"; };
+		FA0452D0192AE6A70044126F /* UIView+KIFRContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+KIFRContent.m"; sourceTree = "<group>"; };
+		FA0452E3192B1DDF0044126F /* UIDatePicker+KIFRUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDatePicker+KIFRUtils.h"; sourceTree = "<group>"; };
+		FA0452E4192B1DDF0044126F /* UIDatePicker+KIFRUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDatePicker+KIFRUtils.m"; sourceTree = "<group>"; };
 		FAFF0BB318EA4A05002B0033 /* libKIFRecorder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKIFRecorder.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAFF0BB618EA4A05002B0033 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FAFF0BBA18EA4A06002B0033 /* KIFRecorder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KIFRecorder-Prefix.pch"; sourceTree = "<group>"; };
@@ -188,6 +182,10 @@
 				FAFF0BDF18EA4A65002B0033 /* UIAlertView+KIFRUtils.m */,
 				FAFF0BE018EA4A65002B0033 /* UIPickerView+KIFRUtils.h */,
 				FAFF0BE118EA4A65002B0033 /* UIPickerView+KIFRUtils.m */,
+				FA0452CF192AE6A70044126F /* UIView+KIFRContent.h */,
+				FA0452D0192AE6A70044126F /* UIView+KIFRContent.m */,
+				FA0452E3192B1DDF0044126F /* UIDatePicker+KIFRUtils.h */,
+				FA0452E4192B1DDF0044126F /* UIDatePicker+KIFRUtils.m */,
 			);
 			path = "Other Categories";
 			sourceTree = "<group>";
@@ -250,6 +248,18 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		FA0452D5192AEE030044126F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA0452E5192B1DDF0044126F /* UIDatePicker+KIFRUtils.h in Headers */,
+				FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		FAFF0BB218EA4A05002B0033 /* KIFRecorder */ = {
 			isa = PBXNativeTarget;
@@ -257,7 +267,7 @@
 			buildPhases = (
 				FAFF0BAF18EA4A05002B0033 /* Sources */,
 				FAFF0BB018EA4A05002B0033 /* Frameworks */,
-				FAF36BA318EA6BC500A9BB61 /* CopyFiles */,
+				FA0452D5192AEE030044126F /* Headers */,
 			);
 			buildRules = (
 			);
@@ -308,12 +318,14 @@
 				FAFF0C1518EA4A65002B0033 /* KIFRStepTypeCell.m in Sources */,
 				FAFF0C0A18EA4A65002B0033 /* UIPickerView+KIFRUtils.m in Sources */,
 				FAFF0C1318EA4A65002B0033 /* KIFRMenuView.m in Sources */,
+				FA0452D1192AE6A70044126F /* UIView+KIFRContent.m in Sources */,
 				FAFF0C0E18EA4A65002B0033 /* KIFRTestStep+FromString.m in Sources */,
 				FAFF0C1818EA4A65002B0033 /* UIView+KIFRUtils.m in Sources */,
 				FAFF0C1218EA4A65002B0033 /* KIFRBorderView.m in Sources */,
 				FAFF0C1918EA4A65002B0033 /* UIWindow+KIFRUtils.m in Sources */,
 				FAFF0C1718EA4A65002B0033 /* KIFRWaitStepCell.m in Sources */,
 				FAFF0C0B18EA4A65002B0033 /* KIFRTargetInfo.m in Sources */,
+				FA0452E6192B1DDF0044126F /* UIDatePicker+KIFRUtils.m in Sources */,
 				FAFF0C0918EA4A65002B0033 /* UIAlertView+KIFRUtils.m in Sources */,
 				FAFF0C1618EA4A65002B0033 /* KIFRTestStepCell.m in Sources */,
 				FA03CCF61929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m in Sources */,
@@ -368,7 +380,6 @@
 		FA80E412192468C00055E71C /* Test */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/KIFRecorder.dst;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -457,7 +468,6 @@
 		FAFF0BD718EA4A06002B0033 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/KIFRecorder.dst;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -478,7 +488,6 @@
 		FAFF0BD818EA4A06002B0033 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/KIFRecorder.dst;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

@@ -510,4 +510,9 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
 - (void)verifyContentOfViewWithAccessibilityIdentifier:(NSString *)identifier isEqualTo:(NSString *)contentString;
 - (void)verifyContentOfInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier isEqualTo:(NSString *)contentString;
 
+#pragma mark - Set Date
+
+- (void)setDateOfPickerViewWithAccessibilityIdentifier:(NSString *)identifier toDate:(NSDate *)date;
+- (void)addTimeInterval:(NSTimeInterval)timeInterval toDateOfPickerViewWithAccessibilityIdentifier:(NSString *)identifier;
+
 @end

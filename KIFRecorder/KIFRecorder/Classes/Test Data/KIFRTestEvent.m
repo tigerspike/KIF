@@ -9,6 +9,9 @@
 #import "KIFRTestEvent.h"
 #import "KIFRBorderView.h"
 #import "UITouch+KIFRUtils.h"
+#import "UIView+KIFRContent.h"
+#import "UIDatePicker+KIFRUtils.h"
+#import "KIFRTestStep+ToString.h"
 #import <objc/runtime.h>
 
 @implementation KIFRTestEvent
@@ -102,6 +105,9 @@
     else if ([self.targetView isKindOfClass:[UISegmentedControl class]]) {
         [self finalizeUISegmentedControlWithTouches:touches];
     }
+    else if ([self.targetView isKindOfClass:[UIDatePicker class]]) {
+        [self finalizeDatePickerWithTouches:touches];
+    }
     
     // Check if we tapped an 'internal view' (a control which we don't have direct access to)
     if ([[KIFRTestEvent classesWithInternalViews] containsObject:self.targetInfo.targetClass]) {
@@ -115,7 +121,7 @@
         }
         
         // If the touch's view is not the same as the targetClass (then it's probably an internal view)
-        if (![touch.view isKindOfClass:self.targetInfo.targetClass]) {
+        if (![[UIView viewClassesToIgnoreWhenRecording] containsObject:[touch.view class]] && ![touch.view isKindOfClass:self.targetInfo.targetClass]) {
             self.targetInfo.isTargettingInternalSubview = YES;
             self.internalTargetView = touch.view;
             self.targetInfo.internalTargetClass = [touch.view class];
@@ -171,6 +177,25 @@
     }
     
     self.targetInfo.selectedIndex = segmentIndex;
+}
+
+- (void)finalizeDatePickerWithTouches:(NSArray *)touches {
+    // Set the date to the UIDatePicker's date
+    UIDatePicker *datePicker = (UIDatePicker *)self.targetView;
+    self.eventType = KIFREventTypeSetValue;
+    self.targetInfo.targetDate = datePicker.date;
+    
+    // Add an 'onAnimationFinished' block so we can get the new date value
+    datePicker.userInteractionEnabled = NO;
+    [datePicker onAnimationFinishedPerformBlock:^(NSDate *newDate) {
+        self.targetInfo.targetDate = newDate;
+        datePicker.userInteractionEnabled = YES;
+        
+        // If we have set the 'testStep' then this event has been marked as complete, so update the data
+        if (self.testStep) {
+            [self.testStep generateStepData];
+        }
+    }];
 }
 
 #pragma mark - Crazy Keyboard Methods

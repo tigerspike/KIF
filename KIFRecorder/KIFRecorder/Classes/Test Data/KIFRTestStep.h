@@ -14,7 +14,8 @@ typedef enum {
     KIFREventTypeLongPress,
     KIFREventTypePan,
     KIFREventTypePinch,
-    KIFREventTypeEnterText
+    KIFREventTypeEnterText,
+    KIFREventTypeSetValue
 } KIFREventType;
 
 typedef enum {
@@ -43,6 +44,7 @@ typedef enum {
     KIFRStepTypePinch,
     KIFRStepTypeKeyboardKey,
     KIFRStepTypeSelectSegment,
+    KIFRStepTypeSetValue,
     KIFRStepTypeVerification
 } KIFRStepType;
 

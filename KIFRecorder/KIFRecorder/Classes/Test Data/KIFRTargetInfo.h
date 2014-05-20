@@ -31,6 +31,11 @@
 // UISegmentedControl Specific
 @property (nonatomic, assign) NSInteger selectedIndex;
 
+// UIDatePicker Specific
+@property (nonatomic, assign) BOOL shouldSetDateRelative;
+@property (nonatomic, copy) NSDate *targetDate;
+@property (nonatomic, assign) NSInteger relativeTimeIntervalDifference;
+
 + (KIFRTargetInfo *)targetInfoForView:(UIView *)view;
 
 @end

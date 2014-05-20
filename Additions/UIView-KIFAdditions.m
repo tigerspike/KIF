@@ -604,6 +604,13 @@ typedef struct __GSEvent * GSEventRef;
         return YES;
     }
     
+    // Map pins can fail this test depending on the z-order, the standard UX allows the user to re-tap
+    // a pin and it will select the pin below it (unfortunately the recording stuff might be inconsistent with
+    // this hence this special case)
+    if ([hitView isKindOfClass:NSClassFromString(@"MKAnnotationView")]) {
+        return YES;
+    }
+    
     return [hitView isDescendantOfView:self];
 }
 

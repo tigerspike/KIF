@@ -12,4 +12,6 @@
 
 @property (nonatomic, readonly) NSString *kifrContentString;
 
++ (NSArray *)viewClassesToIgnoreWhenRecording;
+
 @end

@@ -708,10 +708,15 @@
             [self runBlock:^KIFTestStepResult(NSError **error) {
                 BOOL found = NO;
                 
-                for (UIAccessibilityElement *element in elementArray) {
+                for (UIAccessibilityElement *targetElement in elementArray) {
+                    // First ensure the element is tappable
+                    if (!((UIView *)targetElement).userInteractionEnabled || CGSizeEqualToSize(((UIView *)targetElement).frame.size, CGSizeZero)) {
+                        continue;
+                    }
+                    
                     // Check if the content of the element matches up
-                    if ([((UIView *)element).kifContentString isEqualToString:contentString]) {
-                        elementToTap = element;
+                    if ([((UIView *)targetElement).kifContentString isEqualToString:contentString]) {
+                        elementToTap = targetElement;
                         found = YES;
                         break;
                     }
@@ -844,9 +849,7 @@
     
     KIFDisplacement scrollDisplacement = CGPointMake(elementFrame.size.width * horizontalFraction, elementFrame.size.height * verticalFraction);
     
-    CGPoint scrollStart = CGPointCenteredInRect(elementFrame);
-    scrollStart.x -= scrollDisplacement.x / 2;
-    scrollStart.y -= scrollDisplacement.y / 2;
+    CGPoint scrollStart = [viewToScroll tappablePointInRect:elementFrame];
     
     [viewToScroll dragFromPoint:scrollStart displacement:scrollDisplacement steps:kNumberOfPointsInScrollPath];
 }
@@ -1247,6 +1250,40 @@
         
         return KIFTestStepResultSuccess;
     }];
+}
+
+#pragma mark - Set Date
+
+- (void)setDateOfPickerViewWithAccessibilityIdentifier:(NSString *)identifier toDate:(NSDate *)date {
+    UIView *view;
+    UIAccessibilityElement *element;
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier tappable:NO];
+    
+    if (![view isKindOfClass:[UIDatePicker class]]) {
+        [self failWithError:[NSError KIFErrorWithFormat:@"View with accessibilityIdentifier '%@' is not a UIDatePicker", identifier] stopTest:YES];
+    }
+    
+    [self setDateOfDatePicker:(UIDatePicker *)view toDate:date];
+}
+
+- (void)addTimeInterval:(NSTimeInterval)timeInterval toDateOfPickerViewWithAccessibilityIdentifier:(NSString *)identifier {
+    UIView *view;
+    UIAccessibilityElement *element;
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier tappable:NO];
+    
+    if (![view isKindOfClass:[UIDatePicker class]]) {
+        [self failWithError:[NSError KIFErrorWithFormat:@"View with accessibilityIdentifier '%@' is not a UIDatePicker", identifier] stopTest:YES];
+    }
+    
+    UIDatePicker *datePicker = (UIDatePicker *)view;
+    [self setDateOfDatePicker:datePicker toDate:[datePicker.date dateByAddingTimeInterval:timeInterval]];
+}
+
+- (void)setDateOfDatePicker:(UIDatePicker *)datePicker toDate:(NSDate *)date {
+    [datePicker setDate:date animated:YES];
+    
+    // Wait for the view to stabilize.
+    [self waitForTimeInterval:0.5];
 }
 
 @end

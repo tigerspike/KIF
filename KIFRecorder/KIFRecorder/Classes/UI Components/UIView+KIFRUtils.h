@@ -14,6 +14,7 @@
 @property (nonatomic, assign) BOOL recursiveKIFRShouldIgnore;
 
 - (UIView *)subviewWithClassName:(NSString *)className;
+- (NSArray *)getSubviewsOfClass:(Class)classType;
 
 #pragma mark - Modify Frame Methods
 

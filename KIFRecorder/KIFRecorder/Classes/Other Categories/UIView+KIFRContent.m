@@ -32,4 +32,26 @@
     return nil;
 }
 
++ (NSArray *)viewClassesToIgnoreWhenRecording {
+    return @[ NSClassFromString(@"UILayoutContainerView"),
+              NSClassFromString(@"UITransitionView"),
+              NSClassFromString(@"UIViewControllerWrapperView"),
+              NSClassFromString(@"UILayoutContainerView"),
+              NSClassFromString(@"UINavigationTransitionView"),
+              NSClassFromString(@"UIViewControllerWrapperView"),
+              NSClassFromString(@"UITableViewWrapperView"),
+              NSClassFromString(@"UITableViewCellScrollView"),
+              NSClassFromString(@"MKBasicMapView"),
+              NSClassFromString(@"_MKMapLayerHostingView"),
+              NSClassFromString(@"MKScrollContainerView"),
+              NSClassFromString(@"MKNewAnnotationContainerView"),
+              NSClassFromString(@"_UISearchBarSearchFieldBackgroundView"),
+              NSClassFromString(@"UISearchBarBackground"),
+              
+              // Note: Causes issues when two UISearchBar's have the same placeholder
+              NSClassFromString(@"UISearchBarTextField"),
+              NSClassFromString(@"UISearchBarTextFieldLabel"),
+              ];
+}
+
 @end

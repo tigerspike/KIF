@@ -45,4 +45,11 @@
     [self generateStepData];
 }
 
+#pragma mark - Overridden Methods
+
+- (void)setTestEventData:(KIFRTestEvent *)testEventData {
+    testEventData.testStep = self;
+    _testEventData = testEventData;
+}
+
 @end

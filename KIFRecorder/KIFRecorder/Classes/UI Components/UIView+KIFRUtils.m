@@ -28,6 +28,20 @@
     return nil;
 }
 
+- (NSArray *)getSubviewsOfClass:(Class)classType {
+    NSMutableArray *subviewsArray = [NSMutableArray new];
+    if ([self isKindOfClass:classType]) {
+        [subviewsArray addObject:self];
+    }
+    
+    for (UIView *subview in self.subviews) {
+        NSArray *foundViews = [subview getSubviewsOfClass:classType];
+        [subviewsArray addObjectsFromArray:foundViews];
+    }
+    
+    return subviewsArray;
+}
+
 #pragma mark - Associate Category Variable Methods
 
 - (BOOL)kifrShouldIgnore {

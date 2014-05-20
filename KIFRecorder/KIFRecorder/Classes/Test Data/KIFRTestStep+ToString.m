@@ -43,6 +43,10 @@
             }
         } break;
             
+        case KIFREventTypeSetValue: {
+            [self generateSetValueStep];
+        } break;
+            
         case KIFREventTypeNone:
             break;
     }
@@ -275,6 +279,28 @@
             
         default:
             break;
+    }
+}
+
+#pragma mark - Set Value Step
+
+- (void)generateSetValueStep {
+    KIFRTargetInfo *targetInfo = self.testEventData.targetInfo;
+    
+    if ([targetInfo.targetClass isSubclassOfClass:[UIDatePicker class]]) {
+        self.stepType = KIFRStepTypeSetValue;
+        
+        if (self.testEventData.targetInfo.shouldSetDateRelative) {
+            self.readableString = [NSString stringWithFormat:@"Add '%ld' seconds to the date for date picker '%@'.", (long)targetInfo.relativeTimeIntervalDifference, targetInfo.accessibilityIdentifier];
+            self.testString = [NSString stringWithFormat:@"\n    [tester addTimeInterval:%ld toDateOfPickerViewWithAccessibilityIdentifier:@\"%@\"]];\n", (long)targetInfo.relativeTimeIntervalDifference, targetInfo.accessibilityIdentifier];
+        }
+        else {
+            NSDateFormatter *dateFormatter = [NSDateFormatter new];
+            dateFormatter.dateFormat = @"hh:mm a dd/MM/YY";
+            
+            self.readableString = [NSString stringWithFormat:@"Set date for date picker '%@' to '%@'.", targetInfo.accessibilityIdentifier, [dateFormatter stringFromDate:targetInfo.targetDate]];
+            self.testString = [NSString stringWithFormat:@"\n    [tester setDateOfPickerViewWithAccessibilityIdentifier:@\"%@\" toDate:[NSDate dateWithTimeIntervalSince1970:%f]];\n", targetInfo.accessibilityIdentifier, [targetInfo.targetDate timeIntervalSince1970]];
+        }
     }
 }
 

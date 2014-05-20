@@ -14,6 +14,7 @@
 #import "KIFRMenuView.h"
 #import "KIFRTest.h"
 #import "KIFRAddVerificationStepUI.h"
+#import "UIView+KIFRContent.h"
 #import <objc/runtime.h>
 
 @implementation UIApplication (KIFRUtils)
@@ -127,28 +128,13 @@
             
         case KIFREventTypeEnterText:
             return @"EventTypeEnterText";
+            
+        case KIFREventTypeSetValue:
+            return @"EventTypeSetValue";
     }
 }
 
 #pragma mark - Recording Methods
-
-- (NSArray *)classesToIgnore {
-    return @[ NSClassFromString(@"UILayoutContainerView"),
-              NSClassFromString(@"UITransitionView"),
-              NSClassFromString(@"UIViewControllerWrapperView"),
-              NSClassFromString(@"UILayoutContainerView"),
-              NSClassFromString(@"UINavigationTransitionView"),
-              NSClassFromString(@"UIViewControllerWrapperView"),
-              NSClassFromString(@"UITableViewWrapperView"),
-              NSClassFromString(@"UITableViewCellScrollView"),
-              NSClassFromString(@"MKBasicMapView"),
-              NSClassFromString(@"_MKMapLayerHostingView"),
-              NSClassFromString(@"MKScrollContainerView"),
-              NSClassFromString(@"MKNewAnnotationContainerView"),
-              NSClassFromString(@"_UISearchBarSearchFieldBackgroundView"),
-              NSClassFromString(@"UISearchBarBackground")
-              ];
-}
 
 - (NSArray *)viewsBelowView:(UIView *)view withAccessibilityContainingPoint:(CGPoint)point {
     NSMutableArray *mutableArray = [NSMutableArray new];
@@ -160,7 +146,7 @@
             CGPoint localPoint = [subview convertPoint:point fromView:view];
             if ([subview pointInside:localPoint withEvent:nil]) {
                 // Only add the view if it isn't one of the classes the user shouldn't care about
-                if (![[self classesToIgnore] containsObject:[subview class]]) {
+                if (![[UIView viewClassesToIgnoreWhenRecording] containsObject:[subview class]]) {
                     [mutableArray addObject:subview];
                 }
                 

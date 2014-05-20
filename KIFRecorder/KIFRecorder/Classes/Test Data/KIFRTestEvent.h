@@ -12,6 +12,8 @@
 
 @interface KIFRTestEvent : NSObject
 
+@property (nonatomic, weak) KIFRTestStep *testStep; // Note: This will be nil until the step has completed
+
 @property (nonatomic, copy) NSString *eventID;
 @property (nonatomic, weak) UIView *targetView;
 @property (nonatomic, weak) UIView *internalTargetView;
