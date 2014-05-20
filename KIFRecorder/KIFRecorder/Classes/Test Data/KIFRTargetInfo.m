@@ -7,6 +7,7 @@
 //
 
 #import "KIFRTargetInfo.h"
+#import "UIView+KIFRContent.h"
 
 @implementation KIFRTargetInfo
 
@@ -15,6 +16,25 @@
     targetInfo.targetClass = [view class];
     targetInfo.accessibilityIdentifier = view.accessibilityIdentifier;
     targetInfo.frame = view.frame;
+    targetInfo.numberOfSubviews = view.subviews.count;
+    targetInfo.interactionEnabled = view.userInteractionEnabled;
+    targetInfo.contentString = view.kifrContentString;
+    
+    // If we don't have an 'accessibilityIdentifier' then store the closest parent which does
+    if (!view.accessibilityIdentifier) {
+        UIView *tmpSuper = view.superview;
+        while (tmpSuper) {
+            if (tmpSuper.accessibilityIdentifier) {
+                targetInfo.hasAccessibleParent = YES;
+                targetInfo.firstAccessibleParentClass = [tmpSuper class];
+                targetInfo.firstAccessibleParentAccessibilityIdentifier = tmpSuper.accessibilityIdentifier;
+                break;
+            }
+            
+            // Step up to the next super
+            tmpSuper = tmpSuper.superview;
+        }
+    }
     
     return targetInfo;
 }

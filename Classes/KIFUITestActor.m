@@ -23,6 +23,12 @@
     return [self waitForViewWithAccessibilityLabel:label value:nil traits:UIAccessibilityTraitNone tappable:NO];
 }
 
+- (UIView *)waitForViewWithAccessibilityIdentifier:(NSString *)identifier {
+    UIView *view = nil;
+    [self waitForAccessibilityElement:NULL view:&view withIdentifier:identifier value:nil traits:UIAccessibilityTraitNone tappable:NO];
+    return view;
+}
+
 - (UIView *)waitForViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits
 {
     return [self waitForViewWithAccessibilityLabel:label value:nil traits:traits tappable:NO];
@@ -110,9 +116,17 @@
     [self waitForAbsenceOfViewWithAccessibilityLabel:label traits:UIAccessibilityTraitNone];
 }
 
+- (void)waitForAbsenceOfViewWithAccessibilityIdentifier:(NSString *)identifier {
+    [self waitForAbsenceOfViewWithAccessibilityIdentifier:identifier value:nil traits:UIAccessibilityTraitNone];
+}
+
 - (void)waitForAbsenceOfViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits
 {
     [self waitForAbsenceOfViewWithAccessibilityLabel:label value:nil traits:traits];
+}
+
+- (void)waitForAbsenceOfViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits {
+    [self waitForAbsenceOfViewWithAccessibilityIdentifier:identifier value:nil traits:traits];
 }
 
 - (void)waitForAbsenceOfViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits
@@ -134,6 +148,33 @@
         
         // Hidden views count as absent
         KIFTestWaitCondition([view isHidden], error, @"Accessibility element with label \"%@\" is visible and not hidden.", label);
+        
+        return KIFTestStepResultSuccess;
+    }];
+}
+
+- (void)waitForAbsenceOfViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits {
+    [self runBlock:^KIFTestStepResult(NSError **error) {
+        // If the app is ignoring interaction events, then wait before doing our analysis
+        KIFTestWaitCondition(![[UIApplication sharedApplication] isIgnoringInteractionEvents], error, @"Application is ignoring interaction events.");
+        
+        // If the element can't be found, then we're done
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accessibilityIdentifier = %@", identifier];
+        UIAccessibilityElement *element = [[UIApplication sharedApplication] accessibilityElementMatchingBlock:^BOOL(UIAccessibilityElement *element) {
+            return [predicate evaluateWithObject:element];
+        }];
+        
+        if (!element) {
+            return KIFTestStepResultSuccess;
+        }
+        
+        UIView *view = [UIAccessibilityElement viewContainingAccessibilityElement:element];
+        
+        // If we found an element, but it's not associated with a view, then something's wrong. Wait it out and try again.
+        KIFTestWaitCondition(view, error, @"Cannot find view containing accessibility element with the identifier \"%@\"", identifier);
+        
+        // Hidden views count as absent
+        KIFTestWaitCondition([view isHidden], error, @"Accessibility element with identifier \"%@\" is visible and not hidden.", identifier);
         
         return KIFTestStepResultSuccess;
     }];
@@ -648,18 +689,48 @@
 }
 
 - (void)tapInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier {
+    [self tapInternalViewOfClass:classType inViewWithAccessibilityIdentifier:identifier withContent:nil];
+}
+
+- (void)tapInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier withContent:(NSString *)contentString {
     UIView *view = nil;
     UIAccessibilityElement *element = nil;
     
     [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier traits:nil tappable:YES];
-    NSArray *controlArray = [view subviewsOfClass:classType];
-    if (controlArray.count == 1) {
-        UIView *targetView = controlArray[0];
-        [self tapAccessibilityElement:(UIAccessibilityElement *)targetView inView:targetView];
+    NSArray *elementArray = [view subviewsOfClass:classType];
+    if (contentString == nil && elementArray.count == 1) {
+        UIAccessibilityElement *elementToTap = elementArray[0];
+        [self tapAccessibilityElement:elementToTap inView:(UIView *)elementToTap];
     }
     else {
-        NSString *errorString = (controlArray.count > 0 ? @"Found too many internal views of type \"%@\"" : @"Could not find internal view of type \"%@\"");
-        [self failWithError:[NSError KIFErrorWithFormat:errorString, NSStringFromClass(classType)] stopTest:YES];
+        if (contentString && elementArray.count > 0) {
+            __block UIAccessibilityElement *elementToTap = nil;
+            [self runBlock:^KIFTestStepResult(NSError **error) {
+                BOOL found = NO;
+                
+                for (UIAccessibilityElement *element in elementArray) {
+                    // Check if the content of the element matches up
+                    if ([((UIView *)element).kifContentString isEqualToString:contentString]) {
+                        elementToTap = element;
+                        found = YES;
+                        break;
+                    }
+                }
+                
+                // If we didn't find a match then wait
+                if (!found) {
+                    return KIFTestStepResultWait;
+                }
+                
+                return KIFTestStepResultSuccess;
+            }];
+            
+            [self tapAccessibilityElement:elementToTap inView:(UIView *)elementToTap];
+        }
+        else {
+            NSString *errorString = (elementArray.count > 0 ? @"Found too many internal views of type \"%@\"" : @"Could not find internal view of type \"%@\"");
+            [self failWithError:[NSError KIFErrorWithFormat:errorString, NSStringFromClass(classType)] stopTest:YES];
+        }
     }
 }
 
@@ -756,7 +827,7 @@
 - (void)scrollCellAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier byFractionOfSizeHorizontal:(CGFloat)horizontalFraction vertical:(CGFloat)verticalFraction {
     UITableView *tableView;
     [self waitForAccessibilityElement:NULL view:&tableView withIdentifier:identifier tappable:NO];
-    
+
     // Wait for the cell, convert it to a 'UIAccessibilityElement' and scroll it
     UITableViewCell *cell = [self waitForCellAtIndexPath:indexPath withAccessibilityIdentifier:cellIdentifier inTableView:tableView];
     UIAccessibilityElement *element = (UIAccessibilityElement *)cell;
@@ -869,7 +940,7 @@
     if (!cell || !identifiersEqual) {
         [self runBlock:^KIFTestStepResult(NSError **error) {
             NSIndexPath *localIndexPath = indexPath;    // We want to reset this every time we run this
-            
+        
             // If section < 0, search from the end of the table.
             if (localIndexPath.section < 0) {
                 localIndexPath = [NSIndexPath indexPathForRow:localIndexPath.row inSection:tableView.numberOfSections + localIndexPath.section];
@@ -879,7 +950,7 @@
             if (localIndexPath.row < 0) {
                 localIndexPath = [NSIndexPath indexPathForRow:[tableView numberOfRowsInSection:localIndexPath.section] + localIndexPath.row inSection:localIndexPath.section];
             }
-            
+        
             if (localIndexPath.section >= tableView.numberOfSections) {
                 return KIFTestStepResultWait;
             }
@@ -887,7 +958,7 @@
             if (localIndexPath.row >= [tableView numberOfRowsInSection:localIndexPath.section]) {
                 return KIFTestStepResultWait;
             }
-            
+        
             [tableView scrollToRowAtIndexPath:localIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
             [self waitForTimeInterval:0.5];
             cell = [tableView cellForRowAtIndexPath:localIndexPath];
@@ -934,7 +1005,7 @@
     if (!cell || !identifiersEqual) {
         [self runBlock:^KIFTestStepResult(NSError **error) {
             NSIndexPath *localIndexPath = indexPath;    // We want to reset this every time we run this
-            
+    
             // If section < 0, search from the end of the table.
             if (localIndexPath.section < 0) {
                 localIndexPath = [NSIndexPath indexPathForRow:localIndexPath.row inSection:collectionView.numberOfSections + localIndexPath.section];
@@ -1136,6 +1207,46 @@
     
     // Wait for the view to stabilize.
     [self waitForTimeInterval:0.5];
+}
+
+#pragma mark - Verify Content
+
+- (void)verifyContentOfViewWithAccessibilityIdentifier:(NSString *)identifier isEqualTo:(NSString *)contentValue {
+    UIView *view;
+    UIAccessibilityElement *element;
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier tappable:NO];
+    [self verifyContentOfAccessibilityElements:@[ element ] isEqualTo:contentValue];
+}
+
+- (void)verifyContentOfInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier isEqualTo:(NSString *)contentString {
+    UIView *view;
+    UIAccessibilityElement *element;
+    [self waitForAccessibilityElement:&element view:&view withIdentifier:identifier tappable:NO];
+    
+    // Pass through all elements matching the class
+    NSArray *controlArray = [view subviewsOfClass:classType];
+    [self verifyContentOfAccessibilityElements:controlArray isEqualTo:contentString];
+}
+
+- (void)verifyContentOfAccessibilityElements:(NSArray *)elements isEqualTo:(NSString *)contentString {
+    [self runBlock:^KIFTestStepResult(NSError **error) {
+        BOOL found = NO;
+        
+        for (UIView *view in elements) {
+            // Check if the content of the element matches up
+            if ([view.kifContentString isEqualToString:contentString]) {
+                found = YES;
+                break;
+            }
+        }
+        
+        // If we didn't find a match then wait
+        if (!found) {
+            return KIFTestStepResultWait;
+        }
+        
+        return KIFTestStepResultSuccess;
+    }];
 }
 
 @end

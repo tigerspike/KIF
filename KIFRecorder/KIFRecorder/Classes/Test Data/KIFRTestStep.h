@@ -42,8 +42,19 @@ typedef enum {
     KIFRStepTypeEnterText,
     KIFRStepTypePinch,
     KIFRStepTypeKeyboardKey,
-    KIFRStepTypeSelectSegment
+    KIFRStepTypeSelectSegment,
+    KIFRStepTypeVerification
 } KIFRStepType;
+
+typedef enum {
+    KIFRVerificationTypeVisible = 0,
+    KIFRVerificationTypeNotVisible,
+    
+    // Note: This one should always be last because the content may or may not actually be accessible
+    KIFRVerificationTypeContentEqual,
+    
+    KIFRVerificationTypeCount
+} KIFRVerificationType;
 
 @class KIFRTestEvent;
 
@@ -58,6 +69,7 @@ typedef enum {
 
 + (KIFRTestStep *)stepFromTestEvent:(KIFRTestEvent *)testEvent;
 + (KIFRTestStep *)stepForStringStep:(NSString *)stepString withIndex:(NSInteger)index;
++ (KIFRTestStep *)verificationStepFromTestEvent:(KIFRTestEvent *)testEvent withVerificationType:(KIFRVerificationType)verificationType;
 - (void)updateEnteredTextByAddingText:(NSString *)textToAdd;
 
 @end

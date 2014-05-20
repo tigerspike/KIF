@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class KIFRTestEvent;
+#import "KIFRTestEvent.h"
 
 @interface KIFRTest : NSObject
 
@@ -25,6 +24,7 @@
 - (void)addTestEvent:(KIFRTestEvent *)testEvent;
 - (void)completeTestEvent:(KIFRTestEvent *)testEvent;
 - (void)addStepForTestEvent:(KIFRTestEvent *)testEvent;
+- (void)addVerificationStep:(KIFRVerificationType)verificationType forTargetInfo:(KIFRTargetInfo *)targetInfo;
 - (void)saveCurrentState;
 
 @end

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		FA013658192357F0008582FC /* KIFRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = FA013657192357F0008582FC /* KIFRecorder.m */; };
+		FA03CCF61929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FA03CCF51929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m */; };
+		FA03CCFD1929C60A00E7A3C3 /* KIFRVerificationStepCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA03CCFC1929C60A00E7A3C3 /* KIFRVerificationStepCell.m */; };
 		FAF36BA418EA6BDB00A9BB61 /* KIFRecorder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAFF0C4C18EA64E9002B0033 /* KIFRecorder.h */; };
 		FAFF0BB718EA4A05002B0033 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFF0BB618EA4A05002B0033 /* Foundation.framework */; };
 		FAFF0C0918EA4A65002B0033 /* UIAlertView+KIFRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFF0BDF18EA4A65002B0033 /* UIAlertView+KIFRUtils.m */; };
@@ -49,6 +51,10 @@
 
 /* Begin PBXFileReference section */
 		FA013657192357F0008582FC /* KIFRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRecorder.m; sourceTree = "<group>"; };
+		FA03CCF41929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRAddVerificationStepUI.h; sourceTree = "<group>"; };
+		FA03CCF51929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRAddVerificationStepUI.m; sourceTree = "<group>"; };
+		FA03CCFB1929C60A00E7A3C3 /* KIFRVerificationStepCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFRVerificationStepCell.h; sourceTree = "<group>"; };
+		FA03CCFC1929C60A00E7A3C3 /* KIFRVerificationStepCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFRVerificationStepCell.m; sourceTree = "<group>"; };
 		FAFF0BB318EA4A05002B0033 /* libKIFRecorder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKIFRecorder.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAFF0BB618EA4A05002B0033 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FAFF0BBA18EA4A06002B0033 /* KIFRecorder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KIFRecorder-Prefix.pch"; sourceTree = "<group>"; };
@@ -211,6 +217,8 @@
 				FAFF0BF818EA4A65002B0033 /* UITableViewCells */,
 				FAFF0BF018EA4A65002B0033 /* KIFRAddStepView.h */,
 				FAFF0BF118EA4A65002B0033 /* KIFRAddStepView.m */,
+				FA03CCF41929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.h */,
+				FA03CCF51929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m */,
 				FAFF0BF218EA4A65002B0033 /* KIFRBorderView.h */,
 				FAFF0BF318EA4A65002B0033 /* KIFRBorderView.m */,
 				FAFF0BF418EA4A65002B0033 /* KIFRMenuView.h */,
@@ -234,6 +242,8 @@
 				FAFF0BFC18EA4A65002B0033 /* KIFRTestStepCell.m */,
 				FAFF0BFD18EA4A65002B0033 /* KIFRWaitStepCell.h */,
 				FAFF0BFE18EA4A65002B0033 /* KIFRWaitStepCell.m */,
+				FA03CCFB1929C60A00E7A3C3 /* KIFRVerificationStepCell.h */,
+				FA03CCFC1929C60A00E7A3C3 /* KIFRVerificationStepCell.m */,
 			);
 			path = UITableViewCells;
 			sourceTree = "<group>";
@@ -306,16 +316,76 @@
 				FAFF0C0B18EA4A65002B0033 /* KIFRTargetInfo.m in Sources */,
 				FAFF0C0918EA4A65002B0033 /* UIAlertView+KIFRUtils.m in Sources */,
 				FAFF0C1618EA4A65002B0033 /* KIFRTestStepCell.m in Sources */,
+				FA03CCF61929BC0A00E7A3C3 /* KIFRAddVerificationStepUI.m in Sources */,
 				FA013658192357F0008582FC /* KIFRecorder.m in Sources */,
 				FAFF0C0F18EA4A65002B0033 /* KIFRTestStep+ToString.m in Sources */,
 				FAFF0C1018EA4A65002B0033 /* KIFRTestStep.m in Sources */,
 				FAFF0C1B18EA4A65002B0033 /* UIGestureRecognizer+KIFRUtils.m in Sources */,
+				FA03CCFD1929C60A00E7A3C3 /* KIFRVerificationStepCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		FA80E411192468C00055E71C /* Test */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Test;
+		};
+		FA80E412192468C00055E71C /* Test */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				DSTROOT = /tmp/KIFRecorder.dst;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "KIFRecorder/KIFRecorder-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/**",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
+			};
+			name = Test;
+		};
 		FAFF0BD418EA4A06002B0033 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -392,6 +462,11 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KIFRecorder/KIFRecorder-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/**",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -408,6 +483,11 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(SDKROOT)/Developer/Library/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KIFRecorder/KIFRecorder-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -422,6 +502,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FAFF0BD418EA4A06002B0033 /* Debug */,
+				FA80E411192468C00055E71C /* Test */,
 				FAFF0BD518EA4A06002B0033 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -431,6 +512,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FAFF0BD718EA4A06002B0033 /* Debug */,
+				FA80E412192468C00055E71C /* Test */,
 				FAFF0BD818EA4A06002B0033 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

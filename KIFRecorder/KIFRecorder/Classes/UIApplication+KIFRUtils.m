@@ -13,12 +13,17 @@
 #import "UITouch+KIFRUtils.h"
 #import "KIFRMenuView.h"
 #import "KIFRTest.h"
+#import "KIFRAddVerificationStepUI.h"
 #import <objc/runtime.h>
 
 @implementation UIApplication (KIFRUtils)
 
 - (void)KIFR_sendEvent:(UIEvent *)event {
-    if (![KIFRMenuView sharedInstance].isExpanded && event.type == UIEventTypeTouches) {
+    if ([KIFRAddVerificationStepUI sharedInstance].isProcessingStep) {
+        // If we are currently adding a verification step the it should be tap-to-dismiss
+        [[KIFRAddVerificationStepUI sharedInstance] hideIfNeededForTouches:[[event allTouches] allObjects]];
+    }
+    else if (![KIFRMenuView sharedInstance].isExpanded && event.type == UIEventTypeTouches) {
         NSArray *touches = [[event allTouches] allObjects];
         KIFRTestEvent *testEvent;
         
@@ -81,7 +86,8 @@
     
     // Passing 'nil' to 'locationInView:' returns the location in the window
     CGPoint touchPoint = [touch locationInView:nil];
-    NSArray *possibleViews = [self viewsBelowView:[UIWindow kifrWindow] withAccessibilityContainingPoint:touchPoint];
+    NSArray *touchedViews = [self viewsBelowView:[UIWindow kifrWindow] withAccessibilityContainingPoint:touchPoint];
+    NSArray *possibleViews = [touchedViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.userInteractionEnabled == YES && SELF.accessibilityIdentifier.length > 0"]];
     
     // Ignore the Testing UI
     if ((!touch.view && possibleViews.count) || (touch.view && !touch.view.kifrShouldIgnore)) {
@@ -92,7 +98,7 @@
             UIView *touchedView = [touch accessibleViewWithPossibilities:possibleViews];
             
             // Store the event in the array
-            KIFRTestEvent *testEvent = [KIFRTestEvent eventWithID:touchID touches:touches targetView:touchedView andPotentialTargets:possibleViews];
+            KIFRTestEvent *testEvent = [KIFRTestEvent eventWithID:touchID touches:touches targetView:touchedView andAllTouchedViews:touchedViews];
             testEvent.eventState = KIFREventStateStarted;
             
             return testEvent;
@@ -126,17 +132,35 @@
 
 #pragma mark - Recording Methods
 
+- (NSArray *)classesToIgnore {
+    return @[ NSClassFromString(@"UILayoutContainerView"),
+              NSClassFromString(@"UITransitionView"),
+              NSClassFromString(@"UIViewControllerWrapperView"),
+              NSClassFromString(@"UILayoutContainerView"),
+              NSClassFromString(@"UINavigationTransitionView"),
+              NSClassFromString(@"UIViewControllerWrapperView"),
+              NSClassFromString(@"UITableViewWrapperView"),
+              NSClassFromString(@"UITableViewCellScrollView"),
+              NSClassFromString(@"MKBasicMapView"),
+              NSClassFromString(@"_MKMapLayerHostingView"),
+              NSClassFromString(@"MKScrollContainerView"),
+              NSClassFromString(@"MKNewAnnotationContainerView"),
+              NSClassFromString(@"_UISearchBarSearchFieldBackgroundView"),
+              NSClassFromString(@"UISearchBarBackground")
+              ];
+}
+
 - (NSArray *)viewsBelowView:(UIView *)view withAccessibilityContainingPoint:(CGPoint)point {
     NSMutableArray *mutableArray = [NSMutableArray new];
     
     for (UIView *subview in view.subviews) {
-        // Check if the user can interact with the view
-        if (!subview.hidden && subview.userInteractionEnabled && subview.alpha > 0.01) {
+        // Check if the user can see the view
+        if (!subview.hidden && subview.alpha > 0.01) {
             // Check if it contains the point
             CGPoint localPoint = [subview convertPoint:point fromView:view];
             if ([subview pointInside:localPoint withEvent:nil]) {
-                // Only add this view if it has accessibility info (currently needed for testing)
-                if (subview.accessibilityIdentifier.length > 0) {
+                // Only add the view if it isn't one of the classes the user shouldn't care about
+                if (![[self classesToIgnore] containsObject:[subview class]]) {
                     [mutableArray addObject:subview];
                 }
                 

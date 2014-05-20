@@ -75,21 +75,27 @@
             // Internal views need to be targetted slightly differently
             if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
                 self.stepType = KIFRStepTypeTapTableCell;
-                
+
                 self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of cell '%@' at (%li, %li) in the table '%@'.", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
                 self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") ofRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] withAccessibilityIdentifier:@\"%@\" inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, targetInfo.tableViewAccessibilityIdentifier];
             }
             else {
                 self.stepType = KIFRStepTypeTap;
                 
-                self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of view '%@'.", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier];
-                self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") inViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier];
+                if (targetInfo.contentString) {
+                    self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of view '%@' with content '%@'.", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier, targetInfo.contentString];
+                    self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") inViewWithAccessibilityIdentifier:@\"%@\" withContent:@\"%@\"];\n", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier, targetInfo.contentString];
+                }
+                else {
+                    self.readableString = [NSString stringWithFormat:@"Tap internal class '%@' of view '%@'.", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier];
+                    self.testString = [NSString stringWithFormat:@"\n    [tester tapInternalViewOfClass:NSClassFromString(@\"%@\") inViewWithAccessibilityIdentifier:@\"%@\"];\n", targetInfo.internalTargetClass, targetInfo.accessibilityIdentifier];
+                }
             }
         }
         else if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
             // If it's a UITableViewCell then use the specific method
             self.stepType = KIFRStepTypeTapTableCell;
-            
+
             self.readableString = [NSString stringWithFormat:@"Tap cell '%@' at (%li, %li) in the table '%@'.", targetInfo.accessibilityIdentifier, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier];
             self.testString = [NSString stringWithFormat:@"\n    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] withAccessibilityIdentifier:@\"%@\" inTableViewWithAccessibilityIdentifier:@\"%@\"];\n", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, targetInfo.tableViewAccessibilityIdentifier];
         }
@@ -107,7 +113,7 @@
     }
     else {
         self.stepType = KIFRStepTypeMultiTap;
-        
+
         NSArray *tapNumberStrings = @[ @"", @"", @"Double ", @"Triple ", @"Multi (4+) " ];
         NSString *tapAmount = tapNumberStrings[MIN(self.testEventData.numberOfTaps, 4)];
         self.readableString = [NSString stringWithFormat:@"%@Tap on view '%@'.", tapAmount, targetInfo.accessibilityIdentifier];
@@ -143,7 +149,7 @@
         
         if ([targetInfo.targetClass isSubclassOfClass:[UITableViewCell class]]) {
             self.readableString = [NSString stringWithFormat:@"Scroll cell '%@' at (%li, %li) in the table '%@' by %.0f%% width and %.0f%% height.", targetInfo.accessibilityIdentifier, (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.tableViewAccessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];
-            self.testString = [NSString stringWithFormat:@"\n    [tester scrollCellAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] withAccessibilityIdentifier:@\"%@\" inTableViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, targetInfo.accessibilityIdentifier, horizontalFraction, verticalFraction];
+            self.testString = [NSString stringWithFormat:@"\n    [tester scrollCellAtIndexPath:[NSIndexPath indexPathForRow:%li inSection:%li] withAccessibilityIdentifier:@\"%@\" inTableViewWithAccessibilityIdentifier:@\"%@\" byFractionOfSizeHorizontal:%f vertical:%f];", (long)targetInfo.cellIndexPath.row, (long)targetInfo.cellIndexPath.section, targetInfo.accessibilityIdentifier, targetInfo.tableViewAccessibilityIdentifier, horizontalFraction, verticalFraction];
         }
         else {
             self.readableString = [NSString stringWithFormat:@"Scroll view '%@' by %.0f%% width and %.0f%% height.", targetInfo.accessibilityIdentifier, (horizontalFraction * 100), (verticalFraction * 100)];
@@ -192,7 +198,7 @@
     }
     
     self.stepType = KIFRStepTypeKeyboardKey;
-    
+        
     // The only special key we should need to handle is the 'Dismiss' key (iPad keyboard - it's accessibility identifier is actually 'Hide keyboard' for some reason)
     switch (self.testEventData.eventKey) {
         case KIFREventKeyDismissKeyboard: {
@@ -236,6 +242,40 @@
     self.stepType = KIFRStepTypeEnterText;
     self.readableString = [NSString stringWithFormat:@"Enter text '%@' in to selected field.", self.testEventData.keyString];
     self.testString = [NSString stringWithFormat:@"\n    [tester enterTextIntoCurrentFirstResponder:@\"%@\"];\n", self.testEventData.keyString];
+}
+
+#pragma mark - Verification Steps
+
+- (void)generateVerificationStepOfType:(KIFRVerificationType)verificationType {
+    self.stepType = KIFRStepTypeVerification;
+    
+    switch (verificationType) {
+        case KIFRVerificationTypeVisible: {
+            self.readableString = [NSString stringWithFormat:@"Verify visiblity of view '%@'.", self.testEventData.targetInfo.accessibilityIdentifier];
+            self.testString = [NSString stringWithFormat:@"\n    [tester waitForViewWithAccessibilityIdentifier:@\"%@\"];\n", self.testEventData.targetInfo.accessibilityIdentifier];
+        } break;
+            
+        case KIFRVerificationTypeNotVisible: {
+            self.readableString = [NSString stringWithFormat:@"Verify view '%@' is not visible.", self.testEventData.targetInfo.accessibilityIdentifier];
+            self.testString = [NSString stringWithFormat:@"\n    [tester waitForAbsenceOfViewWithAccessibilityIdentifier:@\"%@\"];\n", self.testEventData.targetInfo.accessibilityIdentifier];
+        } break;
+            
+        case KIFRVerificationTypeContentEqual: {
+            if (self.testEventData.targetInfo.accessibilityIdentifier) {
+                // Verify the element directly
+                self.readableString = [NSString stringWithFormat:@"Verify content of view '%@' is equal to '%@'.", self.testEventData.targetInfo.accessibilityIdentifier, self.testEventData.targetInfo.contentString];
+                self.testString = [NSString stringWithFormat:@"\n    [tester verifyContentOfViewWithAccessibilityIdentifier:@\"%@\" isEqualTo:@\"%@\"];\n", self.testEventData.targetInfo.accessibilityIdentifier, self.testEventData.targetInfo.contentString];
+            }
+            else {
+                // Otherwise, verify the element via it's parent control
+                self.readableString = [NSString stringWithFormat:@"Verify content of subview of class '%@' in view '%@' is equal to '%@'.", NSStringFromClass(self.testEventData.targetInfo.targetClass), self.testEventData.targetInfo.firstAccessibleParentAccessibilityIdentifier, self.testEventData.targetInfo.contentString];
+                self.testString = [NSString stringWithFormat:@"\n    [tester verifyContentOfInternalViewOfClass:NSClassFromString(@\"%@\") inViewWithAccessibilityIdentifier:@\"%@\" isEqualTo:@\"%@\"];\n", NSStringFromClass(self.testEventData.targetInfo.targetClass), self.testEventData.targetInfo.firstAccessibleParentAccessibilityIdentifier, self.testEventData.targetInfo.contentString];
+            }
+        } break;
+            
+        default:
+            break;
+    }
 }
 
 @end

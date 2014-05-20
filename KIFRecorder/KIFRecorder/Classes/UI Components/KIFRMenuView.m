@@ -11,6 +11,7 @@
 #import "UIApplication+KIFRUtils.h"
 #import "KIFRTestsView.h"
 #import "KIFRecorder.h"
+#import "KIFRAddVerificationStepUI.h"
 
 #define OLD_FRAME_KEY @"kOldMenuFrame"
 #define CONTRACTED_SIDE_PADDING 2
@@ -23,6 +24,7 @@
 @property (nonatomic, strong) UIImageView *contractedImageView;
 @property (nonatomic, strong) UIButton *viewTestsButton;
 @property (nonatomic, strong) UIButton *exportButton;
+@property (nonatomic, strong) UIButton *addVerificationStepButton;
 @property (nonatomic, strong) NSArray *mainMenuUIArray;
 
 @property (nonatomic, strong) KIFRTestsView *testsView;
@@ -88,6 +90,14 @@
         _exportButton.alpha = 0;
         [self addSubview:_exportButton];
         
+        _addVerificationStepButton = [UIButton new];
+        _addVerificationStepButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        [_addVerificationStepButton setTitle:@"Add Verification Step" forState:UIControlStateNormal];
+        [_addVerificationStepButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [_addVerificationStepButton addTarget:self action:@selector(addVerificationStepButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        _addVerificationStepButton.alpha = 0;
+        [self addSubview:_addVerificationStepButton];
+        
         _testsView = [[KIFRTestsView alloc] initWithMenuView:self];
         _testsView.alpha = 0;
         [self addSubview:_testsView];
@@ -133,6 +143,7 @@
     }
     else {
         self.viewTestsButton.frame = CGRectMake(5, ceil((self.kifrHeight - 80) / 2), 80, 80);
+        self.addVerificationStepButton.frame = CGRectMake(80, self.kifrHeight - 60 - 5, 160, 40);
         self.exportButton.frame = CGRectMake(self.kifrWidth - 60 - 5, ceil((self.kifrHeight - 60) / 2), 60, 60);
     }
     
@@ -182,6 +193,30 @@
         [strongSelf layoutIfNeeded];
     }];
 
+}
+
+- (void)addVerificationStepButtonPressed:(id)sender {
+    // Add the verification step UI
+    [[KIFRAddVerificationStepUI sharedInstance] show];
+    
+    __weak KIFRMenuView *weakSelf = self;
+    [UIView animateWithDuration:0.3 animations:^{
+        KIFRMenuView *strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        
+        strongSelf.alpha = 0;
+    } completion:^(BOOL finished) {
+        KIFRMenuView *strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        
+        // Note: 'setExpanded' messes with the alpha so we need to set it again here
+        [strongSelf setExpanded:NO animated:NO];
+        strongSelf.alpha = 0;
+    }];
 }
 
 - (void)exportButtonPressed:(id)sender {
@@ -287,7 +322,7 @@
 
 - (NSArray *)mainMenuUIArray {
     if (!_mainMenuUIArray) {
-        _mainMenuUIArray = @[ self.exportButton, self.viewTestsButton ];
+        _mainMenuUIArray = @[ self.exportButton, self.viewTestsButton, self.addVerificationStepButton ];
     }
     
     return _mainMenuUIArray;
@@ -341,7 +376,10 @@
             [self setNeedsLayout];
             [self layoutIfNeeded];
             
-            self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(fadeOutView:) userInfo:nil repeats:NO];
+            // Only fade back in if the menu is currently visible
+            if (self.alpha > 0) {
+                self.fadeOutTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(fadeOutView:) userInfo:nil repeats:NO];
+            }
         }
         else {
             CGRect oldFrame = CGRectMake(sidePadding, ceil((screenSize.height - sideSize) / 2), sideSize, sideSize);

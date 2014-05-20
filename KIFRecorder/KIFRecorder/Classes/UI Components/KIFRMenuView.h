@@ -14,5 +14,6 @@
 
 + (KIFRMenuView *)sharedInstance;
 - (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)fadeOutView:(id)sender;
 
 @end

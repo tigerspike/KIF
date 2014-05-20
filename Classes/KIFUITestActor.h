@@ -59,6 +59,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param label The accessibility label of the element to wait for.
  */
 - (UIView *)waitForViewWithAccessibilityLabel:(NSString *)label;
+- (UIView *)waitForViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Waits until a view or accessibility element is present.
@@ -89,6 +90,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param label The accessibility label of the element to wait for.
  */
 - (void)waitForAbsenceOfViewWithAccessibilityLabel:(NSString *)label;
+- (void)waitForAbsenceOfViewWithAccessibilityIdentifier:(NSString *)identifier;
 
 /*!
  @abstract Waits until a view or accessibility element is no longer present.
@@ -97,6 +99,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param traits The accessibility traits of the element to wait for. Elements that do not include at least these traits are ignored.
  */
 - (void)waitForAbsenceOfViewWithAccessibilityLabel:(NSString *)label traits:(UIAccessibilityTraits)traits;
+- (void)waitForAbsenceOfViewWithAccessibilityIdentifier:(NSString *)identifier traits:(UIAccessibilityTraits)traits;
 
 /*!
  @abstract Waits until a view or accessibility element is no longer present.
@@ -106,6 +109,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  @param traits The accessibility traits of the element to wait for. Elements that do not include at least these traits are ignored.
  */
 - (void)waitForAbsenceOfViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits;
+- (void)waitForAbsenceOfViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits;
 
 /*!
  @abstract Waits until a view or accessibility element is present and available for tapping.
@@ -346,6 +350,7 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
 - (void)tapRowAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier NS_AVAILABLE_IOS(5_0);
 
 - (void)tapInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier;
+- (void)tapInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier withContent:(NSString *)contentString;
 - (void)tapInternalViewOfClass:(Class)classType ofRowAtIndexPath:(NSIndexPath *)indexPath inTableViewWithAccessibilityIdentifier:(NSString *)identifier;
 - (void)tapInternalViewOfClass:(Class)classType ofRowAtIndexPath:(NSIndexPath *)indexPath withAccessibilityIdentifier:(NSString *)cellIdentifier inTableViewWithAccessibilityIdentifier:(NSString *)identifier;
 
@@ -499,5 +504,10 @@ static inline KIFDisplacement KIFDisplacementForSwipingInDirection(KIFSwipeDirec
  */
 - (void)tapSegmentAtIndex:(NSInteger)segmentIndex inSegmentedControlWithAccessibilityIdentifier:(NSString *)identifier;
 - (void)tapSegmentAtIndex:(NSInteger)segmentIndex inAccessibilityElement:(UIAccessibilityElement *)element inView:(UIView *)view;
+
+#pragma mark - Verify Content
+
+- (void)verifyContentOfViewWithAccessibilityIdentifier:(NSString *)identifier isEqualTo:(NSString *)contentString;
+- (void)verifyContentOfInternalViewOfClass:(Class)classType inViewWithAccessibilityIdentifier:(NSString *)identifier isEqualTo:(NSString *)contentString;
 
 @end

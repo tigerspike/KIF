@@ -13,6 +13,14 @@
 @property (nonatomic, copy) NSString *accessibilityIdentifier;
 @property (nonatomic, copy) Class targetClass;
 @property (nonatomic, assign) CGRect frame;
+@property (nonatomic, copy) NSString *contentString;
+@property (nonatomic, assign) NSUInteger numberOfSubviews;
+@property (nonatomic, assign) BOOL interactionEnabled;
+
+// Internal View Values
+@property (nonatomic, assign) BOOL hasAccessibleParent;
+@property (nonatomic, copy) Class firstAccessibleParentClass;
+@property (nonatomic, copy) NSString *firstAccessibleParentAccessibilityIdentifier;
 @property (nonatomic, copy) Class internalTargetClass;
 @property (nonatomic, assign) BOOL isTargettingInternalSubview;
 

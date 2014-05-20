@@ -290,6 +290,7 @@ typedef struct __GSEvent * GSEventRef;
     return result;
 }
 
+
 - (BOOL)isDescendantOfFirstResponder;
 {
     if ([self isFirstResponder]) {
@@ -724,6 +725,30 @@ typedef struct __GSEvent * GSEventRef;
     for (UIWindow *window in [[UIApplication sharedApplication] windowsWithKeyWindow]) {
         if (CGAffineTransformIsIdentity(window.transform)) {
             return window;
+        }
+    }
+    
+    return nil;
+}
+
+#pragma mark - Content String
+
+// Note: This should match the method in 'UIView+KIFRContent'
+- (NSString *)kifContentString {
+    // Different UI types are handled differently, return the respective content for each
+    if ([self isKindOfClass:[UILabel class]]) {
+        return ((UILabel *)self).text;
+    }
+    else if ([self isKindOfClass:[UIButton class]]) {
+        return [(UIButton *)self titleForState:UIControlStateNormal];
+    }
+    else if ([self isKindOfClass:[UISearchBar class]]) {
+        return ((UISearchBar *)self).placeholder;
+    }
+    else if ([self respondsToSelector:@selector(annotation)]) {
+        id annotation = [self performSelector:@selector(annotation)];
+        if ([annotation respondsToSelector:@selector(title)]) {
+            return [annotation performSelector:@selector(title)];
         }
     }
     

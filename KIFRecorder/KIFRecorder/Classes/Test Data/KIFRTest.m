@@ -10,6 +10,7 @@
 #import "KIFRTestEvent.h"
 #import "KIFRTestStep+ToString.h"
 #import "KIFRTestStep+FromString.h"
+#import "KIFRAddVerificationStepUI.h"
 
 @implementation KIFRTest
 
@@ -88,22 +89,6 @@
 
 - (void)addTestEvent:(KIFRTestEvent *)testEvent {
     [self.currentEvents setObject:testEvent forKey:testEvent.eventID];
-    
-//    // Sanity Check
-//    if (testEvent) {
-//        testEvent.eventState = KIFREventStateStarted;
-//        
-//        NSMutableString *touchList = [NSMutableString new];
-//        for (UITouch *tmpTouch in touches) {
-//            [touchList appendFormat:@"%p", tmpTouch];
-//            
-//            if (tmpTouch != touches.lastObject) {
-//                [touchList appendString:@", "];
-//            }
-//        }
-//        
-//        NSLog(@"Added Event\nID: %@\nTouches: %@", touchID, touchList);
-//    }
 }
 
 - (void)completeTestEvent:(KIFRTestEvent *)testEvent {
@@ -142,12 +127,28 @@
             break;
     }
     
-    // Add the KIFRTestEvent as a KIFRTestStep
-    [self addStepForTestEvent:testEvent];
+    // If we are adding a verification step then don't add the step to the testStepArray
+    if ([KIFRAddVerificationStepUI sharedInstance].isAddingStep) {
+        [[KIFRAddVerificationStepUI sharedInstance] addVerificationStepWithEvent:testEvent];
+    }
+    else {
+        // Add the KIFRTestEvent as a KIFRTestStep
+        [self addStepForTestEvent:testEvent];
+    }
 }
 
 - (void)addStepForTestEvent:(KIFRTestEvent *)testEvent {
     KIFRTestStep *testStep = [KIFRTestStep stepFromTestEvent:testEvent];
+    testStep.originalIndex = self.testStepsArray.count;
+    
+    [self.testStepsArray addObject:testStep];
+}
+
+- (void)addVerificationStep:(KIFRVerificationType)verificationType forTargetInfo:(KIFRTargetInfo *)targetInfo {
+    KIFRTestEvent *event = [KIFRTestEvent new];
+    event.targetInfo = targetInfo;
+    
+    KIFRTestStep *testStep = [KIFRTestStep verificationStepFromTestEvent:event withVerificationType:verificationType];
     testStep.originalIndex = self.testStepsArray.count;
     
     [self.testStepsArray addObject:testStep];

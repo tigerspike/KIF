@@ -16,11 +16,12 @@
 + (NSArray *)classesWithInternalViews {
     return @[
              [UITableViewCell class],
-             [UISearchBar class]
+             [UISearchBar class],
+             NSClassFromString(@"MKMapView")
              ];
 }
 
-+ (KIFRTestEvent *)eventWithID:(NSString *)eventID touches:(NSArray *)touches targetView:(UIView *)target andPotentialTargets:(NSArray *)potentialTargets {
++ (KIFRTestEvent *)eventWithID:(NSString *)eventID touches:(NSArray *)touches targetView:(UIView *)target andAllTouchedViews:(NSArray *)allTouchedViews {
     KIFRTestEvent *testEvent = [KIFRTestEvent new];
     testEvent.eventID = eventID;
     testEvent.targetView = target;
@@ -31,13 +32,13 @@
     testEvent.eventKey = KIFREventKeyNone;
     
     // Get the targetInfo for each potentialView
-    testEvent.potentialTargets = potentialTargets;
-    NSMutableArray *targetInfoArray = [NSMutableArray arrayWithCapacity:potentialTargets.count];
-    for (UIView *view in potentialTargets) {
+    testEvent.allTouchedViews = allTouchedViews;
+    NSMutableArray *touchedViewInfoArray = [NSMutableArray arrayWithCapacity:allTouchedViews.count];
+    for (UIView *view in allTouchedViews) {
         KIFRTargetInfo *viewInfo = [KIFRTargetInfo targetInfoForView:view];
-        [targetInfoArray addObject:viewInfo];
+        [touchedViewInfoArray addObject:viewInfo];
     }
-    testEvent.potentialTargetInfo = targetInfoArray;
+    testEvent.touchedViewsInfo = touchedViewInfoArray;
     
     // Set the touch details
     if (touches.count == 1) {
@@ -118,12 +119,20 @@
             self.targetInfo.isTargettingInternalSubview = YES;
             self.internalTargetView = touch.view;
             self.targetInfo.internalTargetClass = [touch.view class];
+            
+            // If we have a touchedViewInfo which matches the above details then set the 'contentString' to match (so the step records correctly)
+            for (KIFRTargetInfo *info in self.touchedViewsInfo) {
+                if (info.targetClass == [touch.view class] && info.contentString) {
+                    self.targetInfo.contentString = info.contentString;
+                    break;
+                }
+            }
         }
     }
     
     // We don't want to keep hanging on the the 'targetView' or 'potentialTargets' references (to avoid memory issues, also the red 'BorderView' will only disappear once this value has been cleared)
     self.targetView = nil;
-    self.potentialTargets = nil;
+    self.allTouchedViews = nil;
     self.eventState = KIFREventStateEnded;
     self.eventEndTimeInterval = [[NSDate date] timeIntervalSince1970];
 }

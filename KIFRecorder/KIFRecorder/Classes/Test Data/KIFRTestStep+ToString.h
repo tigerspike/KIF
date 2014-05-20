@@ -12,5 +12,6 @@
 
 - (void)generateStepData;
 - (KIFRTestStep *)createStepToWaitForCell;
+- (void)generateVerificationStepOfType:(KIFRVerificationType)verificationType;
 
 @end

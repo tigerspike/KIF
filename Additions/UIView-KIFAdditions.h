@@ -13,6 +13,7 @@ typedef CGPoint KIFDisplacement;
 
 @interface UIView (KIFAdditions)
 
+@property (nonatomic, readonly) NSString *kifContentString;
 @property (nonatomic, readonly, getter=isProbablyTappable) BOOL probablyTappable;
 
 - (BOOL)isDescendantOfFirstResponder;

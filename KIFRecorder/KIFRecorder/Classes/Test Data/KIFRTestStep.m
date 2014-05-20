@@ -10,6 +10,7 @@
 #import "KIFRTestEvent.h"
 #import "KIFRTestStep+ToString.h"
 #import "KIFRTestStep+FromString.h"
+#import "KIFRAddVerificationStepUI.h"
 
 @implementation KIFRTestStep
 
@@ -26,6 +27,14 @@
     step.originalIndex = index;
     step.testString = stepString;
     [step generateStepDataFromString:stepString];
+    
+    return step;
+}
+
++ (KIFRTestStep *)verificationStepFromTestEvent:(KIFRTestEvent *)testEvent withVerificationType:(KIFRVerificationType)verificationType {
+    KIFRTestStep *step = [KIFRTestStep new];
+    step.testEventData = testEvent;
+    [step generateVerificationStepOfType:verificationType];
     
     return step;
 }

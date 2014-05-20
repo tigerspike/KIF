@@ -142,7 +142,7 @@ static const void *KIFRunLoopModesKey = &KIFRunLoopModesKey;
     }
     
     outputPath = [outputPath stringByExpandingTildeInPath];
-
+    
     if ([[NSFileManager defaultManager] createDirectoryAtPath:outputPath withIntermediateDirectories:YES attributes:nil error:error]) {
         outputPath = [outputPath stringByAppendingPathComponent:imageName];
         outputPath = [outputPath stringByAppendingPathExtension:@"png"];

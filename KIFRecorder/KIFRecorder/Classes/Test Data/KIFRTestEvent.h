@@ -15,10 +15,10 @@
 @property (nonatomic, copy) NSString *eventID;
 @property (nonatomic, weak) UIView *targetView;
 @property (nonatomic, weak) UIView *internalTargetView;
-@property (nonatomic, strong) NSArray *potentialTargets;
+@property (nonatomic, strong) NSArray *allTouchedViews;
 
 @property (nonatomic, strong) KIFRTargetInfo *targetInfo;
-@property (nonatomic, strong) NSArray *potentialTargetInfo;
+@property (nonatomic, strong) NSArray *touchedViewsInfo;
 @property (nonatomic, assign) KIFREventType eventType;
 @property (nonatomic, assign) KIFREventState eventState;
 @property (nonatomic, assign) NSUInteger numberOfTaps;
@@ -37,7 +37,7 @@
 @property (nonatomic, strong) NSArray *startPoints;
 @property (nonatomic, strong) NSArray *endPoints;
 
-+ (KIFRTestEvent *)eventWithID:(NSString *)eventID touches:(NSArray *)touches targetView:(UIView *)target andPotentialTargets:(NSArray *)potentialTargets;
++ (KIFRTestEvent *)eventWithID:(NSString *)eventID touches:(NSArray *)touches targetView:(UIView *)target andAllTouchedViews:(NSArray *)allTouchedViews;
 
 - (void)endWithTouches:(NSArray *)touches;
 
