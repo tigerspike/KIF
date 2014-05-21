@@ -31,6 +31,7 @@
         _lastModifiedDate = [NSDate date];
         _currentEvents = [NSMutableDictionary new];
         _testStepsArray = [NSMutableArray new];
+        _testRequestsArray = [NSMutableArray new];
     }
     
     return self;

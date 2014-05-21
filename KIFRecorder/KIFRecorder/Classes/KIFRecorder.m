@@ -14,6 +14,7 @@
 #import "KIFRTest.h"
 #import "KIFRTestStep.h"
 #import "UIDatePicker+KIFRUtils.h"
+#import "NSObject+KIFRUtils_Networking.h"
 #import <objc/runtime.h>
 
 @implementation KIFRecorder
@@ -54,6 +55,10 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
         
         // We will need to add the recording wrapper to the Window
         Swizzle([UIWindow class], @selector(makeKeyAndVisible), @selector(KIFR_makeKeyAndVisible));
+        
+        // Intercept HTTP request completion methods - AFURLConnectionOperation's delegate 'connectionDidFinishLoading:' and ASIHTTPRequest's 'markAsFinished'
+        Swizzle(NSClassFromString(@"AFURLConnectionOperation"), @selector(connectionDidFinishLoading:), @selector(KIFR_connectionDidFinishLoading:));
+        Swizzle(NSClassFromString(@"ASIHTTPRequest"), NSSelectorFromString(@"markAsFinished"), @selector(KIFR_markAsFinished));
         
         // Intercept UIApplication's 'sendEvent:' method
         Swizzle([UIApplication class], @selector(sendEvent:), @selector(KIFR_sendEvent:));
@@ -136,6 +141,17 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
     NSLog(@"%@", testString);
     
     [testString writeToFile:[NSString stringWithFormat:@"%@/%@.kifr", docsDir, testName] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    
+    // Log the number of API requests and save the json files to a folder with the same name as the test
+    NSLog(@"%lu requests made during test.", (unsigned long)[KIFRTest currentTest].testRequestsArray.count);
+    [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/%@", docsDir, testName] withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    for (int i = 0; i < [KIFRTest currentTest].testRequestsArray.count; ++i) {
+        NSDictionary *requestDictionary = [KIFRTest currentTest].testRequestsArray[i];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:requestDictionary options:0 error:nil];
+        
+        [jsonData writeToFile:[NSString stringWithFormat:@"%@/%@/%@Request%lu.json", docsDir, testName, testName, (unsigned long)i] atomically:YES];
+    }
     
     // Giev the tester feedback that exporting succeeded
     [UIAlertView showWithTitle:@"Export Successful" message:[NSString stringWithFormat:@"Test saved as '%@'", testName] cancelButtonTitle:@"OK" otherButtonTitles:nil andCallback:nil];

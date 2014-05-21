@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSDate *lastModifiedDate;
 @property (nonatomic, strong) NSMutableDictionary *currentEvents;
 @property (nonatomic, strong) NSMutableArray *testStepsArray;
+@property (nonatomic, strong) NSMutableArray *testRequestsArray;
 @property (nonatomic, assign) BOOL isCurrentBuild;
 
 + (KIFRTest *)currentTest;
