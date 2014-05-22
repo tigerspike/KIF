@@ -12,5 +12,6 @@
 
 + (UIWindow *)kifrWindow;
 - (void)KIFR_makeKeyAndVisible;
+- (void)KIFR_addSubview:(UIView *)subview;
 
 @end

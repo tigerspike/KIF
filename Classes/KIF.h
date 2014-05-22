@@ -17,3 +17,11 @@
 #else
 #import "SenTestCase-KIFAdditions.h"
 #endif
+
+@interface KIF : NSObject
+
+@property (nonatomic, copy) NSString *currentTestName;
+
++ (instancetype)sharedInstance;
+
+@end

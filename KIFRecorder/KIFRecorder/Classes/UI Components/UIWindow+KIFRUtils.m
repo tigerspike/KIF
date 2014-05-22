@@ -55,6 +55,11 @@ static UIWindow *sharedInstance;
     [self addGestureRecognizer:pinchGestureRecognizer];
 }
 
+- (void)KIFR_addSubview:(UIView *)subview {
+    [self KIFR_addSubview:subview];
+    [self bringSubviewToFront:[KIFRMenuView sharedInstance]];
+}
+
 #pragma mark - Gesture Handlers
 
 - (KIFRTestEvent *)eventForTouches:(NSArray *)touches {

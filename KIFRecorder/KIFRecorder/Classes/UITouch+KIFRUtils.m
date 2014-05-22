@@ -32,7 +32,23 @@
         return self.view;
     }
     
-    // If the touched view doesn't meet the criteria then assume the lastObject in the 'possibleViews' array is the correct one (the array will be sorted by z-index by default, so it should be the top-most view, and the UIResponder chain would take care of the rest)
+    // If the touched view doesn't meet the criteria then try find the relevant view in the 'possibleViews' array.
+    
+    // MKAnnotationViews have the same z-index so if there are multiple options we actually want the first one (as that's what would have been clicked)
+    if ([possibleViews.lastObject isKindOfClass:NSClassFromString(@"MKAnnotationView")]) {
+        UIView *annotationView;
+        for (int i = (int)possibleViews.count - 1; i >= 0; --i) {
+            if ([possibleViews[i] isKindOfClass:NSClassFromString(@"MKAnnotationView")]) {
+                annotationView = possibleViews[i];
+            }
+            else {
+                // There aren't any more MKAnnotationViews in front of this one so return it
+                return annotationView;
+            }
+        }
+    }
+    
+    // If we don't need to worry about any special cases then ssume the lastObject in the 'possibleViews' array is the correct one (the array will be sorted by z-index by default, so it should be the top-most view, and the UIResponder chain would take care of the rest)
     return possibleViews.lastObject;
 }
 

@@ -69,10 +69,11 @@
 
 - (void)addResponse:(NSData *)responseData forRequest:(NSURL *)requestURL {
     NSMutableDictionary *requestDictionary = [NSMutableDictionary new];
-    [requestDictionary setObject:[requestURL absoluteString] forKey:@"request"];
+    [requestDictionary setObject:[requestURL absoluteString] forKey:kKIFRRequestKey];
     
     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-    [requestDictionary setObject:jsonData forKey:@"response"];
+    [requestDictionary setObject:jsonData forKey:kKIFRResponseKey];
+    [requestDictionary setObject:@([KIFRTest currentTest].testStepsArray.count) forKey:kKIFRTestStepIndexKey];
     
     [[KIFRTest currentTest].testRequestsArray addObject:requestDictionary];
 }

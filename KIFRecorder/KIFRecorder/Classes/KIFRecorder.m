@@ -55,6 +55,7 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
         
         // We will need to add the recording wrapper to the Window
         Swizzle([UIWindow class], @selector(makeKeyAndVisible), @selector(KIFR_makeKeyAndVisible));
+        Swizzle([UIWindow class], @selector(addSubview:), @selector(KIFR_addSubview:));
         
         // Intercept HTTP request completion methods - AFURLConnectionOperation's delegate 'connectionDidFinishLoading:' and ASIHTTPRequest's 'markAsFinished'
         Swizzle(NSClassFromString(@"AFURLConnectionOperation"), @selector(connectionDidFinishLoading:), @selector(KIFR_connectionDidFinishLoading:));
@@ -125,6 +126,9 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
         [testString appendFormat:@"- (void)test%@ {", testName];
     }
     
+    // Add in the code to update KIF's 'currentTestName' property while the test runs
+    [testString appendFormat:@"\n    [[KIF sharedInstance] setCurrentTestName:@\"%@\"];\n", testName];
+    
     for (KIFRTestStep *step in [KIFRTest currentTest].testStepsArray) {
         if (step.stepType == KIFRStepTypeUnknown) {
             NSLog(@"Warning! Attempted to export a recorded action with no export logic!");
@@ -146,6 +150,23 @@ static inline void Swizzle(Class c, SEL orig, SEL new) {
     NSLog(@"%lu requests made during test.", (unsigned long)[KIFRTest currentTest].testRequestsArray.count);
     [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/%@", docsDir, testName] withIntermediateDirectories:YES attributes:nil error:nil];
     
+    // Discard any tests which are running on the same Test Step
+    // Note: The blow code *might* be able to be reworked to fix multi-request issues with 'auto-complete' requests BUT it could cause bugs with any auto-polling requests
+//    NSInteger testStepIndex = -1;
+//    NSMutableArray *mutableRequestsArray = [[KIFRTest currentTest].testRequestsArray mutableCopy];
+//    for (int i = (int)mutableRequestsArray.count - 1; i >= 0; --i) {
+//        NSDictionary *requestDictionary = mutableRequestsArray[i];
+//        NSInteger newStepIndex = [requestDictionary[kKIFRTestStepIndexKey] integerValue];
+//        
+//        // If they are for the same step then remove the step
+//        if (testStepIndex == newStepIndex) {
+//            [mutableRequestsArray removeObjectAtIndex:i];
+//        }
+//        
+//        testStepIndex = newStepIndex;
+//    }
+    
+    // Save out the filtered tests
     for (int i = 0; i < [KIFRTest currentTest].testRequestsArray.count; ++i) {
         NSDictionary *requestDictionary = [KIFRTest currentTest].testRequestsArray[i];
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:requestDictionary options:0 error:nil];

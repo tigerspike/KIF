@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+static const NSString *kKIFRRequestKey = @"request";
+static const NSString *kKIFRResponseKey = @"response";
+static const NSString *kKIFRTestStepIndexKey = @"testStepIndex";
+
 @interface NSObject (KIFRUtils_Networking)
 
 - (void)KIFR_markAsFinished;

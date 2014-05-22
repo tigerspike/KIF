@@ -150,6 +150,8 @@
 		EBAE488217A460E50005EE19 /* NSError-KIFAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE488017A460E50005EE19 /* NSError-KIFAdditions.m */; };
 		EBAE488717A4E5C30005EE19 /* KIFTestStepValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = EBAE488517A4E5C30005EE19 /* KIFTestStepValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EBAE488817A4E5C30005EE19 /* KIFTestStepValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE488617A4E5C30005EE19 /* KIFTestStepValidation.m */; };
+		FA09A8E4192D864E00058CF1 /* KIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FA09A8E3192D864E00058CF1 /* KIF.m */; };
+		FA09A8E5192D864E00058CF1 /* KIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FA09A8E3192D864E00058CF1 /* KIF.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,6 +268,7 @@
 		EBAE488017A460E50005EE19 /* NSError-KIFAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError-KIFAdditions.m"; sourceTree = "<group>"; };
 		EBAE488517A4E5C30005EE19 /* KIFTestStepValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIFTestStepValidation.h; sourceTree = "<group>"; };
 		EBAE488617A4E5C30005EE19 /* KIFTestStepValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIFTestStepValidation.m; sourceTree = "<group>"; };
+		FA09A8E3192D864E00058CF1 /* KIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIF.m; sourceTree = "<group>"; };
 		FA268FD0191B1633000758D2 /* KIFRecorder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KIFRecorder.xcodeproj; path = KIFRecorder/KIFRecorder.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -377,6 +380,7 @@
 			children = (
 				EB4C312F167BA39200E31109 /* Actors */,
 				A88930111685098E00FC7C63 /* KIF.h */,
+				FA09A8E3192D864E00058CF1 /* KIF.m */,
 				EB4C3127167BA37B00E31109 /* KIFTestCase.h */,
 				EB4C3128167BA37B00E31109 /* KIFTestCase.m */,
 				EB4C3123167BA37B00E31109 /* KIFTestActor.h */,
@@ -803,6 +807,7 @@
 				EABD467C1857A0C700A5F081 /* UIAccessibilityElement-KIFAdditions.m in Sources */,
 				EABD467D1857A0C700A5F081 /* UIApplication-KIFAdditions.m in Sources */,
 				EABD467E1857A0C700A5F081 /* UIScrollView-KIFAdditions.m in Sources */,
+				FA09A8E4192D864E00058CF1 /* KIF.m in Sources */,
 				EABD467F1857A0C700A5F081 /* UITouch-KIFAdditions.m in Sources */,
 				EABD46801857A0C700A5F081 /* UIView-KIFAdditions.m in Sources */,
 				EABD46811857A0C700A5F081 /* UIWindow-KIFAdditions.m in Sources */,
@@ -886,6 +891,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA09A8E5192D864E00058CF1 /* KIF.m in Sources */,
 				EB7204431680DDAD00278DA2 /* CGGeometry-KIFAdditions.m in Sources */,
 				EB7204441680DDAD00278DA2 /* UIAccessibilityElement-KIFAdditions.m in Sources */,
 				EB7204451680DDAD00278DA2 /* UIApplication-KIFAdditions.m in Sources */,
