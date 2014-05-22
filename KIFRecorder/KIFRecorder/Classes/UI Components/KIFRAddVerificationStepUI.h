@@ -17,7 +17,6 @@
 
 + (instancetype)sharedInstance;
 - (void)show;
-- (void)hideIfNeededForTouches:(NSArray *)touches;
 - (void)addVerificationStepWithEvent:(KIFRTestEvent *)event;
 
 @end

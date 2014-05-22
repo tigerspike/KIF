@@ -184,11 +184,15 @@
     UIDatePicker *datePicker = (UIDatePicker *)self.targetView;
     self.eventType = KIFREventTypeSetValue;
     self.targetInfo.targetDate = datePicker.date;
+    self.targetInfo.relativeTimeIntervalDifference = [datePicker.date timeIntervalSinceNow];
+    self.targetInfo.shouldSetDateRelative = YES;
     
     // Add an 'onAnimationFinished' block so we can get the new date value
     datePicker.userInteractionEnabled = NO;
     [datePicker onAnimationFinishedPerformBlock:^(NSDate *newDate) {
         self.targetInfo.targetDate = newDate;
+        self.targetInfo.relativeTimeIntervalDifference = [newDate timeIntervalSinceNow];
+        self.targetInfo.shouldSetDateRelative = YES;
         datePicker.userInteractionEnabled = YES;
         
         // If we have set the 'testStep' then this event has been marked as complete, so update the data

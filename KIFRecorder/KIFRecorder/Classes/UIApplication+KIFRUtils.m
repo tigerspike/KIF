@@ -20,51 +20,50 @@
 @implementation UIApplication (KIFRUtils)
 
 - (void)KIFR_sendEvent:(UIEvent *)event {
-    if ([KIFRAddVerificationStepUI sharedInstance].isProcessingStep) {
-        // If we are currently adding a verification step the it should be tap-to-dismiss
-        [[KIFRAddVerificationStepUI sharedInstance] hideIfNeededForTouches:[[event allTouches] allObjects]];
-    }
-    else if (![KIFRMenuView sharedInstance].isExpanded && event.type == UIEventTypeTouches) {
-        NSArray *touches = [[event allTouches] allObjects];
-        KIFRTestEvent *testEvent;
-        
-        // Not all of the touches will have a 'view' property, loop through the event touches until you find one which does
-        // Default to the firstObject on the off chance that none of the touches have a view
-        UITouch *touch = touches.firstObject;
-        NSString *touchID = [NSString stringWithFormat:@"%p", touch];
-        for (UITouch *eventTouch in touches) {
-            // Try to get the event from the currentEvents dictionary
-            NSString *tmpTouchID = [NSString stringWithFormat:@"%p", eventTouch];
-            testEvent = [KIFRTest currentTest].currentEvents[tmpTouchID];
+    // Don't let KIFR process events if we are proccessing a validation step
+    if (![KIFRAddVerificationStepUI sharedInstance].isProcessingStep) {
+        if (![KIFRMenuView sharedInstance].isExpanded && event.type == UIEventTypeTouches) {
+            NSArray *touches = [[event allTouches] allObjects];
+            KIFRTestEvent *testEvent;
             
-            // If the touch has a view then update the variables
-            if (eventTouch.view) {
-                touch = eventTouch;
-                touchID = tmpTouchID;
+            // Not all of the touches will have a 'view' property, loop through the event touches until you find one which does
+            // Default to the firstObject on the off chance that none of the touches have a view
+            UITouch *touch = touches.firstObject;
+            NSString *touchID = [NSString stringWithFormat:@"%p", touch];
+            for (UITouch *eventTouch in touches) {
+                // Try to get the event from the currentEvents dictionary
+                NSString *tmpTouchID = [NSString stringWithFormat:@"%p", eventTouch];
+                testEvent = [KIFRTest currentTest].currentEvents[tmpTouchID];
+                
+                // If the touch has a view then update the variables
+                if (eventTouch.view) {
+                    touch = eventTouch;
+                    touchID = tmpTouchID;
+                }
+                
+                // If we already have an event then break from the loop
+                if (testEvent) {
+                    touch = eventTouch;
+                    touchID = tmpTouchID;
+                    break;
+                }
             }
             
-            // If we already have an event then break from the loop
-            if (testEvent) {
-                touch = eventTouch;
-                touchID = tmpTouchID;
-                break;
+            // If we didn't find an existing event and it's in the 'Began' phase, add a new one
+            if (!testEvent && touch.phase == UITouchPhaseBegan) {
+                // Create the 'KIFRTestEvent' and pass it to the currentTest
+                testEvent = [self createTestEventForEvent:event];
+                
+                // The testEvent will be nil if there isn't a valid UIElement to select
+                if (testEvent) {
+                    [[KIFRTest currentTest] addTestEvent:testEvent];
+                }
             }
-        }
-        
-        // If we didn't find an existing event and it's in the 'Began' phase, add a new one
-        if (!testEvent && touch.phase == UITouchPhaseBegan) {
-            // Create the 'KIFRTestEvent' and pass it to the currentTest
-            testEvent = [self createTestEventForEvent:event];
-            
-            // The testEvent will be nil if there isn't a valid UIElement to select
-            if (testEvent) {
-                [[KIFRTest currentTest] addTestEvent:testEvent];
+            else if (testEvent && touch.phase == UITouchPhaseEnded) {
+                // Otherwise if the event ended, nil the 'targetView' and remove it from the currentEvents dictionary
+                [testEvent endWithTouches:touches];
+                [[KIFRTest currentTest] completeTestEvent:testEvent];
             }
-        }
-        else if (testEvent && touch.phase == UITouchPhaseEnded) {
-            // Otherwise if the event ended, nil the 'targetView' and remove it from the currentEvents dictionary
-            [testEvent endWithTouches:touches];
-            [[KIFRTest currentTest] completeTestEvent:testEvent];
         }
     }
     

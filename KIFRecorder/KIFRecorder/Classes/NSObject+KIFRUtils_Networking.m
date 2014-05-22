@@ -72,10 +72,14 @@
     [requestDictionary setObject:[requestURL absoluteString] forKey:kKIFRRequestKey];
     
     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-    [requestDictionary setObject:jsonData forKey:kKIFRResponseKey];
-    [requestDictionary setObject:@([KIFRTest currentTest].testStepsArray.count) forKey:kKIFRTestStepIndexKey];
     
-    [[KIFRTest currentTest].testRequestsArray addObject:requestDictionary];
+    // Sanity Check
+    if (jsonData) {
+        [requestDictionary setObject:jsonData forKey:kKIFRResponseKey];
+        [requestDictionary setObject:@([KIFRTest currentTest].testStepsArray.count) forKey:kKIFRTestStepIndexKey];
+    
+        [[KIFRTest currentTest].testRequestsArray addObject:requestDictionary];
+    }
 }
 
 @end
