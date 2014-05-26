@@ -11,4 +11,14 @@
 
 #import "UIView+KIFRUtils.h"
 
+CGFloat UIAnimationDragCoefficient(void);
+
+static inline BOOL slowAnimationsEnabled() {
+#if TARGET_IPHONE_SIMULATOR
+    return UIAnimationDragCoefficient() != 1;
+#else
+    return NO;
+#endif
+}
+
 #endif

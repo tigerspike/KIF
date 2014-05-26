@@ -11,8 +11,8 @@
 #import "KIFRTestEvent.h"
 #import "KIFRTargetInfo.h"
 #import "UITouch+KIFRUtils.h"
-#import "KIFRMenuView.h"
 #import "KIFRTest.h"
+#import "KIFRController.h"
 #import "KIFRAddVerificationStepUI.h"
 #import "UIView+KIFRContent.h"
 #import <objc/runtime.h>
@@ -22,7 +22,7 @@
 - (void)KIFR_sendEvent:(UIEvent *)event {
     // Don't let KIFR process events if we are proccessing a validation step
     if (![KIFRAddVerificationStepUI sharedInstance].isProcessingStep) {
-        if (![KIFRMenuView sharedInstance].isExpanded && event.type == UIEventTypeTouches) {
+        if (![KIFRController sharedInstance].items.count && event.type == UIEventTypeTouches) {
             NSArray *touches = [[event allTouches] allObjects];
             KIFRTestEvent *testEvent;
             

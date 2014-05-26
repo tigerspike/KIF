@@ -10,8 +10,8 @@
 #import "UIApplication+KIFRUtils.h"
 #import "KIFRTestEvent.h"
 #import "UIGestureRecognizer+KIFRUtils.h"
-#import "KIFRMenuView.h"
 #import "KIFRTest.h"
+#import "KIFRController.h"
 #import <objc/runtime.h>
 
 #pragma mark - KIFRecordingWindow
@@ -35,7 +35,7 @@ static UIWindow *sharedInstance;
 
 - (void)setupRecordingUI {
     // Add the magic menu
-    [self addSubview:[KIFRMenuView sharedInstance]];
+    [self addSubview:[KIFRController sharedInstance]];
     
     // Setup Gesture Recognizers (These make identifying the type of event much easier)
     UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(windowLongTapped:)];
@@ -57,7 +57,7 @@ static UIWindow *sharedInstance;
 
 - (void)KIFR_addSubview:(UIView *)subview {
     [self KIFR_addSubview:subview];
-    [self bringSubviewToFront:[KIFRMenuView sharedInstance]];
+    [self bringSubviewToFront:[KIFRController sharedInstance]];
 }
 
 #pragma mark - Gesture Handlers
@@ -109,11 +109,7 @@ static UIWindow *sharedInstance;
 #pragma mark - UIGestureRecognizerDelegate Methods
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if ([KIFRMenuView sharedInstance].isExpanded) {
-        return NO;
-    }
-    
-    return YES;
+    return [KIFRController sharedInstance].items.count;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {

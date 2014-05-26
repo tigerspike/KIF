@@ -9,8 +9,8 @@
 #import "KIFRAddVerificationStepUI.h"
 #import "KIFRTestEvent.h"
 #import "KIFRVerificationStepCell.h"
-#import "KIFRMenuView.h"
 #import "KIFRTest.h"
+#import "KIFRController.h"
 
 @interface KIFRAddVerificationStepUI () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
@@ -128,6 +128,7 @@
         }
         
         strongSelf.contentWindow.alpha = 0;
+        [KIFRController sharedInstance].alpha = KIFR_MENU_CONTROLLER_UNFOCUSSED_ALPHA;
     } completion:^(BOOL finished) {
         KIFRAddVerificationStepUI *strongSelf = weakSelf;
         if (!strongSelf) {
@@ -140,7 +141,7 @@
         strongSelf.isProcessingStep = NO;
         strongSelf.selectedTargetInfo = nil;
         strongSelf.contentWindow.hidden = YES;
-        [[KIFRMenuView sharedInstance] fadeOutView:nil];
+        
     }];
 }
 
